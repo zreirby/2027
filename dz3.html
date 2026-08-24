@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ДЗ Физика</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 40px;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Варианты ответов */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .options-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-option {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .options-vertical .btn-option {
+      justify-content: flex-start;
+      text-align: left;
+      padding: 14px 20px;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background: rgba(45, 55, 80, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-option:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background: var(--success) !important;
+      border-color: var(--success) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--success-glow) !important;
+    }
+
+    .btn-option.incorrect {
+      background: var(--error) !important;
+      border-color: var(--error) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--error-glow) !important;
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    /* Блок решения с полной адаптивностью */
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solution-box p, .solution-box div {
+      margin-bottom: 10px;
+    }
+
+    .solution-box ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .solution-box li {
+      margin-bottom: 4px;
+    }
+
+    .math-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-scroll::-webkit-scrollbar,
+    .task-title::-webkit-scrollbar,
+    .solution-box::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .math-scroll::-webkit-scrollbar-thumb,
+    .task-title::-webkit-scrollbar-thumb,
+    .solution-box::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0;
+      margin: 6px 0 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .katex-display::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="hero">
+      <h1>МКТ. Масса и размеры молекул. Число Авогадро</h1>
+      <p>Введите полученный числовой ответ или выберите верный вариант.</p>
+    </div>
+
+    <!-- Задача 1 -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Определите массу $m$ гелия в объеме, содержащем $N = 1{,}2 \cdot 10^{25}$ молекул.</div>
+      <div class="task-desc">Введите массу в килограммах ($\text{кг}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-1-input" />
+        <button class="btn-main" onclick="validateCalculation(1)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <strong>Дано:</strong>
+        <ul>
+          <li>$N = 1{,}2 \cdot 10^{25}$</li>
+          <li>$N_A = 6 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>В условии дан гелий, поэтому его молярную массу $M$ мы находим по таблице Менделеева: гелий ($\text{He}$) находится под номером 4, его округленная атомная масса равна $4\text{ г/моль}$, а для перевода в систему СИ делим на $1000$ и получаем $M = 4 \cdot 10^{-3}\text{ кг/моль}$. Основная формула для количества вещества через массу имеет вид $\nu = \frac{m}{M}$, откуда выражаем массу: $m = \nu \cdot M$. Вторая основная формула связывает количество вещества с числом частиц: $\nu = \frac{N}{N_A}$. Так как левые части ($\nu$) в обоих уравнениях одинаковы, мы приравниваем их правые части: $\frac{m}{M} = \frac{N}{N_A}$.</p>
+        <p>Чтобы окончательно вывести формулу для массы, умножаем обе части равенства на $M$ и получаем: $m = \frac{N \cdot M}{N_A}$. Подставляем числовые значения в выведенную формулу:</p>
+        <div class="math-scroll">
+          $$m = \frac{1{,}2 \cdot 10^{25} \cdot 4 \cdot 10^{-3}}{6 \cdot 10^{23}} = 0{,}2 \cdot 10^2 \cdot 4 \cdot 10^{-3} = 20 \cdot 4 \cdot 10^{-3} = 80 \cdot 10^{-3}\text{ кг} = 0{,}08\text{ кг}.$$
+        </div>
+        <strong>Ответ:</strong> $0{,}08\text{ кг}$ (или $80\text{ г}$).
+      </div>
+    </div>
+
+    <!-- Задача 2 -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Вычислите массу $m$ водорода, находящуюся в сосуде, количество вещества которого $\nu = 200\text{ моль}$.</div>
+      <div class="task-desc">Введите массу в килограммах ($\text{кг}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-2-input" />
+        <button class="btn-main" onclick="validateCalculation(2)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <strong>Дано:</strong>
+        <ul>
+          <li>$\nu = 200\text{ моль}$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>В условии указан водород, который в свободном виде всегда существует как двухатомный газ ($\text{H}_2$). По таблице Менделеева атомная масса водорода ($\text{H}$) равна $1\text{ г/моль}$, значит для молекулы $\text{H}_2$ молярная масса равна $1 \cdot 2 = 2\text{ г/моль}$, что в системе СИ составляет $M = 2 \cdot 10^{-3}\text{ кг/моль}$. Записываем базовую формулу количества вещества: $\nu = \frac{m}{M}$. Выражаем из неё формулу массы, перенося $M$ из знаменателя левой части в числитель правой: $m = \nu \cdot M$. Подставляем все известные значения в эту формулу:</p>
+        <div class="math-scroll">
+          $$m = 200 \cdot 2 \cdot 10^{-3} = 400 \cdot 10^{-3}\text{ кг} = 0{,}4\text{ кг}.$$
+        </div>
+        <strong>Ответ:</strong> $0{,}4\text{ кг}$ (или $400\text{ г}$).
+      </div>
+    </div>
+
+    <!-- Задача 3 -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">Вычислите отношение количества молекул $N_1$ в водороде массой $m_1 = 12\text{ г}$ к количеству молекул $N_2$ в кислороде массой $m_2 = 6{,}0\text{ г}$.</div>
+      <div class="task-desc">Введите значение отношения ($N_1 / N_2$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-3-input" />
+        <button class="btn-main" onclick="validateCalculation(3)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <strong>Дано:</strong>
+        <ul>
+          <li>$m_1 = 12\text{ г} = 12 \cdot 10^{-3}\text{ кг}$ (масса водорода)</li>
+          <li>$m_2 = 6{,}0\text{ г} = 6{,}0 \cdot 10^{-3}\text{ кг}$ (масса кислорода)</li>
+          <li>$N_A = 6 \cdot 10^{23}\text{ моль}^{-1}$ (постоянная Авогадро)</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>В условии задачи даны водород и кислород. В обычных условиях оба эти газа являются двухатомными, то есть их химические формулы — $\text{H}_2$ и $\text{O}_2$. Чтобы определить их молярные массы, обратимся к таблице Менделеева. Относительная атомная масса водорода ($\text{H}$) равна $1\text{ г/моль}$, поэтому молярная масса молекулярного водорода составляет $M_1 = 1 \cdot 2 = 2\text{ г/моль} = 2 \cdot 10^{-3}\text{ кг/моль}$. Относительная атомная масса кислорода ($\text{O}$) равна $16\text{ г/моль}$, следовательно, молярная масса молекулярного кислорода равна $M_2 = 16 \cdot 2 = 32\text{ г/моль} = 32 \cdot 10^{-3}\text{ кг/моль}$.</p>
+        <p>Теперь поэтапно выведем формулу для расчета количества молекул каждого газа. Мы знаем базовую формулу связи количества вещества с его массой: $\nu = \frac{m}{M}$. Также существует базовая формула связи количества вещества с числом частиц: $\nu = \frac{N}{N_A}$. Приравнивая правые части этих уравнений, так как их левые части одинаковы, получаем пропорцию: $\frac{N}{N_A} = \frac{m}{M}$. Чтобы выразить число молекул $N$, умножим обе части этого равенства на постоянную Авогадро $N_A$, что дает формулу: $N = \frac{m \cdot N_A}{M}$.</p>
+        <p>Запишем полученную формулу для каждого газа отдельно: для водорода выражение имеет вид $N_1 = \frac{m_1 \cdot N_A}{M_1}$, а для кислорода — $N_2 = \frac{m_2 \cdot N_A}{M_2}$. Нам требуется найти отношение количества молекул водорода к количеству молекул кислорода, то есть $\frac{N_1}{N_2}$. Составим отношение, разделив одну дробь на другую:</p>
+        <div class="math-scroll">
+          $$\frac{N_1}{N_2} = \frac{\frac{m_1 \cdot N_A}{M_1}}{\frac{m_2 \cdot N_A}{M_2}}.$$
+        </div>
+        <p>Чтобы разделить дробь на дробь, умножим первую дробь на перевернутую вторую дробь:</p>
+        <div class="math-scroll">
+          $$\frac{N_1}{N_2} = \frac{m_1 \cdot N_A}{M_1} \cdot \frac{M_2}{m_2 \cdot N_A}.$$
+        </div>
+        <p>Сокращаем одинаковый множитель $N_A$ в числителе и знаменателе, в результате чего получаем:</p>
+        <div class="math-scroll">
+          $$\frac{N_1}{N_2} = \frac{12 \cdot 10^{-3} \cdot 32 \cdot 10^{-3}}{2 \cdot 10^{-3} \cdot 6{,}0 \cdot 10^{-3}} = \frac{12 \cdot 32}{2 \cdot 6} = \frac{384}{12} = 32.$$
+        </div>
+        <p>При расчете степени $10^{-3}$ полностью сократились, подтверждая, что отношение является безразмерной величиной.</p>
+        <strong>Ответ:</strong> $32$.
+      </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">Почему с ростом температуры возрастает скорость диффузии?</div>
+      <div class="options-vertical">
+        <button class="btn-option" onclick="handleChoice(4, '1', this)">1) При нагревании молекулы всех веществ начинают двигаться быстрее</button>
+        <button class="btn-option" onclick="handleChoice(4, '2', this)">2) Увеличиваются геометрические размеры самих молекул</button>
+        <button class="btn-option" onclick="handleChoice(4, '3', this)">3) Уменьшаются расстояния между молекулами вещества</button>
+        <button class="btn-option" onclick="handleChoice(4, '4', this)">4) Молекулы перестают сталкиваться друг с другом</button>
+      </div>
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <strong>Решение:</strong>
+        <p>С ростом температуры возрастает скорость диффузии, потому что при нагревании молекулы всех веществ начинают двигаться быстрее. Диффузия — это процесс, при котором частицы одного вещества сами по себе перемешиваются и проникают в промежутки между частицами другого вещества. Температура как раз и является мерой того, насколько интенсивно движутся молекулы: чем выше температура, тем сильнее они развивают скорость и тем чаще сталкиваются. Соответственно, когда скорость движения частиц увеличивается, они гораздо быстрее преодолевают расстояния и перемешиваются друг с другом, из-за чего весь процесс диффузии заметно ускоряется.</p>
+        <strong>Ответ:</strong> вариант 1.
+      </div>
+    </div>
+
+    <!-- Задача 5 -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">Известно, что нельзя заставить капельку нефти объемом $V = 1{,}0\text{ мм}^3$ расплыться по поверхности воды так, чтобы она заняла площадь больше $S = 3{,}0\text{ м}^2$. Оцените по этим данным минимальный размер $d$ частицы нефти.</div>
+      <div class="task-desc">Введите минимальный размер $d$ в метрах ($\text{м}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-5-input" />
+        <button class="btn-main" onclick="validateCalculation(5)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <strong>Дано:</strong>
+        <ul>
+          <li>$V = 1{,}0\text{ мм}^3 = 1{,}0 \cdot 10^{-9}\text{ м}^3$ (объем капли нефти)</li>
+          <li>$S = 3{,}0\text{ м}^2$ (максимальная площадь пленки)</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>При максимальном растекании капля образует тончайшую пленку толщиной всего в одну молекулу нефти. Эта толщина и будет являться минимальным размером $d$ самой частицы нефти. Основная геометрическая формула для объема такого слоя выглядит как произведение его площади на толщину: $V = S \cdot d$. Из этой формулы выражаем искомый размер частицы, деля объем на площадь поверхности: $d = \frac{V}{S}$.</p>
+        <p>Перед расчетом переведем миллиметры в метры: в одном метре $1000$ миллиметров, значит в одном кубическом метре будет один миллиард кубических миллиметров ($10^9$), откуда получаем $V = 1{,}0 \cdot 10^{-9}\text{ м}^3$. Подставляем числовые данные в выведенную формулу:</p>
+        <div class="math-scroll">
+          $$d = \frac{V}{S} = \frac{1{,}0 \cdot 10^{-9}}{3{,}0} = 0{,}333\ldots \cdot 10^{-9}\text{ м} \approx 3{,}3 \cdot 10^{-10}\text{ м}.$$
+        </div>
+        <strong>Ответ:</strong> $d = \frac{V}{S} = 3{,}3 \cdot 10^{-10}\text{ м}$.
+      </div>
+    </div>
+
+    <!-- Задача 6 -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">За промежуток времени $t = 10\text{ сут}$ из стакана полностью испарилась вода массой $m = 0{,}10\text{ кг}$. Сколько молекул $\left(\frac{N}{t}\right)$ в среднем вылетало с поверхности воды за одну секунду?</div>
+      <div class="task-desc">Введите число молекул за секунду ($\text{с}^{-1}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-6-input" />
+        <button class="btn-main" onclick="validateCalculation(6)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <strong>Дано:</strong>
+        <ul>
+          <li>$t = 10\text{ сут}$</li>
+          <li>$m = 0{,}10\text{ кг}$</li>
+          <li>$N_A = 6 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>В условии задачи дана вода с формулой $\text{H}_2\text{O}$. По таблице Менделеева смотрим атомные массы: водород равен 1, кислород равен 16. Молярная масса молекулы воды равна $M = 1 \cdot 2 + 16 = 18\text{ г/моль}$. В системе СИ это составит $M = 0{,}018\text{ кг/моль}$.</p>
+        <p>Переведем 10 суток в секунды. В одних сутках 24 часа по 3600 секунд. Получаем время $t = 10 \cdot 24 \cdot 3600 = 864\,000\text{ с}$.</p>
+        <p>Выведем формулу для числа молекул за одну секунду, то есть для величины $N/t$. Основная формула количества вещества через массу: количество вещества $= m / M$. Вторая основная формула через частицы: количество вещества $= N / N_A$. Приравняем их правые части: $N / N_A = m / M$. Выразим общее число молекул, перенеся $N_A$ вверх: $N = (m \cdot N_A) / M$. Поделим обе части на время $t$ и получим финальную рабочую формулу: $N/t = (m \cdot N_A) / (M \cdot t)$.</p>
+        <p>Подставим числа в эту готовую формулу:</p>
+        <div class="math-scroll">
+          $$\frac{N}{t} = \frac{m N_A}{M t} = \frac{0{,}10 \cdot 6 \cdot 10^{23}}{0{,}018 \cdot 864\,000} = \frac{6 \cdot 10^{22}}{15\,552} = 3{,}9 \cdot 10^{18}\text{ с}^{-1}.$$
+        </div>
+        <strong>Ответ:</strong> $\frac{N}{t} = \frac{m N_A}{M t} = 3{,}9 \cdot 10^{18}\text{ с}^{-1}$ (или $3{,}9 \cdot 10^{18}\text{ частиц в секунду}$).
+      </div>
+    </div>
+
+    <!-- Задача 7 -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">Число $N_1$ атомов титана $\left(M_1 = 48\text{ }\frac{\text{г}}{\text{моль}}\right)$ имеет массу $m_1 = 2\text{ г}$, $N_2$ атомов углерода $\left(M_2 = 12\text{ }\frac{\text{г}}{\text{моль}}\right)$ имеет массу $m_2 = 1\text{ г}$. Отношение $\frac{N_1}{N_2}$ равно:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(7, '1', this)">1) $\frac{1}{4}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '2', this)">2) $\frac{1}{2}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '3', this)">3) $1$</button>
+        <button class="btn-option" onclick="handleChoice(7, '4', this)">4) $2$</button>
+        <button class="btn-option" onclick="handleChoice(7, '5', this)">5) $4$</button>
+      </div>
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <strong>Решение:</strong>
+        <p>Число атомов равно произведению количества вещества и числа Авогадро: $N_1 = \nu_1 \cdot N_A$. Количество вещества равно $\nu_1 = \frac{m_1}{M_1}$. Тогда для отношения получаем:</p>
+        <div class="math-scroll">
+          $$\frac{N_1}{N_2} = \frac{m_1 M_2}{m_2 M_1} = \frac{2\text{ г} \cdot 12\text{ г/моль}}{1\text{ г} \cdot 48\text{ г/моль}} = \frac{1}{2}.$$
+        </div>
+        <strong>Ответ:</strong> 2.
+      </div>
+    </div>
+
+    <!-- Задача 8 -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title">Если в объёме $V = 1{,}0\text{ дм}^3$ некоторого вещества ($M = 56\text{ г/моль}$) содержится $N = 8{,}4 \cdot 10^{25}$ молекул, то плотность $\rho$ этого вещества равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(8, '1', this)">1) $1{,}0\text{ г/см}^3$</button>
+        <button class="btn-option" onclick="handleChoice(8, '2', this)">2) $2{,}7\text{ г/см}^3$</button>
+        <button class="btn-option" onclick="handleChoice(8, '3', this)">3) $5{,}6\text{ г/см}^3$</button>
+        <button class="btn-option" onclick="handleChoice(8, '4', this)">4) $7{,}8\text{ г/см}^3$</button>
+        <button class="btn-option" onclick="handleChoice(8, '5', this)">5) $8{,}7\text{ г/см}^3$</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <strong>Решение:</strong>
+        <p>Плотность вещества может быть найдена по формуле</p>
+        <div class="math-scroll">
+          $$\rho = \frac{m}{V} = \frac{M \cdot N}{V \cdot N_A} \approx 7{,}8\text{ г/см}^3.$$
+        </div>
+        <p>Правильный ответ указан под номером 4.</p>
+        <strong>Ответ:</strong> 4.
+      </div>
+    </div>
+
+    <!-- Задача 9 -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title">Если объём алюминиевой $\left(\rho = 2{,}7\text{ }\frac{\text{г}}{\text{см}^3},\ M = 27\text{ }\frac{\text{г}}{\text{моль}}\right)$ пластины $V = 180\text{ см}^3$, то в ней содержится количество вещества, равное ... моль.</div>
+      <div class="task-desc">Введите количество вещества в молях ($\text{моль}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-9-input" />
+        <button class="btn-main" onclick="validateCalculation(9)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <strong>Решение:</strong>
+        <p>Масса алюминиевой пластины $m = \rho V$. Количество вещества</p>
+        <div class="math-scroll">
+          $$\nu = \frac{m}{M} = \frac{\rho V}{M} = \frac{2{,}7 \cdot 180}{27} = 18\text{ моль}.$$
+        </div>
+        <strong>Ответ:</strong> 18.
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Рендеринг формул KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const correctAnswers = {
+      4: ['1'],
+      7: ['2'],
+      8: ['4']
+    };
+
+    function handleChoice(taskId, value, buttonEl) {
+      const card = document.getElementById(`task-${taskId}`);
+      const buttons = card.querySelectorAll('.btn-option');
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      const isCorrect = correctAnswers[taskId].includes(value);
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Отличная работа.';
+        btnSol.style.display = 'none';
+      } else {
+        buttonEl.classList.add('incorrect');
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверно. Попробуйте еще раз или посмотрите решение.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      // Задача 1: m = 0.08 кг (или 80 г)
+      if (taskId === 1) isCorrect = Math.abs(val - 0.08) < 0.005 || Math.abs(val - 80) < 0.5;
+      // Задача 2: m = 0.4 кг (или 400 г)
+      else if (taskId === 2) isCorrect = Math.abs(val - 0.4) < 0.01 || Math.abs(val - 400) < 1;
+      // Задача 3: N1/N2 = 32
+      else if (taskId === 3) isCorrect = Math.abs(val - 32) < 0.1;
+      // Задача 5: d ≈ 3.3e-10 м
+      else if (taskId === 5) isCorrect = Math.abs(val - 3.33e-10) < 0.25e-10 || Math.abs(val - 3.3e-10) < 0.25e-10;
+      // Задача 6: N/t ≈ 3.9e18
+      else if (taskId === 6) isCorrect = Math.abs(val - 3.9e18) < 0.2e18 || Math.abs(val - 3.86e18) < 0.2e18;
+      // Задача 9: nu = 18 моль
+      else if (taskId === 9) isCorrect = Math.abs(val - 18) < 0.1;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>

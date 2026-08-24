@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Домашнее задание • Физика</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Шапка */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 10, 16, 0.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+    }
+
+    .header-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 40px auto 0;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .task-desc {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .formula-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      color: #c7d2fe;
+      padding: 6px 14px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      margin: 8px 0 16px;
+    }
+
+    /* Блоки картинок */
+    .task-image-box {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin: 18px 0 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .task-image-box img {
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .img-caption {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* Векторный блок */
+    .svg-wrapper {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin: 18px 0 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      overflow-x: auto;
+    }
+
+    .svg-caption {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* Чертежи внутри решения */
+    .solution-svg-box {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 14px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    /* Кнопки ответов */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .options-numbers {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .btn-option {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background: rgba(45, 55, 80, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-option:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background: var(--success) !important;
+      border-color: var(--success) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--success-glow) !important;
+    }
+
+    .btn-option.incorrect {
+      background: var(--error) !important;
+      border-color: var(--error) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--error-glow) !important;
+    }
+
+    /* Таблицы */
+    .table-box {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--surface-elevated);
+      margin: 16px 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Мензурки (Задача 3) */
+    .cylinders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .cylinder-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s var(--ease-spring);
+    }
+
+    .cylinder-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .cylinder-img {
+      width: 100%;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+      position: relative;
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .cylinder-img:hover {
+      transform: scale(1.03);
+    }
+
+    .cylinder-img img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .cylinder-zoom-hint {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cylinder-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .input-field-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .field-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+    }
+
+    .field-item label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .field-item input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .field-item input:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .multi-input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 170px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Модальное окно увеличения картинок */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(4, 6, 12, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s var(--ease-spring);
+    }
+
+    .image-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: #0f1422;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      max-width: 95vw;
+      max-height: 94vh;
+      transform: scale(0.94);
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .image-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-viewport {
+      height: 74vh;
+      min-height: 500px;
+      width: min(750px, 88vw);
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+    }
+
+    .modal-viewport:active {
+      cursor: grabbing;
+    }
+
+    .modal-viewport img {
+      height: 100%;
+      width: auto;
+      max-height: 100%;
+      object-fit: contain;
+      transform-origin: center center;
+      transition: transform 0.18s ease-out;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .modal-header-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-caption {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .modal-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-zoom {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 7px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-spring);
+    }
+
+    .btn-zoom:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-close-btn {
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s var(--ease-spring);
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header>
+    <div class="header-title">Домашнее задание</div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Физика</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Из перечисленных слов выберите то, которое обозначает <u>единицу измерения</u>:</div>
+      
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(1, 'длина', this)">длина</button>
+        <button class="btn-option" onclick="handleChoice(1, 'метр', this)">метр</button>
+        <button class="btn-option" onclick="handleChoice(1, 'секунда', this)">секунда</button>
+        <button class="btn-option" onclick="handleChoice(1, 'температура', this)">температура</button>
+        <button class="btn-option" onclick="handleChoice(1, 'учебник', this)">учебник</button>
+      </div>
+
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <strong>Теоретическое обоснование:</strong><br/>
+        • <em>Длина</em> и <em>температура</em> — это то, <u>что</u> мы измеряем (физические величины).<br/>
+        • <em>Учебник</em> — это материальный предмет (физическое тело).<br/>
+        • <strong>Метр</strong> и <strong>Секунда</strong> — это эталоны, <u>в чём</u> мы измеряем величины (единицы измерения СИ).
+      </div>
+    </div>
+
+    <!-- Задача 2 -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Из перечисленных слов выберите то, которое обозначает <u>физическое явление</u>:</div>
+      
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(2, 'движение', this)">движение</button>
+        <button class="btn-option" onclick="handleChoice(2, 'звук', this)">звук</button>
+        <button class="btn-option" onclick="handleChoice(2, 'перемена', this)">перемена</button>
+        <button class="btn-option" onclick="handleChoice(2, 'свобода', this)">свобода</button>
+        <button class="btn-option" onclick="handleChoice(2, 'тюрьма', this)">тюрьма</button>
+      </div>
+
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <strong>Теоретическое обоснование:</strong><br/>
+        Физическое явление — это любое изменение, происходящее с физическими телами в природе.<br/>
+        <strong>Движение</strong> — это изменение положения тела в пространстве с течением времени (механическое явление).<br/>
+        <em>Звук</em> также относится к звуковым явлениям.
+      </div>
+    </div>
+
+    <!-- Задача 3 (Мензурки) -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">На рисунке 40 представлены четыре мензурки. Определите цену деления шкалы каждой мензурки и объемы жидкостей, налитых в них:</div>
+      <div class="task-desc">💡 Нажмите на мензурку, чтобы открыть её во весь экран.</div>
+      
+      <div class="cylinders-grid">
+        <div class="cylinder-card">
+          <div class="cylinder-img" onclick="openModal('image1.png', 'Мензурка 1')">
+            <img src="image1.png" alt="Мензурка 1" onerror="this.src='https://via.placeholder.com/150x200?text=image1.png';" />
+            <span class="cylinder-zoom-hint">🔍 Увеличить</span>
+          </div>
+          <div class="cylinder-title">Мензурка 1</div>
+          <div class="input-field-group">
+            <div class="field-item">
+              <label>Цена деления ($\text{мл}$)</label>
+              <input type="text" id="c1-scale" />
+            </div>
+            <div class="field-item">
+              <label>Объем жидкости ($\text{мл}$)</label>
+              <input type="text" id="c1-vol" />
+            </div>
+          </div>
+        </div>
+
+        <div class="cylinder-card">
+          <div class="cylinder-img" onclick="openModal('image2.png', 'Мензурка 2')">
+            <img src="image2.png" alt="Мензурка 2" onerror="this.src='https://via.placeholder.com/150x200?text=image2.png';" />
+            <span class="cylinder-zoom-hint">🔍 Увеличить</span>
+          </div>
+          <div class="cylinder-title">Мензурка 2</div>
+          <div class="input-field-group">
+            <div class="field-item">
+              <label>Цена деления ($\text{мл}$)</label>
+              <input type="text" id="c2-scale" />
+            </div>
+            <div class="field-item">
+              <label>Объем жидкости ($\text{мл}$)</label>
+              <input type="text" id="c2-vol" />
+            </div>
+          </div>
+        </div>
+
+        <div class="cylinder-card">
+          <div class="cylinder-img" onclick="openModal('image3.png', 'Мензурка 3')">
+            <img src="image3.png" alt="Мензурка 3" onerror="this.src='https://via.placeholder.com/150x200?text=image3.png';" />
+            <span class="cylinder-zoom-hint">🔍 Увеличить</span>
+          </div>
+          <div class="cylinder-title">Мензурка 3</div>
+          <div class="input-field-group">
+            <div class="field-item">
+              <label>Цена деления ($\text{мл}$)</label>
+              <input type="text" id="c3-scale" />
+            </div>
+            <div class="field-item">
+              <label>Объем жидкости ($\text{мл}$)</label>
+              <input type="text" id="c3-vol" />
+            </div>
+          </div>
+        </div>
+
+        <div class="cylinder-card">
+          <div class="cylinder-img" onclick="openModal('image4.png', 'Мензурка 4')">
+            <img src="image4.png" alt="Мензурка 4" onerror="this.src='https://via.placeholder.com/150x200?text=image4.png';" />
+            <span class="cylinder-zoom-hint">🔍 Увеличить</span>
+          </div>
+          <div class="cylinder-title">Мензурка 4</div>
+          <div class="input-field-group">
+            <div class="field-item">
+              <label>Цена деления ($\text{мл}$)</label>
+              <input type="text" id="c4-scale" />
+            </div>
+            <div class="field-item">
+              <label>Объем жидкости ($\text{мл}$)</label>
+              <input type="text" id="c4-vol" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-main" style="width: 100%;" onclick="validateCylinders()">Проверить мензурки</button>
+      
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <strong>Формула цены деления: $C = \frac{A - B}{N}$</strong><br/>
+        где $A, B$ — два соседних подписанных штриха, $N$ — число делений между ними.<br/>
+        Объем жидкости: $V = V_{\text{баз}} + n \cdot C$.<br/><br/>
+        • <strong>Мензурка 1:</strong> $C_1 = \frac{20 - 10}{10} = \mathbf{1\text{ мл}}$. Мениск на 7 делений выше 20: $V_1 = 20 + 7 \cdot 1 = \mathbf{27\text{ мл}}$.<br/>
+        • <strong>Мензурка 2:</strong> $C_2 = \frac{18 - 16}{5} = \frac{2}{5} = \mathbf{0{,}4\text{ мл}}$. Мениск на 2 деления выше 16: $V_2 = 16 + 2 \cdot 0{,}4 = \mathbf{16{,}8\text{ мл}}$.<br/>
+        • <strong>Мензурка 3:</strong> $C_3 = \frac{40 - 20}{4} = \frac{20}{4} = \mathbf{5\text{ мл}}$. Мениск на 1 деление выше 40: $V_3 = 40 + 1 \cdot 5 = \mathbf{45\text{ мл}}$.<br/>
+        • <strong>Мензурка 4:</strong> $C_4 = \frac{60 - 50}{5} = \frac{10}{5} = \mathbf{2\text{ мл}}$. Мениск на 1 деление выше 50: $V_4 = 50 + 1 \cdot 2 = \mathbf{52\text{ мл}}$.
+      </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">Абитуриент провел поиск информации в сети Интернет о наиболее высоких зданиях в мире. Самое высокое здание указано в строке таблицы, номер которой:</div>
+      
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Название здания</th>
+              <th>Высота</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Небесное дерево Токио</td><td>$6{,}34 \cdot 10^4\text{ см}$</td></tr>
+            <tr><td>2</td><td>Си-Эн Тауэр</td><td>$553\text{ м}$</td></tr>
+            <tr><td>3</td><td>Телебашня Гуанчжоу</td><td>$610\text{ м}$</td></tr>
+            <tr><td>4</td><td>Бурдж-Халифа</td><td>$0{,}828\text{ км}$</td></tr>
+            <tr><td>5</td><td>Останкинская башня</td><td>$5{,}40 \cdot 10^5\text{ мм}$</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="options-numbers">
+        <button class="btn-option" onclick="handleChoice(4, '1', this)">1</button>
+        <button class="btn-option" onclick="handleChoice(4, '2', this)">2</button>
+        <button class="btn-option" onclick="handleChoice(4, '3', this)">3</button>
+        <button class="btn-option" onclick="handleChoice(4, '4', this)">4</button>
+        <button class="btn-option" onclick="handleChoice(4, '5', this)">5</button>
+      </div>
+
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <strong>Перевод высот в метры (СИ):</strong><br/>
+        1) $h_1 = 6{,}34 \cdot 10^4\text{ см} = 634\text{ м}$<br/>
+        2) $h_2 = 553\text{ м}$<br/>
+        3) $h_3 = 610\text{ м}$<br/>
+        4) $h_4 = 0{,}828\text{ км} = \mathbf{828\text{ м}}$<br/>
+        5) $h_5 = 5{,}40 \cdot 10^5\text{ мм} = 540\text{ м}$<br/><br/>
+        Сравниваем: $828\text{ м} > 634\text{ м} > 610\text{ м} > 553\text{ м} > 540\text{ м}$.<br/>
+        <strong>Ответ: строка 4 (Бурдж-Халифа).</strong>
+      </div>
+    </div>
+
+    <!-- Задача 5 -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">Самый скоростной лифт находится в небоскребе, указанном в строке таблицы, номер которой:</div>
+      
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Название небоскрёба</th>
+              <th>Максимальная скорость лифта</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Джон Хэнкок Центр</td><td>$917\text{ см/с}$</td></tr>
+            <tr><td>2</td><td>Бурдж-Халифа</td><td>$36\text{ км/ч}$</td></tr>
+            <tr><td>3</td><td>Taipei 101</td><td>$60{,}6\text{ км/ч}$</td></tr>
+            <tr><td>4</td><td>Саншайн-60</td><td>$6{,}09 \cdot 10^2\text{ м/мин}$</td></tr>
+            <tr><td>5</td><td>Yokohama Landmark Tower</td><td>$12{,}5\text{ м/с}$</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="options-numbers">
+        <button class="btn-option" onclick="handleChoice(5, '1', this)">1</button>
+        <button class="btn-option" onclick="handleChoice(5, '2', this)">2</button>
+        <button class="btn-option" onclick="handleChoice(5, '3', this)">3</button>
+        <button class="btn-option" onclick="handleChoice(5, '4', this)">4</button>
+        <button class="btn-option" onclick="handleChoice(5, '5', this)">5</button>
+      </div>
+
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <strong>Перевод значений скорости в единицы СИ ($\text{м/с}$):</strong><br/>
+        1) $v_1 = 917\text{ см/с} = 9{,}17\text{ м/с}$<br/>
+        2) $v_2 = 36\text{ км/ч} = \frac{36}{3{,}6} = 10\text{ м/с}$<br/>
+        3) $v_3 = 60{,}6\text{ км/ч} = \frac{60{,}6}{3{,}6} \approx \mathbf{16{,}83\text{ м/с}}$ (максимальная скорость)<br/>
+        4) $v_4 = 609\text{ м/мин} = \frac{609}{60} = 10{,}15\text{ м/с}$<br/>
+        5) $v_5 = 12{,}5\text{ м/с}$<br/>
+        <strong>Ответ: строка 3 (Taipei 101).</strong>
+      </div>
+    </div>
+
+    <!-- Задача 6 -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">В паспорте солнечной батареи приведены технические характеристики. Выберите параметр, характеризующий <u>силу тока</u>:</div>
+      
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(6, '1', this)">$7{,}36\text{ А}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '2', this)">$230\text{ Вт}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '3', this)">$20{,}4\text{ кг}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '4', this)">$14{,}3\text{ \%}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '5', this)">$31{,}25\text{ В}$</button>
+      </div>
+
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <strong>Теоретическое обоснование:</strong><br/>
+        Сила тока измеряется в Амперах ($\text{А}$).<br/>
+        • $7{,}36\text{ А}$ — сила тока $I$;<br/>
+        • $230\text{ Вт}$ — мощность $P$;<br/>
+        • $20{,}4\text{ кг}$ — масса $m$;<br/>
+        • $14{,}3\text{ \%}$ — КПД $\eta$;<br/>
+        • $31{,}25\text{ В}$ — напряжение $U$.<br/>
+        <strong>Ответ: строка 1 ($7{,}36\text{ А}$).</strong>
+      </div>
+    </div>
+
+    <!-- Задача 7 -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">В паспорте электродвигателя приведены технические характеристики. Выберите <u>коэффициент полезного действия (КПД)</u>:</div>
+      
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(7, '1', this)">$70\text{ \%}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '2', this)">$50\text{ Гц}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '3', this)">$2{,}2\text{ кВт}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '4', this)">$380\text{ В}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '5', this)">$6{,}8\text{ А}$</button>
+      </div>
+
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <strong>Теоретическое обоснование:</strong><br/>
+        Коэффициент полезного действия ($\eta$) выражается в процентах ($\%$) либо долях единицы.<br/>
+        • $70\text{ \%}$ — КПД $\eta$;<br/>
+        • $50\text{ Гц}$ — частота $\nu$;<br/>
+        • $2{,}2\text{ кВт}$ — мощность $P$;<br/>
+        • $380\text{ В}$ — напряжение $U$;<br/>
+        • $6{,}8\text{ А}$ — сила тока $I$.<br/>
+        <strong>Ответ: строка 1 ($70\text{ \%}$).</strong>
+      </div>
+    </div>
+
+    <!-- Задача 8 -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title"><strong>Сила тока (Закон Ома):</strong> найдите силу тока $I$, если напряжение $U = 6\text{ кВ}$, а сопротивление $R = 3\text{ МОм}$.</div>
+      <div class="formula-tag">Формула: $$I = \frac{U}{R}$$</div>
+      <div class="task-desc">Введите результат в Амперах ($\text{А}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-8-input" />
+        <button class="btn-main" onclick="validateCalculation(8)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <strong>Дано:</strong> $U = 6\text{ кВ} = 6 \cdot 10^3\text{ В}$, $R = 3\text{ МОм} = 3 \cdot 10^6\text{ Ом}$.<br/>
+        <strong>Закон Ома для участка цепи:</strong>
+        $$I = \frac{U}{R} = \frac{6 \cdot 10^3\text{ В}}{3 \cdot 10^6\text{ Ом}} = 2 \cdot 10^{-3}\text{ А} = \mathbf{0{,}002\text{ А}}$$
+        <strong>Ответ:</strong> $0{,}002\text{ А}$ (или $2 \cdot 10^{-3}\text{ А}$).
+      </div>
+    </div>
+
+    <!-- Задача 9 -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title"><strong>Путь:</strong> какое расстояние $S$ пролетит сигнальная ракета за время $t = 20\text{ мс}$, если её скорость $v = 300\text{ м/с}$?</div>
+      <div class="formula-tag">Формула: $$S = v \cdot t$$</div>
+      <div class="task-desc">Введите расстояние в метрах ($\text{м}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-9-input" />
+        <button class="btn-main" onclick="validateCalculation(9)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <strong>Дано:</strong> $v = 300\text{ м/с}$, $t = 20\text{ мс} = 0{,}02\text{ с}$.<br/>
+        <strong>Формула пути при равномерном прямолинейном движении:</strong>
+        $$S = v \cdot t = 300\text{ м/с} \cdot 0{,}02\text{ с} = \mathbf{6\text{ м}}$$
+        <strong>Ответ:</strong> $6\text{ м}$.
+      </div>
+    </div>
+
+    <!-- Задача 10 -->
+    <div class="card" id="task-10">
+      <div class="task-num">Задача 10</div>
+      <div class="task-title"><strong>Давление:</strong> студент сидит на стуле. Сила давления на пол $F = 600\text{ Н}$, общая площадь ножек стула $S = 12\text{ см}^2$. Найдите давление $p$.</div>
+      <div class="formula-tag">Формула: $$p = \frac{F}{S}$$</div>
+      <div class="task-desc">Введите давление в Паскалях ($\text{Па}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-10-input" />
+        <button class="btn-main" onclick="validateCalculation(10)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-10"></div>
+      <button class="btn-solution" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <strong>Дано:</strong> $F = 600\text{ Н}$, $S = 12\text{ см}^2 = 12 \cdot 10^{-4}\text{ м}^2 = 0{,}0012\text{ м}^2$.<br/>
+        <strong>Определение давления:</strong>
+        $$p = \frac{F}{S} = \frac{600\text{ Н}}{12 \cdot 10^{-4}\text{ м}^2} = 5 \cdot 10^5\text{ Па} = \mathbf{500\,000\text{ Па}}$$
+        <strong>Ответ:</strong> $500\,000\text{ Па}$ (или $5 \cdot 10^5\text{ Па}$).
+      </div>
+    </div>
+
+    <!-- Задача 11 -->
+    <div class="card" id="task-11">
+      <div class="task-num">Задача 11</div>
+      <div class="task-title"><strong>Энергия конденсатора:</strong> вычислите энергию поля $W$, если емкость $C = 5\text{ мкФ}$, а напряжение $U = 200\text{ В}$.</div>
+      <div class="formula-tag">Формула: $$W = \frac{C \cdot U^2}{2}$$</div>
+      <div class="task-desc">Введите значение энергии в Джоулях ($\text{Дж}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-11-input" />
+        <button class="btn-main" onclick="validateCalculation(11)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-11"></div>
+      <button class="btn-solution" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <strong>Дано:</strong> $C = 5\text{ мкФ} = 5 \cdot 10^{-6}\text{ Ф}$, $U = 200\text{ В}$.<br/>
+        <strong>Энергия электростатического поля конденсатора:</strong>
+        $$W = \frac{C \cdot U^2}{2} = \frac{5 \cdot 10^{-6}\text{ Ф} \cdot (200\text{ В})^2}{2} = \frac{5 \cdot 10^{-6} \cdot 40\,000}{2}\text{ Дж} = \mathbf{0{,}1\text{ Дж}}$$
+        <strong>Ответ:</strong> $0{,}1\text{ Дж}$.
+      </div>
+    </div>
+
+    <!-- Задача 12 -->
+    <div class="card" id="task-12">
+      <div class="task-num">Задача 12</div>
+      <div class="task-title"><strong>Масса вещества:</strong> железный кубик имеет объем $V = 5\text{ см}^3$, плотность железа $\rho = 7{,}8 \cdot 10^3\text{ кг/м}^3$. Найдите массу $m$.</div>
+      <div class="formula-tag">Формула: $$m = \rho \cdot V$$</div>
+      <div class="task-desc">Введите массу в килограммах ($\text{кг}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-12-input" />
+        <button class="btn-main" onclick="validateCalculation(12)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-12"></div>
+      <button class="btn-solution" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <strong>Дано:</strong> $V = 5\text{ см}^3 = 5 \cdot 10^{-6}\text{ м}^3$, $\rho = 7{,}8 \cdot 10^3\text{ кг/м}^3$.<br/>
+        <strong>Формула массы:</strong>
+        $$m = \rho \cdot V = 7800\text{ кг/м}^3 \cdot 5 \cdot 10^{-6}\text{ м}^3 = \mathbf{0{,}039\text{ кг}}$$
+        <strong>Ответ:</strong> $0{,}039\text{ кг}$.
+      </div>
+    </div>
+
+    <!-- Задача 13 -->
+    <div class="card" id="task-13">
+      <div class="task-num">Задача 13</div>
+      <div class="task-title"><strong>Период колебаний:</strong> найдите период колебаний $T$ маятника, если его частота $\nu = 25\text{ кГц}$.</div>
+      <div class="formula-tag">Формула: $$T = \frac{1}{\nu}$$</div>
+      <div class="task-desc">Введите период в секундах ($\text{с}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-13-input" />
+        <button class="btn-main" onclick="validateCalculation(13)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-13"></div>
+      <button class="btn-solution" id="btn-sol-13" onclick="toggleSolution(13)">Показать Решение</button>
+      <div class="solution-box" id="sol-13">
+        <strong>Дано:</strong> $\nu = 25\text{ кГц} = 25\,000\text{ Гц}$.<br/>
+        <strong>Связь периода и частоты:</strong>
+        $$T = \frac{1}{\nu} = \frac{1}{25\,000\text{ Гц}} = \mathbf{0{,}00004\text{ с}}\quad (\text{или } 4 \cdot 10^{-5}\text{ с})$$
+        <strong>Ответ:</strong> $0{,}00004\text{ с}$.
+      </div>
+    </div>
+
+    <!-- Задача 14 -->
+    <div class="card" id="task-14">
+      <div class="task-num">Задача 14</div>
+      <div class="task-title"><strong>Мощность тока:</strong> лампа работает под напряжением $U = 220\text{ В}$, ток $I = 500\text{ мА}$. Какова мощность $P$?</div>
+      <div class="formula-tag">Формула: $$P = U \cdot I$$</div>
+      <div class="task-desc">Введите мощность в Ваттах ($\text{Вт}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-14-input" />
+        <button class="btn-main" onclick="validateCalculation(14)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-14"></div>
+      <button class="btn-solution" id="btn-sol-14" onclick="toggleSolution(14)">Показать Решение</button>
+      <div class="solution-box" id="sol-14">
+        <strong>Дано:</strong> $U = 220\text{ В}$, $I = 500\text{ мА} = 0{,}5\text{ А}$.<br/>
+        <strong>Мощность электрического тока:</strong>
+        $$P = U \cdot I = 220\text{ В} \cdot 0{,}5\text{ А} = \mathbf{110\text{ Вт}}$$
+        <strong>Ответ:</strong> $110\text{ Вт}$.
+      </div>
+    </div>
+
+    <!-- Задача 15 -->
+    <div class="card" id="task-15">
+      <div class="task-num">Задача 15</div>
+      <div class="task-title"><strong>Гидростатическое давление:</strong> найдите давление $p$ воды на глубине $h = 4\text{ мм}$. Плотность $\rho = 1000\text{ кг/м}^3$, $g \approx 10\text{ Н/кг}$.</div>
+      <div class="formula-tag">Формула: $$p = \rho \cdot g \cdot h$$</div>
+      <div class="task-desc">Введите давление в Паскалях ($\text{Па}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-15-input" />
+        <button class="btn-main" onclick="validateCalculation(15)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-15"></div>
+      <button class="btn-solution" id="btn-sol-15" onclick="toggleSolution(15)">Показать Решение</button>
+      <div class="solution-box" id="sol-15">
+        <strong>Дано:</strong> $h = 4\text{ мм} = 0{,}004\text{ м}$, $\rho = 1000\text{ кг/м}^3$, $g = 10\text{ Н/кг}$.<br/>
+        <strong>Формула гидростатического давления:</strong>
+        $$p = \rho \cdot g \cdot h = 1000\text{ кг/м}^3 \cdot 10\text{ Н/кг} \cdot 0{,}004\text{ м} = \mathbf{40\text{ Па}}$$
+        <strong>Ответ:</strong> $40\text{ Па}$.
+      </div>
+    </div>
+
+    <!-- Задача 16 -->
+    <div class="card" id="task-16">
+      <div class="task-num">Задача 16</div>
+      <div class="task-title"><strong>Сила Кулона:</strong> два заряда $q_1 = 5\text{ нКл}$ и $q_2 = 4\text{ нКл}$ находятся на расстоянии $r = 0{,}1\text{ м}$. Вычислите силу $F$. ($k = 9 \cdot 10^9\text{ Н}\cdot\text{м}^2/\text{Кл}^2$).</div>
+      <div class="formula-tag">Формула: $$F = k \cdot \frac{q_1 \cdot q_2}{r^2}$$</div>
+      <div class="task-desc">Введите силу в Ньютонах ($\text{Н}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-16-input" />
+        <button class="btn-main" onclick="validateCalculation(16)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-16"></div>
+      <button class="btn-solution" id="btn-sol-16" onclick="toggleSolution(16)">Показать Решение</button>
+      <div class="solution-box" id="sol-16">
+        <strong>Дано:</strong> $q_1 = 5 \cdot 10^{-9}\text{ Кл}$, $q_2 = 4 \cdot 10^{-9}\text{ Кл}$, $r = 0{,}1\text{ м} = 10^{-1}\text{ м}$.<br/>
+        <strong>Закон Кулона:</strong>
+        $$F = k \cdot \frac{q_1 \cdot q_2}{r^2} = 9 \cdot 10^9 \cdot \frac{5 \cdot 10^{-9} \cdot 4 \cdot 10^{-9}}{(0{,}1)^2} = \mathbf{0{,}000018\text{ Н}}\quad (\text{или } 1{,}8 \cdot 10^{-5}\text{ Н})$$
+        <strong>Ответ:</strong> $0{,}000018\text{ Н}$.
+      </div>
+    </div>
+
+    <!-- Задача 17 -->
+    <div class="card" id="task-17">
+      <div class="task-num">Задача 17 (Векторы)</div>
+      <div class="task-title">Вектор характеризуется...</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(17, 'направлением', this)">а) направлением</button>
+        <button class="btn-option" onclick="handleChoice(17, 'площадью', this)">б) площадью</button>
+        <button class="btn-option" onclick="handleChoice(17, 'радиусом', this)">в) радиусом</button>
+        <button class="btn-option" onclick="handleChoice(17, 'угловым значением', this)">г) угловым значением</button>
+        <button class="btn-option" onclick="handleChoice(17, 'числовым значением', this)">д) числовым значением</button>
+      </div>
+      <div class="status-msg" id="status-17"></div>
+      <button class="btn-solution" id="btn-sol-17" onclick="toggleSolution(17)">Показать Решение</button>
+      <div class="solution-box" id="sol-17">
+        <strong>Теоретическое определение:</strong><br/>
+        Вектор — направленный отрезок, который полностью определяется двумя характеристиками:<br/>
+        1) <strong>Направлением</strong> в пространстве;<br/>
+        2) <strong>Числовым значением (длиной / модулем)</strong>.
+      </div>
+    </div>
+
+    <!-- Задача 18 (image5.png) -->
+    <div class="card" id="task-18">
+      <div class="task-num">Задача 18 (Векторы)</div>
+      <div class="task-title">Укажите, какой из векторов, изображённых на рис. 1, равен вектору $\vec{v}$:</div>
+      <div class="task-image-box">
+        <img src="image5.png" alt="Рис. 1" onerror="this.src='https://via.placeholder.com/600x120?text=image5.png';" />
+        <div class="img-caption">Рис. 1</div>
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(18, 'v1', this)">а) $\vec{v}_1$</button>
+        <button class="btn-option" onclick="handleChoice(18, 'v2', this)">б) $\vec{v}_2$</button>
+        <button class="btn-option" onclick="handleChoice(18, 'v3', this)">в) $\vec{v}_3$</button>
+        <button class="btn-option" onclick="handleChoice(18, 'v4', this)">г) $\vec{v}_4$</button>
+        <button class="btn-option" onclick="handleChoice(18, 'v5', this)">д) $\vec{v}_5$</button>
+      </div>
+      <div class="status-msg" id="status-18"></div>
+      <button class="btn-solution" id="btn-sol-18" onclick="toggleSolution(18)">Показать Решение</button>
+      <div class="solution-box" id="sol-18">
+        <strong>Условие равенства векторов:</strong><br/>
+        Векторы равны, когда выполняются два условия:<br/>
+        1) <strong>Равны их модули (длины):</strong> $|\vec{v}| = |\vec{v}_4|$ (обе стрелки имеют одинаковую длину по диагонали прямоугольника $2 \times 3$ клетки).<br/>
+        2) <strong>Одинаковые направления (сонаправлены):</strong> $\vec{v} \upuparrows \vec{v}_4$ (обе стрелки направлены вправо-вниз).<br/><br/>
+        Этим условиям удовлетворяет только вектор <strong>$\vec{v}_4$ (вариант г)</strong>.
+      </div>
+    </div>
+
+    <!-- Задача 19 (image6.png) -->
+    <div class="card" id="task-19">
+      <div class="task-num">Задача 19 (Векторы)</div>
+      <div class="task-title">На рис. 2 изображены векторы $\vec{F}_1$ и $\vec{F}_2$. Укажите вектор, соответствующий сумме $\vec{F}_1 + \vec{F}_2$:</div>
+      <div class="task-image-box">
+        <img src="image6.png" alt="Рис. 2" onerror="this.src='https://via.placeholder.com/600x100?text=image6.png';" />
+        <div class="img-caption">Рис. 2</div>
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(19, 'a', this)">а) $\vec{a}$</button>
+        <button class="btn-option" onclick="handleChoice(19, 'b', this)">б) $\vec{b}$</button>
+        <button class="btn-option" onclick="handleChoice(19, 'c', this)">в) $\vec{c}$</button>
+        <button class="btn-option" onclick="handleChoice(19, 'd', this)">г) $\vec{d}$</button>
+        <button class="btn-option" onclick="handleChoice(19, 'e', this)">д) $\vec{e}$</button>
+      </div>
+      <div class="status-msg" id="status-19"></div>
+      <button class="btn-solution" id="btn-sol-19" onclick="toggleSolution(19)">Показать Решение</button>
+      <div class="solution-box" id="sol-19">
+        <strong>Правило сложения векторов, лежащих на одной прямой, но направленных в разные стороны:</strong>
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 380 90" width="360" height="90" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr19-blk" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
+              </marker>
+              <marker id="arr19-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ef4444"/>
+              </marker>
+            </defs>
+            <!-- F1 -->
+            <line x1="20" y1="30" x2="190" y2="30" stroke="#111827" stroke-width="2.5" marker-end="url(#arr19-blk)"/>
+            <text x="95" y="20" font-size="14" font-weight="bold" fill="#111827">F₁</text>
+            <!-- F2 -->
+            <line x1="190" y1="52" x2="80" y2="52" stroke="#111827" stroke-width="2.5" marker-end="url(#arr19-blk)"/>
+            <text x="130" y="72" font-size="14" font-weight="bold" fill="#111827">F₂</text>
+            <!-- a (sum) -->
+            <line x1="20" y1="52" x2="80" y2="52" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arr19-red)"/>
+            <text x="45" y="72" font-size="14" font-weight="bold" fill="#ef4444">a</text>
+            <!-- Label -->
+            <text x="215" y="45" font-size="14" font-weight="bold" fill="#111827">F₁ + F₂ = a</text>
+          </svg>
+        </div>
+        $$\vec{F}_1 + \vec{F}_2 = \vec{a}$$
+        • Вектор суммы направлен в сторону бóльшего вектора $\vec{F}_1$ (вправо).<br/>
+        • <strong>Модуль (длина) вектора $\vec{a}$ равна разности модулей (длин) векторов:</strong>
+        $$a = F_1 - F_2 = 3 - 2 = \mathbf{1\text{ клетка}}$$
+        Этому условию соответствует вектор <strong>$\vec{a}$ (вариант а)</strong>.
+      </div>
+    </div>
+
+    <!-- Задача 20 (image7.png) -->
+    <div class="card" id="task-20">
+      <div class="task-num">Задача 20 (Векторы)</div>
+      <div class="task-title">На рис. 3 изображён вектор $\vec{n}$, лежащий в плоскости $yOx$. Найдите проекцию вектора $\vec{n}$ на ось $Oy$:</div>
+      <div class="task-image-box">
+        <img src="image7.png" alt="Рис. 3" onerror="this.src='https://via.placeholder.com/350x260?text=image7.png';" />
+        <div class="img-caption">Рис. 3</div>
+      </div>
+      <div class="task-desc">Введите проекцию в сантиметрах ($\text{см}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-20-input" />
+        <button class="btn-main" onclick="validateCalculation(20)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-20"></div>
+      <button class="btn-solution" id="btn-sol-20" onclick="toggleSolution(20)">Показать Решение</button>
+      <div class="solution-box" id="sol-20">
+        <strong>Определение проекции:</strong><br/>
+        Проекция вектора на ось $Oy$ равна разности ординаты конца и ординаты начала:
+        $$n_y = y_{\text{кон}} - y_{\text{нач}}$$
+        Координаты по графику (Рис. 3): начало $y_{\text{нач}} = 2\text{ см}$, конец со стрелкой $y_{\text{кон}} = 5\text{ см}$.<br/>
+        $$n_y = 5\text{ см} - 2\text{ см} = \mathbf{3\text{ см}}$$
+        <strong>Ответ:</strong> $3\text{ см}$.
+      </div>
+    </div>
+
+    <!-- Задача 21 (image7.png) -->
+    <div class="card" id="task-21">
+      <div class="task-num">Задача 21 (Векторы)</div>
+      <div class="task-title">Определите модуль вектора $\vec{n}$, изображённого на рис. 3:</div>
+      <div class="task-image-box">
+        <img src="image7.png" alt="Рис. 3" onerror="this.src='https://via.placeholder.com/350x260?text=image7.png';" />
+        <div class="img-caption">Рис. 3</div>
+      </div>
+      <div class="task-desc">Введите модуль вектора в сантиметрах ($\text{см}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-21-input" />
+        <button class="btn-main" onclick="validateCalculation(21)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-21"></div>
+      <button class="btn-solution" id="btn-sol-21" onclick="toggleSolution(21)">Показать Решение</button>
+      <div class="solution-box" id="sol-21">
+        <strong>Определение модуля через прямоугольный треугольник:</strong>
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 260 140" width="240" height="130" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="30,20 30,110 200,110" fill="rgba(99,102,241,0.08)" stroke="#111827" stroke-width="2"/>
+            <text x="105" y="128" font-size="14" font-weight="bold" fill="#111827">nₓ = 4 см</text>
+            <text x="5" y="70" font-size="14" font-weight="bold" fill="#111827">nᵧ = 3 см</text>
+            <text x="125" y="60" font-size="15" font-weight="bold" fill="#6366f1">n</text>
+            <rect x="30" y="98" width="12" height="12" fill="none" stroke="#111827" stroke-width="1.5"/>
+          </svg>
+        </div>
+        Катеты треугольника: горизонтальный $n_x = 5 - 1 = 4\text{ см}$, вертикальный $n_y = 5 - 2 = 3\text{ см}$.<br/>
+        По теореме Пифагора длина вектора (гипотенуза):
+        $$|\vec{n}| = \sqrt{n_x^2 + n_y^2} = \sqrt{4^2 + 3^2} = \sqrt{16 + 9} = \sqrt{25} = \mathbf{5\text{ см}}$$
+        <strong>Ответ:</strong> $5\text{ см}$.
+      </div>
+    </div>
+
+    <!-- Задача 22 (Рис. 4) -->
+    <div class="card" id="task-22">
+      <div class="task-num">Задача 22 (Векторы)</div>
+      <div class="task-title">На рис. 4 изображены векторы $|\vec{a}| = 2\text{ см}$, $|\vec{b}| = 1\text{ см}$. Найдите модуль разности ($\vec{k} = \vec{a} - \vec{b}$):</div>
+      <div class="svg-wrapper">
+        <svg viewBox="0 0 340 70" width="340" height="70" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr22-main" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827" />
+            </marker>
+          </defs>
+          <line x1="40" y1="40" x2="150" y2="40" stroke="#111827" stroke-width="2.5" marker-end="url(#arr22-main)"/>
+          <text x="90" y="26" font-size="14" font-weight="bold" fill="#111827">a</text>
+          <line x1="270" y1="40" x2="210" y2="40" stroke="#111827" stroke-width="2.5" marker-end="url(#arr22-main)"/>
+          <text x="235" y="26" font-size="14" font-weight="bold" fill="#111827">b</text>
+        </svg>
+        <div class="svg-caption">Рис. 4</div>
+      </div>
+      <div class="task-desc">Введите модуль вектора $\vec{k}$ в сантиметрах ($\text{см}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-22-input" />
+        <button class="btn-main" onclick="validateCalculation(22)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-22"></div>
+      <button class="btn-solution" id="btn-sol-22" onclick="toggleSolution(22)">Показать Решение</button>
+      <div class="solution-box" id="sol-22">
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 360 90" width="340" height="90" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr22-black" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827" />
+              </marker>
+              <marker id="arr22-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ef4444" />
+              </marker>
+            </defs>
+            <circle cx="130" cy="35" r="3.5" fill="#111827"/>
+            <!-- Vector b left (60px = 1cm) -->
+            <line x1="130" y1="35" x2="70" y2="35" stroke="#111827" stroke-width="2.2" marker-end="url(#arr22-black)"/>
+            <text x="95" y="24" font-size="14" font-weight="bold" fill="#111827">b</text>
+            <!-- Vector a right (120px = 2cm) -->
+            <line x1="130" y1="35" x2="250" y2="35" stroke="#111827" stroke-width="2.2" marker-end="url(#arr22-black)"/>
+            <text x="185" y="24" font-size="14" font-weight="bold" fill="#111827">a</text>
+            <!-- Vector k red -->
+            <line x1="70" y1="60" x2="250" y2="60" stroke="#ef4444" stroke-width="2.2" marker-end="url(#arr22-red)"/>
+            <text x="155" y="78" font-size="14" font-weight="bold" fill="#ef4444">k</text>
+          </svg>
+        </div>
+        <strong>1 способ:</strong><br/>
+        1) <strong>Вычесть векторы</strong> (по правилу «соединяем начала векторов, вектор разности $\vec{k}$ соединяет концы векторов и направлен от вычитаемого к уменьшаемому»).<br/>
+        2) <strong>Находим длину вектора $\vec{k}$ (из построения):</strong> она равна сумме длин двух отрезков:
+        $$k = a + b = 2\text{ см} + 1\text{ см} = \mathbf{3\text{ см}}$$
+        <br/>
+        <strong>2 способ (через проекции):</strong><br/>
+        Проекция разности векторов ($k_x$) равна разности проекций ($a_x - b_x$):<br/>
+        • $a_x = +2\text{ см}$<br/>
+        • $b_x = -1\text{ см}$<br/>
+        $$k_x = a_x - b_x = 2 - (-1) = 2 + 1 = \mathbf{3\text{ см}}$$
+        <strong>Ответ:</strong> $3\text{ см}$.
+      </div>
+    </div>
+
+    <!-- Задача 23 -->
+    <div class="card" id="task-23">
+      <div class="task-num">Задача 23 (Векторы)</div>
+      <div class="task-title">Модули двух перпендикулярных векторов равны соответственно $|\vec{e}| = 6\text{ см}$, $|\vec{f}| = 8\text{ см}$. Найдите модуль вектора $\vec{m}$, который равен сумме этих векторов ($\vec{m} = \vec{e} + \vec{f}$):</div>
+      <div class="task-desc">Введите модуль вектора $\vec{m}$ в сантиметрах ($\text{см}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-23-input" />
+        <button class="btn-main" onclick="validateCalculation(23)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-23"></div>
+      <button class="btn-solution" id="btn-sol-23" onclick="toggleSolution(23)">Показать Решение</button>
+      <div class="solution-box" id="sol-23">
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 280 150" width="260" height="140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr23-b" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
+              </marker>
+              <marker id="arr23-r" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+              </marker>
+            </defs>
+            <rect x="40" y="25" width="150" height="95" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+            <line x1="40" y1="120" x2="190" y2="120" stroke="#111827" stroke-width="2.5" marker-end="url(#arr23-b)"/>
+            <text x="95" y="138" font-size="14" font-weight="bold" fill="#111827">e = 6 см</text>
+            <line x1="40" y1="120" x2="40" y2="25" stroke="#111827" stroke-width="2.5" marker-end="url(#arr23-b)"/>
+            <text x="48" y="75" font-size="14" font-weight="bold" fill="#111827">f = 8 см</text>
+            <line x1="40" y1="120" x2="190" y2="25" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr23-r)"/>
+            <text x="125" y="65" font-size="15" font-weight="bold" fill="#6366f1">m</text>
+          </svg>
+        </div>
+        <strong>Сложение взаимно перпендикулярных векторов:</strong><br/>
+        Векторы образуют прямоугольный треугольник со сторонами $6\text{ см}$ и $8\text{ см}$.<br/>
+        По теореме Пифагора гипотенуза равна:
+        $$|\vec{m}| = \sqrt{e^2 + f^2} = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = \mathbf{10\text{ см}}$$
+        <strong>Ответ:</strong> $10\text{ см}$.
+      </div>
+    </div>
+
+    <!-- Задача 24 (image8.png) -->
+    <div class="card" id="task-24">
+      <div class="task-num">Задача 24 (Векторы)</div>
+      <div class="task-title">На рис. 5 модуль силы $|\vec{F}| = 10\text{ Н}$. Найдите проекцию силы $F_x$ на ось $Ox$:</div>
+      <div class="task-image-box">
+        <img src="image8.png" alt="Рис. 5" onerror="this.src='https://via.placeholder.com/350x200?text=image8.png';" />
+        <div class="img-caption">Рис. 5</div>
+      </div>
+      <div class="task-desc">Введите проекцию $F_x$ в Ньютонах ($\text{Н}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-24-input" />
+        <button class="btn-main" onclick="validateCalculation(24)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-24"></div>
+      <button class="btn-solution" id="btn-sol-24" onclick="toggleSolution(24)">Показать Решение</button>
+      <div class="solution-box" id="sol-24">
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 320 140" width="300" height="130" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="30,105 210,105 210,25" fill="rgba(99,102,241,0.08)" stroke="#111827" stroke-width="2"/>
+            <text x="110" y="125" font-size="14" font-weight="bold" fill="#111827">Fₓ (4 части)</text>
+            <text x="220" y="68" font-size="14" font-weight="bold" fill="#111827">Fᵧ (3 части)</text>
+            <text x="95" y="55" font-size="14" font-weight="bold" fill="#6366f1">F = 10 Н (5 частей)</text>
+            <path d="M 55,105 A 25,25 0 0,0 52,95" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="60" y="101" font-size="13" font-weight="bold" fill="#ef4444">&alpha;</text>
+          </svg>
+        </div>
+        <strong>Решение через египетский треугольник ($3 : 4 : 5$):</strong><br/>
+        1. Вектор силы образует прямоугольный треугольник со сторонами $3$ клетки по вертикали и $4$ клетки по горизонтали.<br/>
+        2. Это классический <strong>египетский треугольник со сторонами $3 : 4 : 5$</strong>, где гипотенуза равна $5$ частям.<br/>
+        3. Полная сила $F = 10\text{ Н}$ соответствует $5$ частям $\implies 1\text{ часть} = \frac{10\text{ Н}}{5} = 2\text{ Н}$.<br/>
+        4. Горизонтальная проекция $F_x$ составляет $4$ части:
+        $$F_x = 4 \times 2\text{ Н} = \mathbf{8\text{ Н}}$$
+        *(Или через косинус угла: $\cos\alpha = \frac{4}{5} = 0{,}8 \implies F_x = F \cos\alpha = 10 \cdot 0{,}8 = \mathbf{8\text{ Н}}$).*
+      </div>
+    </div>
+
+    <!-- Задача 25 (№ 309: image9.png) -->
+    <div class="card" id="task-25">
+      <div class="task-num">Задача 25</div>
+      <div class="task-title">На тело действуют две силы $\vec{F}_1$ и $\vec{F}_2$ (рис. 75), модули которых $F_1 = 5\text{ Н}$ и $F_2 = 3\text{ Н}$, угол между ними $\alpha = 60^\circ$. Определите модуль равнодействующей силы $R$:</div>
+      <div class="task-image-box">
+        <img src="image9.png" alt="Рис. 75" onerror="this.src='https://via.placeholder.com/250x250?text=image9.png';" />
+        <div class="img-caption">Рис. 75</div>
+      </div>
+      <div class="task-desc">Введите модуль равнодействующей в Ньютонах ($\text{Н}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-25-input" />
+        <button class="btn-main" onclick="validateCalculation(25)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-25"></div>
+      <button class="btn-solution" id="btn-sol-25" onclick="toggleSolution(25)">Показать Решение</button>
+      <div class="solution-box" id="sol-25">
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 320 160" width="300" height="150" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr25-blk" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
+              </marker>
+              <marker id="arr25-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+              </marker>
+            </defs>
+            <polygon points="40,125 160,125 225,35 105,35" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+            <!-- F1 -->
+            <line x1="40" y1="125" x2="105" y2="35" stroke="#111827" stroke-width="2.5" marker-end="url(#arr25-blk)"/>
+            <text x="25" y="75" font-size="13" font-weight="bold" fill="#111827">F₁ = 5 Н</text>
+            <!-- F2 -->
+            <line x1="40" y1="125" x2="160" y2="125" stroke="#111827" stroke-width="2.5" marker-end="url(#arr25-blk)"/>
+            <text x="95" y="145" font-size="13" font-weight="bold" fill="#111827">F₂ = 3 Н</text>
+            <!-- R -->
+            <line x1="40" y1="125" x2="225" y2="35" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr25-blue)"/>
+            <text x="145" y="70" font-size="15" font-weight="bold" fill="#6366f1">R = 7 Н</text>
+            <!-- 120 angle -->
+            <text x="105" y="55" font-size="13" font-weight="bold" fill="#ef4444">120&deg;</text>
+          </svg>
+        </div>
+        <strong>Решение через угол $120^\circ$ по теореме косинусов для сторон параллелограмма:</strong><br/>
+        1. Угол между векторами $\alpha = 60^\circ$. Прилежащий угол в параллелограмме:
+        $$\beta = 180^\circ - 60^\circ = 120^\circ$$
+        2. По теореме косинусов для треугольника со сторонами $F_1, F_2$ и углом $\beta = 120^\circ$:
+        $$R = \sqrt{F_1^2 + F_2^2 - 2 F_1 F_2 \cos 120^\circ}$$
+        3. Так как $\cos 120^\circ = -0{,}5$:
+        $$R = \sqrt{5^2 + 3^2 - 2 \cdot 5 \cdot 3 \cdot (-0{,}5)} = \sqrt{25 + 9 + 15} = \sqrt{49} = \mathbf{7\text{ Н}}$$
+        <strong>Ответ:</strong> $7\text{ Н}$.
+      </div>
+    </div>
+
+    <!-- Задача 26 (№ 310: image10.png) -->
+    <div class="card" id="task-26">
+      <div class="task-num">Задача 26</div>
+      <div class="task-title">На тело действуют две силы $\vec{F}_1$ и $\vec{F}_2$ (рис. 76), модули которых $F_1 = 40\text{ Н}$ и $F_2 = 30\text{ Н}$. Найдите проекции равнодействующей силы $R_x, R_y$ и её модуль $R$:</div>
+      <div class="task-image-box">
+        <img src="image10.png" alt="Рис. 76" onerror="this.src='https://via.placeholder.com/250x250?text=image10.png';" />
+        <div class="img-caption">Рис. 76</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Проекция $R_x$ ($\text{Н}$):</label>
+          <input type="text" class="input-text" id="calc-26-rx" />
+        </div>
+        <div class="field-item">
+          <label>Проекция $R_y$ ($\text{Н}$):</label>
+          <input type="text" class="input-text" id="calc-26-ry" />
+        </div>
+        <div class="field-item">
+          <label>Модуль $R$ ($\text{Н}$):</label>
+          <input type="text" class="input-text" id="calc-26-r" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask26()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-26"></div>
+      <button class="btn-solution" id="btn-sol-26" onclick="toggleSolution(26)">Показать Решение</button>
+      <div class="solution-box" id="sol-26">
+        <div class="solution-svg-box">
+          <svg viewBox="0 0 280 160" width="260" height="150" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr26-b" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
+              </marker>
+              <marker id="arr26-p" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+              </marker>
+            </defs>
+            <rect x="50" y="25" width="110" height="100" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+            <!-- F2 left -->
+            <line x1="160" y1="125" x2="50" y2="125" stroke="#111827" stroke-width="2.5" marker-end="url(#arr26-b)"/>
+            <text x="80" y="145" font-size="13" font-weight="bold" fill="#111827">F₂ = 30 Н</text>
+            <!-- F1 up -->
+            <line x1="160" y1="125" x2="160" y2="25" stroke="#111827" stroke-width="2.5" marker-end="url(#arr26-b)"/>
+            <text x="168" y="75" font-size="13" font-weight="bold" fill="#111827">F₁ = 40 Н</text>
+            <!-- R -->
+            <line x1="160" y1="125" x2="50" y2="25" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr26-p)"/>
+            <text x="85" y="65" font-size="15" font-weight="bold" fill="#6366f1">R = 50 Н</text>
+          </svg>
+        </div>
+        <strong>Подробное решение:</strong><br/>
+        1. <strong>Проекции сил (Рис. 76):</strong><br/>
+        • Сила $\vec{F}_1 = 40\text{ Н}$ направлена строго вверх вдоль оси $Oy$: $F_{1x} = 0$, $F_{1y} = \mathbf{+40\text{ Н}}$.<br/>
+        • Сила $\vec{F}_2 = 30\text{ Н}$ направлена строго влево (против оси $Ox$): $F_{2x} = \mathbf{-30\text{ Н}}$, $F_{2y} = 0$.<br/><br/>
+        2. <strong>Проекции равнодействующей ($\vec{R} = \vec{F}_1 + \vec{F}_2$):</strong><br/>
+        $$R_x = F_{1x} + F_{2x} = 0 + (-30) = \mathbf{-30\text{ Н}}$$
+        $$R_y = F_{1y} + F_{2y} = 40 + 0 = \mathbf{40\text{ Н}}$$
+        3. <strong>Модуль равнодействующей силы:</strong><br/>
+        $$R = \sqrt{R_x^2 + R_y^2} = \sqrt{(-30)^2 + 40^2} = \sqrt{900 + 1600} = \sqrt{2500} = \mathbf{50\text{ Н}}$$
+        <strong>Ответ:</strong> $R_x = -30\text{ Н}$, $R_y = 40\text{ Н}$, $R = 50\text{ Н}$.
+      </div>
+    </div>
+
+    <!-- Задача 27 (№ 4) -->
+    <div class="card" id="task-27">
+      <div class="task-num">Задача 27</div>
+      <div class="task-title">При каком значении угла $\alpha$ между вектором и осью его проекция будет:<br/>
+      а) максимальна?<br/>
+      б) равна половине модуля вектора?</div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>а) Угол для макс. проекции ($^\circ$):</label>
+          <input type="text" class="input-text" id="calc-27-a" />
+        </div>
+        <div class="field-item">
+          <label>б) Угол для половины модуля ($^\circ$):</label>
+          <input type="text" class="input-text" id="calc-27-b" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask27()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-27"></div>
+      <button class="btn-solution" id="btn-sol-27" onclick="toggleSolution(27)">Показать Решение</button>
+      <div class="solution-box" id="sol-27">
+        <strong>Определение угла по таблице тригонометрических значений:</strong><br/>
+        Проекция вектора находится по формуле: $a_x = a \cos\alpha$.<br/><br/>
+        <strong>а) Проекция максимальна:</strong><br/>
+        Косинус принимает максимальное значение $\cos\alpha = 1$. По таблице тригонометрии $\cos 0^\circ = 1$, следовательно, угол равен **$0^\circ$**.<br/><br/>
+        <strong>б) Проекция равна половине модуля ($a_x = \frac{a}{2}$):</strong><br/>
+        Это означает, что $\cos\alpha = 0{,}5$. По таблице тригонометрии $\cos 60^\circ = 0{,}5$, следовательно, угол равен **$60^\circ$**.<br/>
+        <strong>Ответ:</strong> а) $0^\circ$; б) $60^\circ$.
+      </div>
+    </div>
+
+    <!-- Задача 28 (№ 6: image11.png) -->
+    <div class="card" id="task-28">
+      <div class="task-num">Задача 28</div>
+      <div class="task-title">Сила $\vec{F}$ направлена под углом $\alpha = 30^\circ$ к горизонту (рис. 36). Модуль силы $F = 60\text{ Н}$. Найдите проекции силы $\vec{F}$ на оси $Ox$ и $Oy$:</div>
+      <div class="task-image-box">
+        <img src="image11.png" alt="Рис. 36" onerror="this.src='https://via.placeholder.com/300x150?text=image11.png';" />
+        <div class="img-caption">Рис. 36</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Проекция $F_x$ ($\text{Н}$):</label>
+          <input type="text" class="input-text" id="calc-28-fx" />
+        </div>
+        <div class="field-item">
+          <label>Проекция $F_y$ ($\text{Н}$):</label>
+          <input type="text" class="input-text" id="calc-28-fy" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask28()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-28"></div>
+      <button class="btn-solution" id="btn-sol-28" onclick="toggleSolution(28)">Показать Решение</button>
+      <div class="solution-box" id="sol-28">
+        <strong>Формулы проекций силы на оси координат:</strong><br/>
+        $$F_x = F \cdot \cos 30^\circ = 60\text{ Н} \cdot \frac{\sqrt{3}}{2} \approx \mathbf{52\text{ Н}}\quad (51{,}96\text{ Н})$$
+        $$F_y = F \cdot \sin 30^\circ = 60\text{ Н} \cdot 0{,}5 = \mathbf{30\text{ Н}}$$
+        <strong>Ответ:</strong> $F_x \approx 52\text{ Н}$ ($51{,}96\text{ Н}$), $F_y = 30\text{ Н}$.
+      </div>
+    </div>
+
+    <!-- Задача 29 (Рис. 35: a и b) -->
+    <div class="card" id="task-29">
+      <div class="task-num">Задача 29</div>
+      <div class="task-title">По рис. 35 найдите проекции перемещения векторов $\vec{a}$ и $\vec{b}$ на оси $Ox$ и $Oy$:</div>
+      <div class="task-image-box">
+        <img src="image12.png" alt="Рис. 35" onerror="this.src='https://via.placeholder.com/550x220?text=image12.png';" />
+        <div class="img-caption">Рис. 35</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>$a_x$:</label>
+          <input type="text" class="input-text" id="calc-29-ax" />
+        </div>
+        <div class="field-item">
+          <label>$a_y$:</label>
+          <input type="text" class="input-text" id="calc-29-ay" />
+        </div>
+        <div class="field-item">
+          <label>$b_x$:</label>
+          <input type="text" class="input-text" id="calc-29-bx" />
+        </div>
+        <div class="field-item">
+          <label>$b_y$:</label>
+          <input type="text" class="input-text" id="calc-29-by" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask29()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-29"></div>
+      <button class="btn-solution" id="btn-sol-29" onclick="toggleSolution(29)">Показать Решение</button>
+      <div class="solution-box" id="sol-29">
+        <strong>Формула проекции:</strong> вычитаем из координаты конца стрелки координату начала ($s_x = x_{\text{кон}} - x_{\text{нач}},\ s_y = y_{\text{кон}} - y_{\text{нач}}$):<br/><br/>
+        • <strong>Вектор $\vec{a}$</strong>: начало $(2; 5)$, конец $(8; 8)$:
+        $$a_x = 8 - 2 = \mathbf{6},\quad a_y = 8 - 5 = \mathbf{3}$$<br/>
+        • <strong>Вектор $\vec{b}$</strong>: начало $(6; 3)$, конец $(1; 3)$:
+        $$b_x = 1 - 6 = \mathbf{-5},\quad b_y = 3 - 3 = \mathbf{0}$$
+      </div>
+    </div>
+
+    <!-- Задача 30 (Рис. 35: e и c) -->
+    <div class="card" id="task-30">
+      <div class="task-num">Задача 30</div>
+      <div class="task-title">По рис. 35 найдите проекции перемещения векторов $\vec{e}$ и $\vec{c}$ на оси $Ox$ и $Oy$:</div>
+      <div class="task-image-box">
+        <img src="image12.png" alt="Рис. 35" onerror="this.src='https://via.placeholder.com/550x220?text=image12.png';" />
+        <div class="img-caption">Рис. 35</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>$e_x$:</label>
+          <input type="text" class="input-text" id="calc-30-ex" />
+        </div>
+        <div class="field-item">
+          <label>$e_y$:</label>
+          <input type="text" class="input-text" id="calc-30-ey" />
+        </div>
+        <div class="field-item">
+          <label>$c_x$:</label>
+          <input type="text" class="input-text" id="calc-30-cx" />
+        </div>
+        <div class="field-item">
+          <label>$c_y$:</label>
+          <input type="text" class="input-text" id="calc-30-cy" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask30()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-30"></div>
+      <button class="btn-solution" id="btn-sol-30" onclick="toggleSolution(30)">Показать Решение</button>
+      <div class="solution-box" id="sol-30">
+        <strong>Определение проекций по координатам концов векторов:</strong><br/><br/>
+        • <strong>Вектор $\vec{e}$</strong>: начало $(10; 7)$, конец $(10; 3)$:
+        $$e_x = 10 - 10 = \mathbf{0},\quad e_y = 3 - 7 = \mathbf{-4}$$<br/>
+        • <strong>Вектор $\vec{c}$</strong>: начало $(14; 4)$, конец $(8; 1)$:
+        $$c_x = 8 - 14 = \mathbf{-6},\quad c_y = 1 - 4 = \mathbf{-3}$$
+      </div>
+    </div>
+
+    <!-- Задача 31 (Рис. 35: d и k) -->
+    <div class="card" id="task-31">
+      <div class="task-num">Задача 31</div>
+      <div class="task-title">По рис. 35 найдите проекции перемещения векторов $\vec{d}$ и $\vec{k}$ на оси $Ox$ и $Oy$:</div>
+      <div class="task-image-box">
+        <img src="image12.png" alt="Рис. 35" onerror="this.src='https://via.placeholder.com/550x220?text=image12.png';" />
+        <div class="img-caption">Рис. 35</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>$d_x$:</label>
+          <input type="text" class="input-text" id="calc-31-dx" />
+        </div>
+        <div class="field-item">
+          <label>$d_y$:</label>
+          <input type="text" class="input-text" id="calc-31-dy" />
+        </div>
+        <div class="field-item">
+          <label>$k_x$:</label>
+          <input type="text" class="input-text" id="calc-31-kx" />
+        </div>
+        <div class="field-item">
+          <label>$k_y$:</label>
+          <input type="text" class="input-text" id="calc-31-ky" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask31()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-31"></div>
+      <button class="btn-solution" id="btn-sol-31" onclick="toggleSolution(31)">Показать Решение</button>
+      <div class="solution-box" id="sol-31">
+        <strong>Определение проекций:</strong><br/><br/>
+        • <strong>Вектор $\vec{d}$</strong>: начало $(12; 6)$, конец $(19; 2)$:
+        $$d_x = 19 - 12 = \mathbf{7},\quad d_y = 2 - 6 = \mathbf{-4}$$<br/>
+        • <strong>Вектор $\vec{k}$</strong>: начало $(22; 3)$, конец $(22; 8)$:
+        $$k_x = 22 - 22 = \mathbf{0},\quad k_y = 8 - 3 = \mathbf{5}$$
+      </div>
+    </div>
+
+    <!-- Задача 32 (Рис. 35: модули e и c) -->
+    <div class="card" id="task-32">
+      <div class="task-num">Задача 32</div>
+      <div class="task-title">По рис. 35 найдите модуль вектора $\vec{e}$ и модуль вектора $\vec{c}$:</div>
+      <div class="task-image-box">
+        <img src="image12.png" alt="Рис. 35" onerror="this.src='https://via.placeholder.com/550x220?text=image12.png';" />
+        <div class="img-caption">Рис. 35</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Модуль вектора $|\vec{e}|$:</label>
+          <input type="text" class="input-text" id="calc-32-e" />
+        </div>
+        <div class="field-item">
+          <label>Модуль вектора $|\vec{c}|$:</label>
+          <input type="text" class="input-text" id="calc-32-c" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask32()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-32"></div>
+      <button class="btn-solution" id="btn-sol-32" onclick="toggleSolution(32)">Показать Решение</button>
+      <div class="solution-box" id="sol-32">
+        <strong>Нахождение модулей (длин) векторов:</strong><br/><br/>
+        1. <strong>Модуль вектора $\vec{e}$:</strong><br/>
+        Вектор направлен строго вертикально ($e_x = 0$), поэтому его длина равна модулю проекции $e_y$:
+        $$|\vec{e}| = |e_y| = |-4| = \mathbf{4}$$<br/>
+        2. <strong>Модуль вектора $\vec{c}$:</strong><br/>
+        Вектор $\vec{c}$ имеет проекции $c_x = -6$ и $c_y = -3$. Находим длину по теореме Пифагора:
+        $$|\vec{c}| = \sqrt{c_x^2 + c_y^2} = \sqrt{(-6)^2 + (-3)^2} = \sqrt{36 + 9} = \sqrt{45} \approx \mathbf{6{,}71}\quad (\text{или } 6{,}7)$$
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Модальное окно увеличения картинок (только для мензурок) -->
+  <div class="image-modal" id="imageModal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header-row">
+        <div class="modal-caption" id="modalCaption">Мензурка</div>
+        <div class="modal-controls">
+          <button class="btn-zoom" onclick="zoomIn()">➕ Приблизить</button>
+          <button class="btn-zoom" onclick="zoomOut()">➖ Отдалить</button>
+          <button class="btn-zoom" onclick="resetZoom()">↺ Сброс</button>
+          <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        </div>
+      </div>
+      <div class="modal-viewport" id="modalViewport">
+        <img id="modalImg" src="" alt="Увеличенное изображение" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Инициализация KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const correctAnswers = {
+      1: ['метр', 'секунда'],
+      2: ['движение', 'звук'],
+      4: ['4'],
+      5: ['3'],
+      6: ['1'],
+      7: ['1'],
+      17: ['направлением', 'числовым значением'],
+      18: ['v4'],
+      19: ['a']
+    };
+
+    function handleChoice(taskId, value, buttonEl) {
+      const card = document.getElementById(`task-${taskId}`);
+      const buttons = card.querySelectorAll('.btn-option');
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      const isCorrect = correctAnswers[taskId].includes(value);
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Отличная работа.';
+        btnSol.style.display = 'none';
+      } else {
+        buttonEl.classList.add('incorrect');
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверно. Попробуйте еще раз или посмотрите решение.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function validateCylinders() {
+      const c1_s = parseVal(document.getElementById('c1-scale').value);
+      const c1_v = parseVal(document.getElementById('c1-vol').value);
+      const c2_s = parseVal(document.getElementById('c2-scale').value);
+      const c2_v = parseVal(document.getElementById('c2-vol').value);
+      const c3_s = parseVal(document.getElementById('c3-scale').value);
+      const c3_v = parseVal(document.getElementById('c3-vol').value);
+      const c4_s = parseVal(document.getElementById('c4-scale').value);
+      const c4_v = parseVal(document.getElementById('c4-vol').value);
+
+      const status = document.getElementById('status-3');
+      const btnSol = document.getElementById('btn-sol-3');
+
+      const ok1 = (Math.abs(c1_s - 1) < 0.01 && (Math.abs(c1_v - 27) < 0.01 || Math.abs(c1_v - 26) < 0.01));
+      const ok2 = ((Math.abs(c2_s - 0.4) < 0.01 || Math.abs(c2_s - 0.2) < 0.01) && (Math.abs(c2_v - 16.8) < 0.05 || Math.abs(c2_v - 17) < 0.05));
+      const ok3 = (Math.abs(c3_s - 5) < 0.01 && (Math.abs(c3_v - 45) < 0.01 || Math.abs(c3_v - 40) < 0.01));
+      const ok4 = (Math.abs(c4_s - 2) < 0.01 && Math.abs(c4_v - 52) < 0.01);
+
+      if (ok1 && ok2 && ok3 && ok4) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Все мензурки определены абсолютно точно!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ В значениях некоторых мензурок есть ошибка.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      if (taskId === 8) isCorrect = Math.abs(val - 0.002) < 0.0001;
+      else if (taskId === 9) isCorrect = Math.abs(val - 6) < 0.01;
+      else if (taskId === 10) isCorrect = Math.abs(val - 500000) < 1;
+      else if (taskId === 11) isCorrect = Math.abs(val - 0.1) < 0.001;
+      else if (taskId === 12) isCorrect = Math.abs(val - 0.039) < 0.001;
+      else if (taskId === 13) isCorrect = Math.abs(val - 0.00004) < 0.000002;
+      else if (taskId === 14) isCorrect = Math.abs(val - 110) < 0.5;
+      else if (taskId === 15) isCorrect = Math.abs(val - 40) < 0.5;
+      else if (taskId === 16) isCorrect = Math.abs(val - 0.000018) < 0.000001;
+      else if (taskId === 20) isCorrect = Math.abs(val - 3) < 0.01;
+      else if (taskId === 21) isCorrect = Math.abs(val - 5) < 0.01;
+      else if (taskId === 22) isCorrect = Math.abs(val - 3) < 0.01;
+      else if (taskId === 23) isCorrect = Math.abs(val - 10) < 0.01;
+      else if (taskId === 24) isCorrect = Math.abs(val - 8) < 0.01;
+      else if (taskId === 25) isCorrect = Math.abs(val - 7) < 0.01;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask26() {
+      const rx = parseVal(document.getElementById('calc-26-rx').value);
+      const ry = parseVal(document.getElementById('calc-26-ry').value);
+      const r = parseVal(document.getElementById('calc-26-r').value);
+      const status = document.getElementById('status-26');
+      const btnSol = document.getElementById('btn-sol-26');
+
+      if (Math.abs(rx - (-30)) < 0.01 && Math.abs(ry - 40) < 0.01 && Math.abs(r - 50) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Отлично! Проекции и модуль равнодействующей найдены верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в расчете проекций или модуля.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask27() {
+      const a = parseVal(document.getElementById('calc-27-a').value);
+      const b = parseVal(document.getElementById('calc-27-b').value);
+      const status = document.getElementById('status-27');
+      const btnSol = document.getElementById('btn-sol-27');
+
+      if (Math.abs(a - 0) < 0.01 && Math.abs(b - 60) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! 0° для максимума и 60° для половины модуля.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверные значения углов.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask28() {
+      const fx = parseVal(document.getElementById('calc-28-fx').value);
+      const fy = parseVal(document.getElementById('calc-28-fy').value);
+      const status = document.getElementById('status-28');
+      const btnSol = document.getElementById('btn-sol-28');
+
+      if ((Math.abs(fx - 52) < 0.5 || Math.abs(fx - 51.96) < 0.1) && Math.abs(fy - 30) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Проекции Fx и Fy рассчитаны верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверный расчет проекций.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask29() {
+      const ax = parseVal(document.getElementById('calc-29-ax').value);
+      const ay = parseVal(document.getElementById('calc-29-ay').value);
+      const bx = parseVal(document.getElementById('calc-29-bx').value);
+      const by = parseVal(document.getElementById('calc-29-by').value);
+      const status = document.getElementById('status-29');
+      const btnSol = document.getElementById('btn-sol-29');
+
+      if (Math.abs(ax - 6) < 0.01 && Math.abs(ay - 3) < 0.01 && Math.abs(bx - (-5)) < 0.01 && Math.abs(by - 0) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Все проекции векторов a и b верны!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в проекциях.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask30() {
+      const ex = parseVal(document.getElementById('calc-30-ex').value);
+      const ey = parseVal(document.getElementById('calc-30-ey').value);
+      const cx = parseVal(document.getElementById('calc-30-cx').value);
+      const cy = parseVal(document.getElementById('calc-30-cy').value);
+      const status = document.getElementById('status-30');
+      const btnSol = document.getElementById('btn-sol-30');
+
+      if (Math.abs(ex - 0) < 0.01 && Math.abs(ey - (-4)) < 0.01 && Math.abs(cx - (-6)) < 0.01 && Math.abs(cy - (-3)) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Все проекции векторов e и c верны!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в проекциях.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask31() {
+      const dx = parseVal(document.getElementById('calc-31-dx').value);
+      const dy = parseVal(document.getElementById('calc-31-dy').value);
+      const kx = parseVal(document.getElementById('calc-31-kx').value);
+      const ky = parseVal(document.getElementById('calc-31-ky').value);
+      const status = document.getElementById('status-31');
+      const btnSol = document.getElementById('btn-sol-31');
+
+      if (Math.abs(dx - 7) < 0.1 && Math.abs(dy - (-4)) < 0.01 && Math.abs(kx - 0) < 0.01 && Math.abs(ky - 5) < 0.01) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Все проекции векторов d и k верны!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в проекциях.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask32() {
+      const e = parseVal(document.getElementById('calc-32-e').value);
+      const c = parseVal(document.getElementById('calc-32-c').value);
+      const status = document.getElementById('status-32');
+      const btnSol = document.getElementById('btn-sol-32');
+
+      if (Math.abs(e - 4) < 0.01 && (Math.abs(c - 6.71) < 0.1 || Math.abs(c - 6.7) < 0.1)) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Модули векторов e и c найдены верно!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в расчете модуля.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    /* Модальное окно увеличения картинок (только для мензурок) */
+    let currentScale = 1.5;
+
+    function applyZoom() {
+      const img = document.getElementById('modalImg');
+      img.style.transform = `scale(${currentScale})`;
+    }
+
+    function zoomIn() {
+      currentScale = Math.min(currentScale + 0.3, 3.5);
+      applyZoom();
+    }
+
+    function zoomOut() {
+      currentScale = Math.max(currentScale - 0.25, 0.8);
+      applyZoom();
+    }
+
+    function resetZoom() {
+      currentScale = 1.5;
+      applyZoom();
+    }
+
+    function openModal(src, caption) {
+      const modal = document.getElementById('imageModal');
+      const img = document.getElementById('modalImg');
+      const cap = document.getElementById('modalCaption');
+      
+      img.src = src;
+      img.onerror = () => { img.src = 'https://via.placeholder.com/500x300?text=' + src; };
+      cap.innerText = caption;
+      
+      currentScale = 1.5;
+      applyZoom();
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('modalViewport').addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY < 0) zoomIn();
+      else zoomOut();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>
