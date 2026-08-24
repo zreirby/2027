@@ -25,10 +25,10 @@
       --text-sub: #94a3b8;
       --text-muted: #64748b;
       
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --accent-glow: rgba(99, 102, 241, 0.25);
-      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-glow: rgba(37, 99, 235, 0.25);
+      --accent-gradient: linear-gradient(135deg, #2563eb 0%, #0891b2 50%, #0d9488 100%);
       
       --success: #10b981;
       --success-glow: rgba(16, 185, 129, 0.2);
@@ -56,9 +56,9 @@
       font-family: var(--font);
       background-color: var(--bg-main);
       background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
-        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(13, 148, 136, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(34, 197, 94, 0.06) 0px, transparent 50%);
       background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.6;
@@ -75,7 +75,7 @@
       backdrop-filter: blur(24px) saturate(180%);
       -webkit-backdrop-filter: blur(24px) saturate(180%);
       border-bottom: 1px solid var(--border);
-      padding: 18px 24px;
+      padding: 16px clamp(14px, 4vw, 24px);
       text-align: center;
     }
 
@@ -91,17 +91,17 @@
     /* Главный контейнер */
     main {
       max-width: 860px;
-      margin: 40px auto 0;
-      padding: 0 20px;
+      margin: clamp(20px, 6vw, 40px) auto 0;
+      padding: 0 clamp(14px, 4vw, 20px);
     }
 
     .hero {
       text-align: center;
-      margin-bottom: 44px;
+      margin-bottom: clamp(28px, 7vw, 44px);
     }
 
     .hero h1 {
-      font-size: 42px;
+      font-size: clamp(28px, 9vw, 42px);
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.15;
@@ -112,9 +112,10 @@
     }
 
     .hero p {
-      font-size: 17px;
+      font-size: clamp(14px, 3.6vw, 17px);
       font-weight: 500;
       color: var(--text-sub);
+      padding: 0 8px;
     }
 
     /* Карточки задач */
@@ -125,8 +126,8 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      padding: 32px;
-      margin-bottom: 28px;
+      padding: clamp(18px, 5vw, 32px);
+      margin-bottom: clamp(18px, 4vw, 28px);
       transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
     }
 
@@ -144,16 +145,16 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #a5b4fc;
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: #93c5fd;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.25);
       padding: 4px 12px;
       border-radius: 30px;
       margin-bottom: 16px;
     }
 
     .task-title {
-      font-size: 19px;
+      font-size: clamp(16px, 4.2vw, 19px);
       font-weight: 700;
       color: var(--text-main);
       line-height: 1.5;
@@ -161,7 +162,7 @@
     }
 
     .task-desc {
-      font-size: 15px;
+      font-size: clamp(13px, 3.4vw, 15px);
       font-weight: 500;
       color: var(--text-sub);
       margin-bottom: 16px;
@@ -171,9 +172,9 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(99, 102, 241, 0.08);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      color: #c7d2fe;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      color: #99f6e4;
       padding: 6px 14px;
       border-radius: var(--radius-md);
       font-size: 14px;
@@ -258,7 +259,7 @@
     .options-numbers {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      gap: clamp(6px, 2vw, 12px);
       margin-top: 16px;
     }
 
@@ -266,8 +267,8 @@
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
-      font-size: 15px;
+      padding: clamp(10px, 3vw, 14px) clamp(8px, 3vw, 16px);
+      font-size: clamp(13px, 3.4vw, 15px);
       font-weight: 600;
       font-family: inherit;
       color: var(--text-main);
@@ -317,14 +318,15 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: clamp(12.5px, 3.2vw, 14px);
       text-align: left;
     }
 
     th, td {
-      padding: 13px 18px;
+      padding: clamp(9px, 2.6vw, 13px) clamp(10px, 3.5vw, 18px);
       border-bottom: 1px solid var(--border);
       color: var(--text-main);
+      white-space: nowrap;
     }
 
     th {
@@ -357,7 +359,7 @@
     }
 
     .cylinder-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
+      border-color: rgba(37, 99, 235, 0.4);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
@@ -437,7 +439,7 @@
       border: 1px solid var(--border);
       background: var(--surface-input);
       font-family: inherit;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-main);
       outline: none;
@@ -469,7 +471,7 @@
       flex: 1;
       min-width: 170px;
       padding: 14px 18px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       font-family: inherit;
       border-radius: var(--radius-md);
@@ -505,7 +507,7 @@
 
     .btn-main:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 6px 24px rgba(37, 99, 235, 0.4);
       filter: brightness(1.1);
     }
 
@@ -588,6 +590,61 @@
       color: #ffffff;
     }
 
+    /* Длинные формулы KaTeX не должны вылезать за карточку — 
+       разрешаем им скроллиться по горизонтали внутри своего блока */
+    .katex {
+      max-width: 100%;
+    }
+
+    .katex-html {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 2px 0;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+      padding: 4px 0;
+    }
+
+    .katex {
+      position: relative;
+    }
+
+    .katex--scrollable {
+      padding-right: 22px;
+    }
+
+    .formula-scroll-hint {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 18px;
+      text-align: center;
+      pointer-events: none;
+      box-shadow: 0 0 10px var(--accent-glow);
+      animation: formulaHintPulse 1.6s ease-in-out infinite;
+      transition: opacity 0.25s ease;
+    }
+
+    .formula-scroll-hint--hidden {
+      opacity: 0;
+    }
+
+    @keyframes formulaHintPulse {
+      0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+      50% { transform: translateY(-50%) scale(1.18); opacity: 0.7; }
+    }
+
     @keyframes smoothSlideIn {
       from {
         opacity: 0;
@@ -626,7 +683,7 @@
       background: #0f1422;
       border: 1px solid var(--border);
       border-radius: 24px;
-      padding: 24px;
+      padding: clamp(14px, 4vw, 24px);
       box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
@@ -634,6 +691,7 @@
       position: relative;
       max-width: 95vw;
       max-height: 94vh;
+      overflow-y: auto;
       transform: scale(0.94);
       transition: transform 0.3s var(--ease-spring);
     }
@@ -643,8 +701,8 @@
     }
 
     .modal-viewport {
-      height: 74vh;
-      min-height: 500px;
+      height: min(74vh, 500px);
+      min-height: 280px;
       width: min(750px, 88vw);
       background: #ffffff;
       border-radius: 16px;
@@ -674,19 +732,22 @@
     .modal-header-row {
       width: 100%;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
       margin-bottom: 14px;
     }
 
     .modal-caption {
-      font-size: 17px;
+      font-size: clamp(15px, 4vw, 17px);
       font-weight: 800;
       color: var(--text-main);
     }
 
     .modal-controls {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       align-items: center;
     }
@@ -695,12 +756,13 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 7px 14px;
+      padding: 7px clamp(8px, 2.5vw, 14px);
       border-radius: var(--radius-md);
-      font-size: 13px;
+      font-size: clamp(11px, 3vw, 13px);
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s var(--ease-spring);
+      white-space: nowrap;
     }
 
     .btn-zoom:hover {
@@ -725,6 +787,33 @@
 
     .modal-close-btn:hover {
       background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Доп. подстройка для очень узких экранов */
+    @media (max-width: 380px) {
+      .options-numbers {
+        gap: 6px;
+      }
+      .btn-option {
+        padding: 10px 6px;
+      }
+      .modal-controls {
+        gap: 6px;
+        justify-content: flex-end;
+        width: 100%;
+      }
+      .btn-zoom,
+      .modal-close-btn {
+        padding: 6px 10px;
+      }
+    }
+
+    /* Ландшафтная ориентация на телефоне — модалка не должна упираться в высоту */
+    @media (max-height: 480px) {
+      .modal-viewport {
+        height: min(60vh, 320px);
+        min-height: 220px;
+      }
     }
   </style>
 </head>
@@ -1351,7 +1440,7 @@
             <polygon points="30,20 30,110 200,110" fill="rgba(99,102,241,0.08)" stroke="#111827" stroke-width="2"/>
             <text x="105" y="128" font-size="14" font-weight="bold" fill="#111827">nₓ = 4 см</text>
             <text x="5" y="70" font-size="14" font-weight="bold" fill="#111827">nᵧ = 3 см</text>
-            <text x="125" y="60" font-size="15" font-weight="bold" fill="#6366f1">n</text>
+            <text x="125" y="60" font-size="15" font-weight="bold" fill="#2563eb">n</text>
             <rect x="30" y="98" width="12" height="12" fill="none" stroke="#111827" stroke-width="1.5"/>
           </svg>
         </div>
@@ -1443,7 +1532,7 @@
                 <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
               </marker>
               <marker id="arr23-r" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563eb"/>
               </marker>
             </defs>
             <rect x="40" y="25" width="150" height="95" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
@@ -1451,8 +1540,8 @@
             <text x="95" y="138" font-size="14" font-weight="bold" fill="#111827">e = 6 см</text>
             <line x1="40" y1="120" x2="40" y2="25" stroke="#111827" stroke-width="2.5" marker-end="url(#arr23-b)"/>
             <text x="48" y="75" font-size="14" font-weight="bold" fill="#111827">f = 8 см</text>
-            <line x1="40" y1="120" x2="190" y2="25" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr23-r)"/>
-            <text x="125" y="65" font-size="15" font-weight="bold" fill="#6366f1">m</text>
+            <line x1="40" y1="120" x2="190" y2="25" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr23-r)"/>
+            <text x="125" y="65" font-size="15" font-weight="bold" fill="#2563eb">m</text>
           </svg>
         </div>
         <strong>Сложение взаимно перпендикулярных векторов:</strong><br/>
@@ -1484,7 +1573,7 @@
             <polygon points="30,105 210,105 210,25" fill="rgba(99,102,241,0.08)" stroke="#111827" stroke-width="2"/>
             <text x="110" y="125" font-size="14" font-weight="bold" fill="#111827">Fₓ (4 части)</text>
             <text x="220" y="68" font-size="14" font-weight="bold" fill="#111827">Fᵧ (3 части)</text>
-            <text x="95" y="55" font-size="14" font-weight="bold" fill="#6366f1">F = 10 Н (5 частей)</text>
+            <text x="95" y="55" font-size="14" font-weight="bold" fill="#2563eb">F = 10 Н (5 частей)</text>
             <path d="M 55,105 A 25,25 0 0,0 52,95" fill="none" stroke="#ef4444" stroke-width="1.5"/>
             <text x="60" y="101" font-size="13" font-weight="bold" fill="#ef4444">&alpha;</text>
           </svg>
@@ -1522,7 +1611,7 @@
                 <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
               </marker>
               <marker id="arr25-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563eb"/>
               </marker>
             </defs>
             <polygon points="40,125 160,125 225,35 105,35" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
@@ -1533,8 +1622,8 @@
             <line x1="40" y1="125" x2="160" y2="125" stroke="#111827" stroke-width="2.5" marker-end="url(#arr25-blk)"/>
             <text x="95" y="145" font-size="13" font-weight="bold" fill="#111827">F₂ = 3 Н</text>
             <!-- R -->
-            <line x1="40" y1="125" x2="225" y2="35" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr25-blue)"/>
-            <text x="145" y="70" font-size="15" font-weight="bold" fill="#6366f1">R = 7 Н</text>
+            <line x1="40" y1="125" x2="225" y2="35" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr25-blue)"/>
+            <text x="145" y="70" font-size="15" font-weight="bold" fill="#2563eb">R = 7 Н</text>
             <!-- 120 angle -->
             <text x="105" y="55" font-size="13" font-weight="bold" fill="#ef4444">120&deg;</text>
           </svg>
@@ -1585,7 +1674,7 @@
                 <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111827"/>
               </marker>
               <marker id="arr26-p" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#6366f1"/>
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563eb"/>
               </marker>
             </defs>
             <rect x="50" y="25" width="110" height="100" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
@@ -1596,8 +1685,8 @@
             <line x1="160" y1="125" x2="160" y2="25" stroke="#111827" stroke-width="2.5" marker-end="url(#arr26-b)"/>
             <text x="168" y="75" font-size="13" font-weight="bold" fill="#111827">F₁ = 40 Н</text>
             <!-- R -->
-            <line x1="160" y1="125" x2="50" y2="25" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr26-p)"/>
-            <text x="85" y="65" font-size="15" font-weight="bold" fill="#6366f1">R = 50 Н</text>
+            <line x1="160" y1="125" x2="50" y2="25" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr26-p)"/>
+            <text x="85" y="65" font-size="15" font-weight="bold" fill="#2563eb">R = 50 Н</text>
           </svg>
         </div>
         <strong>Подробное решение:</strong><br/>
@@ -1861,7 +1950,28 @@
           ],
           throwOnError: false
         });
+        addFormulaScrollHints(document.body);
       }
+    }
+
+    // Помечает формулы, которые не помещаются по ширине, видимой подсказкой ⇄
+    function addFormulaScrollHints(root) {
+      root.querySelectorAll('.katex-html').forEach((html) => {
+        const katexEl = html.parentElement;
+        if (!katexEl || katexEl.dataset.hintChecked) return;
+        katexEl.dataset.hintChecked = '1';
+        if (html.scrollWidth - html.clientWidth > 4) {
+          katexEl.classList.add('katex--scrollable');
+          const hint = document.createElement('span');
+          hint.className = 'formula-scroll-hint';
+          hint.setAttribute('aria-hidden', 'true');
+          hint.textContent = '⇄';
+          katexEl.appendChild(hint);
+          html.addEventListener('scroll', () => {
+            hint.classList.toggle('formula-scroll-hint--hidden', html.scrollLeft > 8);
+          }, { passive: true });
+        }
+      });
     }
 
     const correctAnswers = {
@@ -2111,6 +2221,7 @@
             ],
             throwOnError: false
           });
+          addFormulaScrollHints(box);
         }
       }
     }
