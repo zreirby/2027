@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10 класс • Основное уравнение МКТ • Температура</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 40px;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solution-box p, .solution-box div {
+      margin-bottom: 10px;
+    }
+
+    .solution-box ol, .solution-box ul {
+      margin-left: 22px;
+      margin-bottom: 12px;
+    }
+
+    .solution-box li {
+      margin-bottom: 6px;
+    }
+
+    .math-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-scroll::-webkit-scrollbar,
+    .task-title::-webkit-scrollbar,
+    .solution-box::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .math-scroll::-webkit-scrollbar-thumb,
+    .task-title::-webkit-scrollbar-thumb,
+    .solution-box::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0;
+      margin: 6px 0 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .katex-display::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">10 класс</div>
+      <h1>Основное уравнение МКТ • Температура</h1>
+      <p>Введите полученный числовой ответ.</p>
+    </div>
+
+    <!-- Задача 1 (№36) -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">В озеро, средняя глубина которого $h = 10\text{ м}$, а площадь $S = 1\text{ км}^2$, бросили кристаллик поваренной соли $\text{NaCl}$ массой $m = 23\text{ мг}$. Сколько ионов хлора оказалось бы в стакане воды объемом $V = 200\text{ см}^3$, взятой из этого озера, если считать, что соль, растворившись, равномерно распределилась по всему озеру? Молярная масса поваренной соли $M = 58\text{ }\frac{\text{г}}{\text{моль}}$.</div>
+      <div class="task-desc">Введите число ионов хлора:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-1-input" />
+        <button class="btn-main" onclick="validateCalculation(1)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <ol>
+          <li><strong>Объем озера ($V_{\text{оз}}$):</strong> Чтобы найти общий объем воды, в которой растворилась соль, умножаем его площадь на среднюю глубину:
+            <div class="math-scroll">$$V_{\text{оз}} = S \cdot h$$</div>
+          </li>
+          <li><strong>Общее число молекул соли ($N_{\text{всего}}$):</strong> Находим количество вещества соли через её массу ($m$) и молярную массу ($M$), а затем умножаем на постоянную Авогадро ($N_A$), чтобы узнать число молекул $\text{NaCl}$. Так как каждая молекула $\text{NaCl}$ содержит один ион хлора ($\text{Cl}^-$), общее число ионов хлора равно:
+            <div class="math-scroll">$$N_{\text{всего}} = \frac{m}{M} \cdot N_A$$</div>
+          </li>
+          <li><strong>Число ионов в стакане ($N$):</strong> Поскольку соль распределилась равномерно, доля ионов в стакане объемом $V$ равна доле объема стакана от общего объема озера:
+            <div class="math-scroll">$$N = N_{\text{всего}} \cdot \frac{V}{V_{\text{оз}}} = \frac{m \cdot N_A}{M} \cdot \frac{V}{S \cdot h} = \frac{m N_A V}{h S M}$$</div>
+          </li>
+        </ol>
+        <p>$h = 10\text{ м}$<br/>
+        $S = 1\text{ км}^2 = 10^6\text{ м}^2$<br/>
+        $m = 23\text{ мг} = 23 \cdot 10^{-6}\text{ кг}$<br/>
+        $V = 200\text{ см}^3 = 200 \cdot 10^{-6}\text{ м}^3$<br/>
+        $M = 58\text{ г/моль} = 58 \cdot 10^{-3}\text{ кг/моль}$<br/>
+        $N_A \approx 6 \cdot 10^{23}\text{ моль}^{-1}$</p>
+        <div class="math-scroll">
+          $$N = \frac{23 \cdot 10^{-6} \cdot 6 \cdot 10^{23} \cdot 200 \cdot 10^{-6}}{10 \cdot 10^6 \cdot 58 \cdot 10^{-3}} = 5 \cdot 10^9$$
+        </div>
+        <strong>Ответ:</strong> $N = \frac{m N_A V}{h S M} = 5 \cdot 10^9$.
+      </div>
+    </div>
+
+    <!-- Задача 2 (№41) -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">В сосуде находится идеальный газ, концентрация молекул которого $n = 5{,}1 \cdot 10^{25}\text{ м}^{-3}$. Определите давление газа, если масса каждой молекулы $m_0 = 6{,}6 \cdot 10^{-24}\text{ г}$, а средняя квадратичная скорость их поступательного движения $\langle v_{\text{кв}} \rangle = 1{,}3\text{ }\frac{\text{км}}{\text{с}}$.</div>
+      <div class="task-desc">Введите давление в Паскалях ($\text{Па}$) или мегапаскалях ($\text{МПа}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-2-input" />
+        <button class="btn-main" onclick="validateCalculation(2)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$n = 5{,}1 \cdot 10^{25}\text{ м}^{-3}$</li>
+          <li>$m_0 = 6{,}6 \cdot 10^{-24}\text{ г} = 6{,}6 \cdot 10^{-27}\text{ кг}$</li>
+          <li>$v = 1{,}3\text{ км/с} = 1300\text{ м/с}$</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Квадрат средней квадратичной скорости для удобства:
+            <div class="math-scroll">$$v^2 = 1300^2 = 1{,}69 \cdot 10^6\text{ м}^2/\text{с}^2$$</div>
+          </li>
+          <li>Давление газа через основное уравнение МКТ:
+            <div class="math-scroll">$$p = \frac{1}{3} n m_0 v^2$$</div>
+          </li>
+          <li>Итоговый расчет:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot 5{,}1 \cdot 10^{25} \cdot 6{,}6 \cdot 10^{-27} \cdot 1{,}69 \cdot 10^6 = 189\,618\text{ Па} \approx 1{,}9 \cdot 10^5\text{ Па}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $p = 0{,}19\text{ МПа}$ (или $1{,}9 \cdot 10^5\text{ Па}$).
+      </div>
+    </div>
+
+    <!-- Задача 3 (№44) -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">Определите массу идеального газа, содержащегося в сосуде вместимостью $V = 5\text{ л}$, если давление газа $p = 1 \cdot 10^5\text{ Па}$, а средняя квадратичная скорость поступательного движения его молекул $\langle v_{\text{кв}} \rangle = 500\text{ }\frac{\text{м}}{\text{с}}$.</div>
+      <div class="task-desc">Введите массу в граммах ($\text{г}$) или килограммах ($\text{кг}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-3-input" />
+        <button class="btn-main" onclick="validateCalculation(3)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V = 5\text{ л} = 5 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$p = 1 \cdot 10^5\text{ Па}$</li>
+          <li>$v = 500\text{ м/с}$</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Основное уравнение МКТ связывает давление с концентрацией $n$ и массой одной молекулы $m_0$:
+            <div class="math-scroll">$$p = \frac{1}{3} n m_0 v^2$$</div>
+          </li>
+          <li>Распишем концентрацию как $n = \frac{N}{V}$, тогда выражение примет вид:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{N \cdot m_0}{V} v^2$$</div>
+          </li>
+          <li>Так как произведение числа молекул на массу одной молекулы — это общая масса газа ($m = N \cdot m_0$), подставим её в формулу давления:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{m}{V} v^2$$</div>
+          </li>
+          <li>Выразим искомую массу $m$ из полученного уравнения:
+            <div class="math-scroll">$$m = \frac{3 p V}{v^2}$$</div>
+            <div class="math-scroll">$$m = \frac{3 \cdot 10^5 \cdot 5 \cdot 10^{-3}}{500^2} = \frac{1500}{250\,000} = 0{,}006\text{ кг} = 6\text{ г}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $m = 6\text{ г}$ (или $0{,}006\text{ кг}$).
+      </div>
+    </div>
+
+    <!-- Задача 4 (№45) -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">Определите среднюю квадратичную скорость теплового движения молекул идеального газа, давление которого $p = 0{,}5 \cdot 10^5\text{ Па}$, а масса $m = 60\text{ г}$. Объем сосуда, в котором находится газ, $V = 0{,}1\text{ м}^3$.</div>
+      <div class="task-desc">Введите скорость в метрах в секунду ($\text{м/с}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-4-input" />
+        <button class="btn-main" onclick="validateCalculation(4)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$p = 0{,}5 \cdot 10^5\text{ Па}$</li>
+          <li>$m = 60\text{ г} = 60 \cdot 10^{-3}\text{ кг} = 0{,}06\text{ кг}$</li>
+          <li>$V = 0{,}1\text{ м}^3$</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ через концентрацию $n$ и массу одной молекулы $m_0$:
+            <div class="math-scroll">$$p = \frac{1}{3} n m_0 v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Выразим концентрацию как отношение числа молекул к объёму ($n = \frac{N}{V}$):
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{N \cdot m_0}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Заменим произведение числа молекул на массу одной молекулы общей массой газа ($m = N \cdot m_0$):
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{m}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Выразим квадрат средней квадратичной скорости из уравнения:
+            <div class="math-scroll">$$v_{\text{кв}}^2 = \frac{3 p V}{m}$$</div>
+          </li>
+          <li>Посчитаем значение квадрата скорости для упрощения:
+            <div class="math-scroll">$$v_{\text{кв}}^2 = \frac{3 \cdot 0{,}5 \cdot 10^5 \cdot 0{,}1}{0{,}06} = \frac{15\,000}{0{,}06} = 250\,000\text{ м}^2/\text{с}^2$$</div>
+          </li>
+          <li>Извлечем корень для нахождения самой скорости:
+            <div class="math-scroll">$$v_{\text{кв}} = \sqrt{250\,000} = 500\text{ м/с}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\langle v_{\text{кв}} \rangle = 0{,}5\text{ }\frac{\text{км}}{\text{с}}$ (или $500\text{ м/с}$).
+      </div>
+    </div>
+
+    <!-- Задача 5 (№46) -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">Плотность идеального газа, находящегося в сосуде, $\rho = 1{,}5\text{ }\frac{\text{кг}}{\text{м}^3}$. Определите давление газа, если средняя квадратичная скорость теплового движения его молекул $\langle v_{\text{кв}} \rangle = 400\text{ }\frac{\text{м}}{\text{с}}$.</div>
+      <div class="task-desc">Введите давление в килопаскалях ($\text{кПа}$) или Паскалях ($\text{Па}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-5-input" />
+        <button class="btn-main" onclick="validateCalculation(5)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$\rho = 1{,}5\text{ кг/м}^3$ (уже в СИ)</li>
+          <li>$v_{\text{кв}} = 400\text{ м/с}$ (уже в СИ)</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ через концентрацию $n$ и массу одной молекулы $m_0$:
+            <div class="math-scroll">$$p = \frac{1}{3} n m_0 v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Распишем концентрацию как $n = \frac{N}{V}$:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{N \cdot m_0}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Заменим произведение общего числа молекул на массу одной молекулы полной массой газа ($m = N \cdot m_0$):
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{m}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Так как отношение массы газа к его объему — это плотность ($\rho = \frac{m}{V}$), подставим её в формулу:
+            <div class="math-scroll">$$p = \frac{1}{3} \rho v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Квадрат скорости для упрощения расчета:
+            <div class="math-scroll">$$v_{\text{кв}}^2 = 400^2 = 160\,000\text{ м}^2/\text{с}^2$$</div>
+          </li>
+          <li>Итоговый расчет давления:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot 1{,}5 \cdot 160\,000 = 0{,}5 \cdot 160\,000 = 80\,000\text{ Па} = 80\text{ кПа}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $p = 80\text{ кПа}$ (или $8 \cdot 10^4\text{ Па}$).
+      </div>
+    </div>
+
+    <!-- Задача 6 (№669) -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">Определите среднюю квадратичную скорость $\langle v_{\text{кв}} \rangle$ движения молекул газа, если масса газа $m = 6{,}0\text{ кг}$, его объем $V = 5{,}0\text{ м}^3$ и давление $p = 0{,}20\text{ МПа}$.</div>
+      <div class="task-desc">Введите скорость в метрах в секунду ($\text{м/с}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-6-input" />
+        <button class="btn-main" onclick="validateCalculation(6)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$m = 6{,}0\text{ кг}$ (уже в СИ)</li>
+          <li>$V = 5{,}0\text{ м}^3$ (уже в СИ)</li>
+          <li>$p = 0{,}20\text{ МПа} = 0{,}20 \cdot 10^6\text{ Па} = 200\,000\text{ Па}$</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ через концентрацию $n$ и массу одной молекулы $m_0$:
+            <div class="math-scroll">$$p = \frac{1}{3} n m_0 v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Выразим концентрацию как $n = \frac{N}{V}$:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{N \cdot m_0}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Заменим произведение $N \cdot m_0$ на полную массу газа $m$:
+            <div class="math-scroll">$$p = \frac{1}{3} \cdot \frac{m}{V} v_{\text{кв}}^2$$</div>
+          </li>
+          <li>Выразим квадрат средней квадратичной скорости:
+            <div class="math-scroll">$$v_{\text{кв}}^2 = \frac{3 p V}{m}$$</div>
+          </li>
+          <li>Посчитаем квадрат скорости для упрощения:
+            <div class="math-scroll">$$v_{\text{кв}}^2 = \frac{3 \cdot 200\,000 \cdot 5{,}0}{6{,}0} = \frac{3\,000\,000}{6{,}0} = 500\,000\text{ м}^2/\text{с}^2$$</div>
+          </li>
+          <li>Извлечем корень для нахождения скорости:
+            <div class="math-scroll">$$v_{\text{кв}} = \sqrt{500\,000} \approx 707\text{ м/с}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $v_{\text{кв}} \approx 707\text{ м/с}$.
+      </div>
+    </div>
+
+    <!-- Задача 7 (№672) -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">Определите среднюю кинетическую энергию $\langle E_{\text{к}} \rangle$ молекулы одноатомного идеального газа, давление которого $p = 20\text{ кПа}$, если концентрация его молекул $n = 3{,}0 \cdot 10^{25}\text{ м}^{-3}$.</div>
+      <div class="task-desc">Введите среднюю кинетическую энергию в Джоулях ($\text{Дж}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-7-input" />
+        <button class="btn-main" onclick="validateCalculation(7)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$p = 20\text{ кПа} = 20 \cdot 10^3\text{ Па} = 2 \cdot 10^4\text{ Па}$</li>
+          <li>$n = 3{,}0 \cdot 10^{25}\text{ м}^{-3}$ (уже в СИ)</li>
+        </ul>
+        <strong>Пошаговое решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ, связывающее давление газа с его концентрацией и средней кинетической энергией поступательного движения молекул:
+            <div class="math-scroll">$$p = \frac{2}{3} n \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li>Выразим из этой формулы искомую среднюю кинетическую энергию $\langle E_{\text{к}} \rangle$:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3p}{2n}$$</div>
+          </li>
+          <li>Итоговый расчет:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3 \cdot 2 \cdot 10^4}{2 \cdot 3{,}0 \cdot 10^{25}} = \frac{6 \cdot 10^4}{6 \cdot 10^{25}} = 1 \cdot 10^{-21}\text{ Дж}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\langle E_{\text{к}} \rangle = 10^{-21}\text{ Дж}$.
+      </div>
+    </div>
+
+    <!-- Задача 8 (№55) -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title">Из баллона емкостью $V = 5\text{ л}$ из-за неисправности вентиля произошла утечка углекислого газа, в результате чего давление понизилось на $|\Delta p| = 2{,}9\text{ кПа}$, а средняя квадратичная скорость теплового движения молекул в баллоне осталась неизменной — $\langle v_{\text{кв}} \rangle = 480\text{ }\frac{\text{м}}{\text{с}}$. Сколько молекул углекислого газа вылетело из баллона?</div>
+      <div class="task-desc">Введите число вылетевших молекул:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-8-input" />
+        <button class="btn-main" onclick="validateCalculation(8)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V = 5\text{ л} = 5 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$\Delta p = 2{,}9\text{ кПа} = 2{,}9 \cdot 10^3\text{ Па}$</li>
+          <li>$v = 480\text{ м/с}$</li>
+          <li>$M = 44 \cdot 10^{-3}\text{ кг/моль}$</li>
+          <li>$N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <ol>
+          <li>Запишем формулы для начального ($p_1$) и конечного ($p_2$) давления газа через основное уравнение МКТ:
+            <div class="math-scroll">$$p_1 = \frac{1}{3} n_1 m_0 v^2$$</div>
+            <div class="math-scroll">$$p_2 = \frac{1}{3} n_2 m_0 v^2$$</div>
+          </li>
+          <li>Найдем разность давлений $\Delta p = p_1 - p_2$, вынося общие множители за скобки:
+            <div class="math-scroll">$$\Delta p = \frac{1}{3} m_0 v^2 (n_1 - n_2)$$</div>
+          </li>
+          <li><strong>Почему нужно расписать концентрации:</strong> В условии задачи нас спрашивают про конкретное число вылетевших молекул, а в нашей формуле сейчас стоит разность концентраций ($n_1 - n_2$). Чтобы связать плотность заселения молекул в пространстве с их реальным поштучным количеством, мы обязаны использовать определение концентрации ($n = \frac{N}{V}$). Распишем её для каждого состояния:
+            <div class="math-scroll">$$n_1 = \frac{N_1}{V}\text{ (сколько молекул было в объёме баллона вначале)}$$</div>
+            <div class="math-scroll">$$n_2 = \frac{N_2}{V}\text{ (сколько молекул осталось в том же объёме в конце)}$$</div>
+          </li>
+          <li>Подставим эти дроби в скобку и приведем к общему знаменателю:
+            <div class="math-scroll">$$n_1 - n_2 = \frac{N_1}{V} - \frac{N_2}{V} = \frac{N_1 - N_2}{V}$$</div>
+            Разность $(N_1 - N_2)$ — это и есть то самое искомое число вылетевших молекул $\Delta N$. Получаем:
+            <div class="math-scroll">$$n_1 - n_2 = \frac{\Delta N}{V}$$</div>
+          </li>
+          <li>Возвращаем это выражение обратно в формулу разности давлений:
+            <div class="math-scroll">$$\Delta p = \frac{1}{3} m_0 v^2 \frac{\Delta N}{V}$$</div>
+          </li>
+          <li>Теперь из этой формулы легко выразить саму величину $\Delta N$:
+            <div class="math-scroll">$$\Delta N = \frac{3 \Delta p V}{m_0 v^2}$$</div>
+          </li>
+          <li>Найдем массу одной молекулы $m_0$, разделив массу целого моля $M$ на число молекул в нем $N_A$:
+            <div class="math-scroll">$$m_0 = \frac{44 \cdot 10^{-3}}{6{,}02 \cdot 10^{23}} \approx 7{,}31 \cdot 10^{-26}\text{ кг}$$</div>
+          </li>
+          <li>Вычислим значение знаменателя ($m_0 v^2$) для упрощения дальнейшего деления:
+            <div class="math-scroll">$$m_0 v^2 = 7{,}31 \cdot 10^{-26} \cdot 480^2 = 7{,}31 \cdot 10^{-26} \cdot 230\,400 \approx 1{,}684 \cdot 10^{-21}\text{ кг} \cdot \text{м}^2/\text{с}^2$$</div>
+          </li>
+          <li>Проведем итоговый расчет:
+            <div class="math-scroll">$$\Delta N = \frac{3 \cdot 2{,}9 \cdot 10^3 \cdot 5 \cdot 10^{-3}}{1{,}684 \cdot 10^{-21}} = \frac{43{,}5}{1{,}684 \cdot 10^{-21}} \approx 2{,}58 \cdot 10^{21}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $|\Delta N| = 2{,}6 \cdot 10^{21}\text{ молекул}$.
+      </div>
+    </div>
+
+    <!-- Задача 9 (№57) -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title">Средняя квадратичная скорость поступательного движения молекул идеального газа в закрытом баллоне увеличилась в $\alpha = 1{,}3$ раза. Определите, на сколько процентов изменилось давление газа.</div>
+      <div class="task-desc">Введите процент изменения давления ($\%$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-9-input" />
+        <button class="btn-main" onclick="validateCalculation(9)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <strong>Данные задачи:</strong>
+        <ul>
+          <li>Коэффициент увеличения скорости: $\alpha = 1{,}3$</li>
+          <li>Баллон закрыт, значит, объём $V$ и число молекул $N$ не меняются. Соответственно, концентрация $n = \frac{N}{V}$ остаётся постоянной.</li>
+        </ul>
+        <strong>Пошаговое объяснение и решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ для начального ($p_1$) и конечного ($p_2$) давлений газа через средние квадратичные скорости ($v_1$ и $v_2$):
+            <div class="math-scroll">$$p_1 = \frac{1}{3} n m_0 v_1^2$$</div>
+            <div class="math-scroll">$$p_2 = \frac{1}{3} n m_0 v_2^2$$</div>
+          </li>
+          <li>Связь конечной и начальной скорости: По условию скорость увеличилась в $\alpha$ раз, то есть:
+            <div class="math-scroll">$$v_2 = \alpha \cdot v_1$$</div>
+          </li>
+          <li>Подставим $v_2$ в формулу для конечного давления $p_2$:
+            <div class="math-scroll">$$p_2 = \frac{1}{3} n m_0 (\alpha v_1)^2 = \alpha^2 \cdot \left(\frac{1}{3} n m_0 v_1^2\right)$$</div>
+          </li>
+          <li>Так как выражение в скобках — это начальное давление $p_1$, получаем простую связь между давлениями:
+            <div class="math-scroll">$$p_2 = \alpha^2 \cdot p_1$$</div>
+          </li>
+          <li>Посчитаем, во сколько раз увеличилось давление, зная значение $\alpha$:
+            <div class="math-scroll">$$\alpha^2 = 1{,}3^2 = 1{,}69 \implies p_2 = 1{,}69 \cdot p_1$$</div>
+          </li>
+          <li>Нахождение изменения в процентах: Чтобы узнать, на сколько процентов увеличилось давление, найдем отношение изменения давления к его начальному значению и умножим на $100\%$:
+            <div class="math-scroll">$$\frac{p_2 - p_1}{p_1} \cdot 100\% = \frac{1{,}69 p_1 - p_1}{p_1} \cdot 100\% = 0{,}69 \cdot 100\% = 69\%$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\eta = 69\%$.
+      </div>
+    </div>
+
+    <!-- Задача 10 (№64) -->
+    <div class="card" id="task-10">
+      <div class="task-num">Задача 10</div>
+      <div class="task-title">В баллоне объемом $V = 10\text{ л}$ находится идеальный газ, количество вещества которого $\nu = 2{,}0\text{ моль}$, а давление $p = 1{,}0\text{ МПа}$. Определите среднюю кинетическую энергию поступательного движения молекул газа.</div>
+      <div class="task-desc">Введите среднюю кинетическую энергию в Джоулях ($\text{Дж}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-10-input" />
+        <button class="btn-main" onclick="validateCalculation(10)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-10"></div>
+      <button class="btn-solution" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V = 10\text{ л} = 10 \cdot 10^{-3}\text{ м}^3 = 10^{-2}\text{ м}^3$</li>
+          <li>$\nu = 2{,}0\text{ моль}$ (уже в СИ)</li>
+          <li>$p = 1{,}0\text{ МПа} = 1{,}0 \cdot 10^6\text{ Па}$</li>
+          <li>$N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <strong>Пошаговое объяснение и решение:</strong>
+        <ol>
+          <li>Запишем основное уравнение МКТ, связывающее давление газа с его концентрацией и средней кинетической энергией поступательного движения молекул:
+            <div class="math-scroll">$$p = \frac{2}{3} n \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li>Переход от концентрации к количеству вещества: В условии нам не дана концентрация $n$, но дан объём и количество вещества в молях. По определению концентрация — это число молекул в единице объёма ($n = \frac{N}{V}$). Общее число молекул $N$ мы можем найти, умножив количество вещества $\nu$ на число Авогадро $N_A$:
+            <div class="math-scroll">$$N = \nu \cdot N_A$$</div>
+          </li>
+          <li>Подставим выражение для $N$ в формулу концентрации:
+            <div class="math-scroll">$$n = \frac{\nu \cdot N_A}{V}$$</div>
+          </li>
+          <li>Теперь подставим полученную концентрацию в основное уравнение МКТ из первого шага:
+            <div class="math-scroll">$$p = \frac{2}{3} \cdot \frac{\nu \cdot N_A}{V} \cdot \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li>Выразим из этого уравнения искомую среднюю кинетическую энергию $\langle E_{\text{к}} \rangle$:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3 p V}{2 \nu N_A}$$</div>
+          </li>
+          <li>Посчитаем числитель для упрощения дроби:
+            <div class="math-scroll">$$3 p V = 3 \cdot 1{,}0 \cdot 10^6 \cdot 10^{-2} = 30\,000\text{ Дж} \cdot \text{м}^3$$</div>
+          </li>
+          <li>Посчитаем знаменатель:
+            <div class="math-scroll">$$2 \nu N_A = 2 \cdot 2{,}0 \cdot 6{,}02 \cdot 10^{23} = 2{,}408 \cdot 10^{24}\text{ моль}^{-1}$$</div>
+          </li>
+          <li>Проведем итоговый расчет делением числителя на знаменатель:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{30\,000}{2{,}408 \cdot 10^{24}} \approx 1{,}246 \cdot 10^{-20}\text{ Дж} \approx 1{,}2 \cdot 10^{-20}\text{ Дж}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\langle E_{\text{к}} \rangle = 1{,}2 \cdot 10^{-20}\text{ Дж}$.
+      </div>
+    </div>
+
+    <!-- Задача 11 (№65) -->
+    <div class="card" id="task-11">
+      <div class="task-num">Задача 11</div>
+      <div class="task-title">В сосуде объемом $V = 2\text{ м}^3$ находится аргон, масса которого $m = 2\text{ кг}$, а давление $p = 3{,}0 \cdot 10^5\text{ Па}$. Определите среднюю кинетическую энергию поступательного движения атомов аргона.</div>
+      <div class="task-desc">Введите среднюю кинетическую энергию в Джоулях ($\text{Дж}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-11-input" />
+        <button class="btn-main" onclick="validateCalculation(11)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-11"></div>
+      <button class="btn-solution" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V = 2\text{ м}^3$ (уже в СИ)</li>
+          <li>$m = 2\text{ кг}$ (уже в СИ)</li>
+          <li>$p = 3{,}0 \cdot 10^5\text{ Па}$ (уже в СИ)</li>
+          <li>$M = 40 \cdot 10^{-3}\text{ кг/моль}$ (молярная масса аргона)</li>
+          <li>$N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <ol>
+          <li>Запишем основное уравнение МКТ, связывающее давление газа со средней кинетической энергией его атомов:
+            <div class="math-scroll">$$p = \frac{2}{3} n \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li><strong>Почему нужно расписать концентрацию:</strong> В условии задачи нет концентрации $n$, но заданы общая масса $m$ и объем $V$. По определению, концентрация — это общее число атомов, деленное на объем ($n = \frac{N}{V}$). Общее число атомов $N$ мы можем выразить через массу газа, молярную массу и число Авогадро: $N = \frac{m}{M} N_A$. Отсюда формула концентрации принимает вид:
+            <div class="math-scroll">$$n = \frac{m N_A}{M V}$$</div>
+          </li>
+          <li>Подставим выражение для концентрации $n$ в основное уравнение МКТ:
+            <div class="math-scroll">$$p = \frac{2}{3} \cdot \frac{m N_A}{M V} \cdot \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li>Из полученного уравнения выразим искомую среднюю кинетическую энергию $\langle E_{\text{к}} \rangle$:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3 p V M}{2 m N_A}$$</div>
+          </li>
+          <li>Итоговый расчет подстановкой всех величин в конечную формулу:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3 \cdot 3{,}0 \cdot 10^5 \cdot 2 \cdot 40 \cdot 10^{-3}}{2 \cdot 2 \cdot 6{,}02 \cdot 10^{23}} = \frac{72\,000}{2{,}408 \cdot 10^{24}} \approx 2{,}99 \cdot 10^{-20}\text{ Дж} \approx 3{,}0 \cdot 10^{-20}\text{ Дж}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\langle E_{\text{к}} \rangle = 3 \cdot 10^{-20}\text{ Дж}$.
+      </div>
+    </div>
+
+    <!-- Задача 12 (№67) -->
+    <div class="card" id="task-12">
+      <div class="task-num">Задача 12</div>
+      <div class="task-title">В сосуде находится гелий, давление которого $p = 1{,}0 \cdot 10^5\text{ Па}$, а количество вещества $\nu = 2{,}0\text{ моль}$. Определите суммарную кинетическую энергию поступательного движения атомов гелия, если его плотность $\rho = 1{,}0\text{ }\frac{\text{кг}}{\text{м}^3}$.</div>
+      <div class="task-desc">Введите суммарную кинетическую энергию в килоджоулях ($\text{кДж}$) или Джоулях ($\text{Дж}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-12-input" />
+        <button class="btn-main" onclick="validateCalculation(12)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-12"></div>
+      <button class="btn-solution" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$p = 1{,}0 \cdot 10^5\text{ Па}$ (уже в СИ)</li>
+          <li>$\nu = 2{,}0\text{ моль}$ (уже в СИ)</li>
+          <li>$\rho = 1{,}0\text{ кг/м}^3$ (уже в СИ)</li>
+          <li>$M = 4 \cdot 10^{-3}\text{ кг/моль}$ (молярная масса гелия)</li>
+          <li>$N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <ol>
+          <li>Запишем основное уравнение МКТ, связывающее давление газа со средней кинетической энергией поступательного движения одного атома:
+            <div class="math-scroll">$$p = \frac{2}{3} n \langle E_{\text{к}} \rangle$$</div>
+          </li>
+          <li><strong>Почему нужно расписать концентрацию:</strong> Нам необходимо найти суммарную кинетическую энергию $E_{\text{сум}}$ всех атомов гелия. Она равна средней энергии одного атома, умноженной на их общее число ($E_{\text{сум}} = N \cdot \langle E_{\text{к}} \rangle$). Чтобы в формуле давления появилось полное число атомов $N$, распишем концентрацию по определению через объём сосуда ($n = \frac{N}{V}$):
+            <div class="math-scroll">$$p = \frac{2}{3} \cdot \frac{N}{V} \cdot \langle E_{\text{к}} \rangle = \frac{2}{3} \cdot \frac{E_{\text{сум}}}{V}$$</div>
+          </li>
+          <li>Из полученного уравнения выразим суммарную кинетическую энергию:
+            <div class="math-scroll">$$E_{\text{сум}} = \frac{3}{2} p V$$</div>
+          </li>
+          <li><strong>Почему нужно расписать объём:</strong> В условии задачи объём сосуда $V$ не задан напрямую, но известны количество вещества $\nu$ и плотность $\rho$. По определению плотности, $V = \frac{m}{\rho}$. А общую массу газа найдем через количество вещества и его молярную массу ($m = \nu M$). Подставим массу в формулу объёма:
+            <div class="math-scroll">$$V = \frac{\nu M}{\rho}$$</div>
+          </li>
+          <li>Подставим полученное выражение объёма в формулу для суммарной энергии из шага 3:
+            <div class="math-scroll">$$E_{\text{сум}} = \frac{3 p \nu M}{2\rho}$$</div>
+          </li>
+          <li>Итоговый расчет подстановкой всех величин в конечную формулу:
+            <div class="math-scroll">$$E_{\text{сум}} = \frac{3 \cdot 1{,}0 \cdot 10^5 \cdot 2{,}0 \cdot 4 \cdot 10^{-3}}{2 \cdot 1{,}0} = \frac{2400}{2} = 1200\text{ Дж}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $E_{\text{к}} = \frac{3 p \nu M}{2\rho} = 1{,}2\text{ кДж}$ (или $1200\text{ Дж}$).
+      </div>
+    </div>
+
+    <!-- Задача 13 (№69) -->
+    <div class="card" id="task-13">
+      <div class="task-num">Задача 13</div>
+      <div class="task-title">Во сколько раз изменится давление идеального газа, если его объем уменьшится в $\alpha = 3{,}0$ раза, а средняя кинетическая энергия поступательного движения молекул увеличится на $\eta = 30\%$?</div>
+      <div class="task-desc">Введите, во сколько раз увеличится давление:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-13-input" />
+        <button class="btn-main" onclick="validateCalculation(13)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-13"></div>
+      <button class="btn-solution" id="btn-sol-13" onclick="toggleSolution(13)">Показать Решение</button>
+      <div class="solution-box" id="sol-13">
+        <strong>Данные задачи:</strong>
+        <ul>
+          <li>Изменение объема: $V_1 / V_2 = \alpha = 3{,}0$</li>
+          <li>Изменение энергии: $\eta = 30\% \implies \langle E_{\text{к}2} \rangle = 1{,}3 \cdot \langle E_{\text{к}1} \rangle$</li>
+          <li>Количество газа $N$ неизменно.</li>
+        </ul>
+        <ol>
+          <li>Запишем основное уравнение МКТ для начального ($p_1$) и конечного ($p_2$) состояний газа:
+            <div class="math-scroll">$$p_1 = \frac{2}{3} n_1 \langle E_{\text{к}1} \rangle$$</div>
+            <div class="math-scroll">$$p_2 = \frac{2}{3} n_2 \langle E_{\text{к}2} \rangle$$</div>
+          </li>
+          <li><strong>Почему нужно расписать концентрации:</strong> В условии задачи дано изменение объёма сосуда, а не концентрации молекул. Чтобы связать концентрации с объёмами, распишем их по определению ($n_1 = \frac{N}{V_1}$ и $n_2 = \frac{N}{V_2}$):
+            <div class="math-scroll">$$p_1 = \frac{2}{3} \cdot \frac{N}{V_1} \cdot \langle E_{\text{к}1} \rangle$$</div>
+            <div class="math-scroll">$$p_2 = \frac{2}{3} \cdot \frac{N}{V_2} \cdot \langle E_{\text{к}2} \rangle$$</div>
+          </li>
+          <li>Найдем отношение конечного давления к начальному ($p_2 / p_1$), чтобы узнать, во сколько раз оно изменилось:
+            <div class="math-scroll">$$\frac{p_2}{p_1} = \frac{\frac{2}{3} \cdot \frac{N}{V_2} \cdot \langle E_{\text{к}2} \rangle}{\frac{2}{3} \cdot \frac{N}{V_1} \cdot \langle E_{\text{к}1} \rangle} = \frac{V_1}{V_2} \cdot \frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle}$$</div>
+          </li>
+          <li>Итоговый расчет подстановкой всех коэффициентов изменений в конечную формулу отношений:
+            <div class="math-scroll">$$\frac{p_2}{p_1} = 3{,}0 \cdot 1{,}3 = 3{,}9$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> Увеличится в $\beta = 3{,}9$ раза.
+      </div>
+    </div>
+
+    <!-- Задача 14 (№72) -->
+    <div class="card" id="task-14">
+      <div class="task-num">Задача 14</div>
+      <div class="task-title">Определите абсолютную температуру атомов ртути, находящейся в энергосберегающих люминесцентных лампах, если их средняя кинетическая энергия теплового движения $\langle E_{\text{к}} \rangle = 6{,}25 \cdot 10^{-21}\text{ Дж}$.</div>
+      <div class="task-desc">Введите абсолютную температуру в Кельвинах ($\text{К}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-14-input" />
+        <button class="btn-main" onclick="validateCalculation(14)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-14"></div>
+      <button class="btn-solution" id="btn-sol-14" onclick="toggleSolution(14)">Показать Решение</button>
+      <div class="solution-box" id="sol-14">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$\langle E_{\text{к}} \rangle = 6{,}25 \cdot 10^{-21}\text{ Дж}$ (уже в СИ)</li>
+          <li>Постоянная Больцмана: $k \approx 1{,}38 \cdot 10^{-23}\text{ Дж/К}$</li>
+        </ul>
+        <ol>
+          <li>Средняя кинетическая энергия поступательного движения молекул (или атомов) идеального газа связана с его абсолютной температурой базовой формулой МКТ:
+            <div class="math-scroll">$$\langle E_{\text{к}} \rangle = \frac{3}{2} k T$$</div>
+          </li>
+          <li>Из этой формулы выразим искомую абсолютную температуру $T$:
+            <div class="math-scroll">$$T = \frac{2\langle E_{\text{к}} \rangle}{3k}$$</div>
+          </li>
+          <li>Итоговый расчет подстановкой всех известных величин сразу в конечную формулу:
+            <div class="math-scroll">$$T = \frac{2 \cdot 6{,}25 \cdot 10^{-21}}{3 \cdot 1{,}38 \cdot 10^{-23}} = \frac{12{,}5 \cdot 10^{-21}}{4{,}14 \cdot 10^{-23}} = \frac{12{,}5}{4{,}14} \cdot 10^2 \approx 3{,}019 \cdot 10^2\text{ К} \approx 302\text{ К}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $T = 302\text{ К}$.
+      </div>
+    </div>
+
+    <!-- Задача 15 (№73) -->
+    <div class="card" id="task-15">
+      <div class="task-num">Задача 15</div>
+      <div class="task-title">Определите температуру, при которой средняя кинетическая энергия теплового движения молекул идеального газа в $\alpha = 1{,}2$ раза больше, чем при температуре $t_1 = 12\text{ }^\circ\text{C}$.</div>
+      <div class="task-desc">Введите температуру в градусах Цельсия ($^\circ\text{C}$) или Кельвинах ($\text{К}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-15-input" />
+        <button class="btn-main" onclick="validateCalculation(15)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-15"></div>
+      <button class="btn-solution" id="btn-sol-15" onclick="toggleSolution(15)">Показать Решение</button>
+      <div class="solution-box" id="sol-15">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>Начальная температура: $T_1 = t_1 + 273 = 12 + 273 = 285\text{ К}$</li>
+          <li>Коэффициент увеличения энергии: $\alpha = 1{,}2$</li>
+        </ul>
+        <ol>
+          <li>Запишем формулы связи средней кинетической энергии теплового движения молекул с абсолютной температурой для начального ($T_1$) и конечного ($T_2$) состояний газа:
+            <div class="math-scroll">$$\langle E_{\text{к}1} \rangle = \frac{3}{2} k T_1$$</div>
+            <div class="math-scroll">$$\langle E_{\text{к}2} \rangle = \frac{3}{2} k T_2$$</div>
+          </li>
+          <li>Разделим второе уравнение на первое, чтобы увидеть, как соотносятся между собой температуры при изменении энергии:
+            <div class="math-scroll">$$\frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle} = \frac{\frac{3}{2} k T_2}{\frac{3}{2} k T_1} = \frac{T_2}{T_1}$$</div>
+          </li>
+          <li><strong>Почему нужно использовать это отношение:</strong> По условию задачи конечная энергия в $\alpha$ раз больше начальной, то есть их отношение $\frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle} = \alpha$. Подставим это в наше равенство:
+            <div class="math-scroll">$$\alpha = \frac{T_2}{T_1}$$</div>
+          </li>
+          <li>Выразим отсюда искомую конечную абсолютную температуру $T_2$:
+            <div class="math-scroll">$$T_2 = \alpha \cdot T_1$$</div>
+          </li>
+          <li>Итоговый расчет в шкале Кельвина:
+            <div class="math-scroll">$$T_2 = 1{,}2 \cdot 285 = 342\text{ К}$$</div>
+          </li>
+          <li>Переведем полученный результат обратно в градусы Цельсия, так как начальная температура была дана в них:
+            <div class="math-scroll">$$t_2 = T_2 - 273 = 342 - 273 = 69\text{ }^\circ\text{C}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $t_2 = 69\text{ }^\circ\text{C}$ (или $T_2 = 342\text{ К}$).
+      </div>
+    </div>
+
+    <!-- Задача 16 (№74) -->
+    <div class="card" id="task-16">
+      <div class="task-num">Задача 16</div>
+      <div class="task-title">На сколько процентов увеличится средняя кинетическая энергия теплового движения молекул идеального газа при повышении его температуры от $T_1 = 280\text{ К}$ до температуры $T_2 = 308\text{ К}$?</div>
+      <div class="task-desc">Введите процент увеличения энергии ($\%$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-16-input" />
+        <button class="btn-main" onclick="validateCalculation(16)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-16"></div>
+      <button class="btn-solution" id="btn-sol-16" onclick="toggleSolution(16)">Показать Решение</button>
+      <div class="solution-box" id="sol-16">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$T_1 = 280\text{ К}$ (уже в СИ)</li>
+          <li>$T_2 = 308\text{ К}$ (уже в СИ)</li>
+        </ul>
+        <ol>
+          <li>Запишем формулы связи средней кинетической энергии поступательного движения молекул с абсолютной температурой для обоих состояний газа:
+            <div class="math-scroll">$$\langle E_{\text{к}1} \rangle = \frac{3}{2} k T_1$$</div>
+            <div class="math-scroll">$$\langle E_{\text{к}2} \rangle = \frac{3}{2} k T_2$$</div>
+          </li>
+          <li><strong>Почему нужно найти отношение энергий:</strong> Нам необходимо определить изменение величины в процентах. Для этого сначала удобно узнать, во сколько раз конечная энергия больше начальной. Разделим второе уравнение на первое:
+            <div class="math-scroll">$$\frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle} = \frac{\frac{3}{2} k T_2}{\frac{3}{2} k T_1} = \frac{T_2}{T_1}$$</div>
+          </li>
+          <li>Посчитаем это отношение, подставив заданные значения температур:
+            <div class="math-scroll">$$\frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle} = \frac{308}{280} = 1{,}1$$</div>
+          </li>
+          <li><strong>Нахождение изменения в процентах:</strong> Так как конечная энергия составляет $1{,}1$ от начальной (то есть $110\%$), найдем относительное увеличение энергии и переведем его в проценты:
+            <div class="math-scroll">$$\left(\frac{\langle E_{\text{к}2} \rangle}{\langle E_{\text{к}1} \rangle} - 1\right) \cdot 100\% = (1{,}1 - 1) \cdot 100\% = 0{,}1 \cdot 100\% = 10\%$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\eta = 10\%$.
+      </div>
+    </div>
+
+    <!-- Задача 17 (№80) -->
+    <div class="card" id="task-17">
+      <div class="task-num">Задача 17</div>
+      <div class="task-title">Определите среднюю квадратичную скорость поступательного движения атомов аргона при температуре $t = 0\text{ }^\circ\text{C}$.</div>
+      <div class="task-desc">Введите скорость в метрах в секунду ($\text{м/с}$) или километрах в секунду ($\text{км/с}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-17-input" />
+        <button class="btn-main" onclick="validateCalculation(17)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-17"></div>
+      <button class="btn-solution" id="btn-sol-17" onclick="toggleSolution(17)">Показать Решение</button>
+      <div class="solution-box" id="sol-17">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$T = t + 273 = 0 + 273 = 273\text{ К}$</li>
+          <li>$M = 40 \cdot 10^{-3}\text{ кг/моль}$ (молярная масса аргона)</li>
+          <li>Постоянная Больцмана: $k \approx 1{,}38 \cdot 10^{-23}\text{ Дж/К}$</li>
+          <li>Число Авогадро: $N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+        </ul>
+        <ol>
+          <li>Запишем формулу для средней квадратичной скорости хаотического теплового движения частиц газа:
+            <div class="math-scroll">$$v = \sqrt{\frac{3 k T}{m_0}}$$</div>
+          </li>
+          <li><strong>Почему нужно найти массу одного атома ($m_0$):</strong> В нашей стартовой формуле неизвестна масса одной частицы аргона. По определению, масса одной молекулы (или атома) находится делением молярной массы вещества $M$ на количество частиц в одном моле, то есть на число Авогадро $N_A$:
+            <div class="math-scroll">$$m_0 = \frac{M}{N_A}$$</div>
+          </li>
+          <li>Вычислим массу одного атома аргона для подстановки:
+            <div class="math-scroll">$$m_0 = \frac{40 \cdot 10^{-3}}{6{,}02 \cdot 10^{23}} \approx 6{,}64 \cdot 10^{-26}\text{ кг}$$</div>
+          </li>
+          <li>Выполним итоговый расчет скорости, подставив массу атома обратно в исходную формулу:
+            <div class="math-scroll">$$v = \sqrt{\frac{3 \cdot 1{,}38 \cdot 10^{-23} \cdot 273}{6{,}64 \cdot 10^{-26}}} = \sqrt{\frac{1{,}13022 \cdot 10^{-20}}{6{,}64 \cdot 10^{-26}}} = \sqrt{170\,213{,}85} \approx 412{,}5\text{ м/с}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\langle v_{\text{кв}} \rangle = \sqrt{\frac{3 k N_A T}{M}} = 0{,}4\text{ }\frac{\text{км}}{\text{с}}$ (или $412\text{ м/с}$).
+      </div>
+    </div>
+
+    <!-- Задача 18 (№82) -->
+    <div class="card" id="task-18">
+      <div class="task-num">Задача 18</div>
+      <div class="task-title">При температуре $T = 300\text{ К}$ плотность газа $\rho = 1{,}2\text{ }\frac{\text{кг}}{\text{м}^3}$, а средняя квадратичная скорость теплового движения молекул $\langle v_{\text{кв}} \rangle = 500\text{ }\frac{\text{м}}{\text{с}}$. Определите концентрацию молекул газа.</div>
+      <div class="task-desc">Введите концентрацию молекул газа в $\text{м}^{-3}$:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-18-input" />
+        <button class="btn-main" onclick="validateCalculation(18)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-18"></div>
+      <button class="btn-solution" id="btn-sol-18" onclick="toggleSolution(18)">Показать Решение</button>
+      <div class="solution-box" id="sol-18">
+        <ol>
+          <li>Запишем классическую формулу для концентрации молекул по её определению:
+            <div class="math-scroll">$$n = \frac{N}{V}$$</div>
+          </li>
+          <li><strong>Почему нужно расписать число молекул и объём:</strong> Прямо сейчас нам не дано ни общее число частиц $N$, ни полный объём $V$, но в условии есть плотность газа $\rho$. По определению, плотность — это вся масса газа, делённая на объём ($\rho = \frac{m}{V} \implies V = \frac{m}{\rho}$). В то же время вся масса газа складывается из поштучного количества молекул на массу одной молекулы ($m = N \cdot m_0 \implies N = \frac{m}{m_0}$). Подставим эти выражения в классическую формулу концентрации:
+            <div class="math-scroll">$$n = \frac{\frac{m}{m_0}}{\frac{m}{\rho}} = \frac{\rho}{m_0}$$</div>
+          </li>
+          <li><strong>Где взять массу одной молекулы ($m_0$):</strong> Чтобы завершить расчет, нам нужна масса одной частицы. Её мы вытащим из формулы для средней квадратичной скорости хаотического движения молекул:
+            <div class="math-scroll">$$v_{\text{кв}} = \sqrt{\frac{3kT}{m_0}} \implies v_{\text{кв}}^2 = \frac{3kT}{m_0} \implies m_0 = \frac{3kT}{v_{\text{кв}}^2}$$</div>
+          </li>
+          <li>Вычислим значение массы одной молекулы газа:
+            <div class="math-scroll">$$m_0 = \frac{3 \cdot 1{,}38 \cdot 10^{-23} \cdot 300}{500^2} = \frac{1{,}242 \cdot 10^{-20}}{250\,000} = 4{,}968 \cdot 10^{-26}\text{ кг}$$</div>
+          </li>
+          <li>Итоговый расчет концентрации подстановкой $m_0$ в выведенную во 2-м шаге формулу:
+            <div class="math-scroll">$$n = \frac{1{,}2}{4{,}968 \cdot 10^{-26}} \approx 2{,}415 \cdot 10^{25}\text{ м}^{-3}$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $n = \frac{\rho \langle v_{\text{кв}} \rangle^2}{3 k T} = 2{,}4 \cdot 10^{25}\text{ м}^{-3}$.
+      </div>
+    </div>
+
+    <!-- Задача 19 (№91) -->
+    <div class="card" id="task-19">
+      <div class="task-num">Задача 19</div>
+      <div class="task-title">При нормальных условиях (давление $p_0 = 760\text{ мм рт. ст.}$, температура $t_0 = 0\text{ }^\circ\text{C}$) плотность воздуха $\rho_0 = 1{,}29\text{ }\frac{\text{кг}}{\text{м}^3}$. Определите плотность этого же воздуха при температуре $t = 74\text{ }^\circ\text{C}$ и давлении $p = 600\text{ мм рт. ст.}$</div>
+      <div class="task-desc">Введите плотность в $\text{кг/м}^3$:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-19-input" />
+        <button class="btn-main" onclick="validateCalculation(19)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-19"></div>
+      <button class="btn-solution" id="btn-sol-19" onclick="toggleSolution(19)">Показать Решение</button>
+      <div class="solution-box" id="sol-19">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$p_0 = 760\text{ мм рт. ст.} \approx 101\,325\text{ Па}$</li>
+          <li>$T_0 = t_0 + 273 = 0 + 273 = 273\text{ К}$</li>
+          <li>$\rho_0 = 1{,}29\text{ кг/м}^3$ (уже в СИ)</li>
+          <li>$T = t + 273 = 74 + 273 = 347\text{ К}$</li>
+          <li>$p = 600\text{ мм рт. ст.} \approx 80\,000\text{ Па}$ (переводить в Паскали не обязательно, так как они сократятся)</li>
+          <li>$k \approx 1{,}38 \cdot 10^{-23}\text{ Дж/К}$</li>
+        </ul>
+        <ol>
+          <li>Запишем основное уравнение МКТ, связывающее макропараметры газа с концентрацией:
+            <div class="math-scroll">$$p = n k T$$</div>
+          </li>
+          <li><strong>Вывод формулы концентрации:</strong> Распишем её по определению, выразив число частиц через полную массу ($N = \frac{m}{m_0}$) и заменив отношение массы к объему на плотность ($\frac{m}{V} = \rho$):
+            <div class="math-scroll">$$n = \frac{N}{V} = \frac{m}{m_0 \cdot V} = \frac{\rho}{m_0}$$</div>
+          </li>
+          <li>Подставим полученную связь в основное уравнение давления из первого шага:
+            <div class="math-scroll">$$p = \frac{\rho k T}{m_0}$$</div>
+          </li>
+          <li>Запишем это уравнение отдельно для начальных (нормальных) условий и отдельно для новых условий:
+            <div class="math-scroll">$$p_0 = \frac{\rho_0 k T_0}{m_0}$$</div>
+            <div class="math-scroll">$$p = \frac{\rho k T}{m_0}$$</div>
+          </li>
+          <li>Разделим второе уравнение на первое, чтобы сократить неизменные константы $k$ и $m_0$:
+            <div class="math-scroll">$$\frac{p}{p_0} = \frac{\rho T}{\rho_0 T_0}$$</div>
+          </li>
+          <li>Выразим из полученной пропорции искомую плотность $\rho$:
+            <div class="math-scroll">$$\rho = \rho_0 \cdot \frac{p}{p_0} \cdot \frac{T_0}{T}$$</div>
+          </li>
+          <li>Итоговый расчет:
+            <div class="math-scroll">$$\rho = 1{,}29 \cdot \frac{600}{760} \cdot \frac{273}{347} \approx 0{,}801\text{ кг/м}^3$$</div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $\rho = \frac{p \rho_0 T_0}{p_0 T} = 0{,}80\text{ }\frac{\text{кг}}{\text{м}^3}$.
+      </div>
+    </div>
+
+    <!-- Задача 20 (№96) -->
+    <div class="card" id="task-20">
+      <div class="task-num">Задача 20</div>
+      <div class="task-title">При нагревании идеального газа на $\Delta T = 3\text{ К}$ при постоянном давлении его объем увеличился на $\alpha = 1\%$. Определите начальную абсолютную температуру газа.</div>
+      <div class="task-desc">Введите начальную температуру в Кельвинах ($\text{К}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-20-input" />
+        <button class="btn-main" onclick="validateCalculation(20)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-20"></div>
+      <button class="btn-solution" id="btn-sol-20" onclick="toggleSolution(20)">Показать Решение</button>
+      <div class="solution-box" id="sol-20">
+        <ul>
+          <li>$\Delta T = 3\text{ К}$ — изменение температуры.</li>
+          <li>$p = \text{const}$ — постоянное давление газа.</li>
+          <li>$\alpha = 1\% = 0{,}01$ — относительное увеличение объема.</li>
+          <li><strong>Найти:</strong> $T_1$ (начальную температуру).</li>
+        </ul>
+        <p>Связь давления ($p$), объема ($V$) и температуры ($T$) выражается формулой:</p>
+        <div class="math-scroll">$$p = \frac{N}{V} k T,\text{ где } N\text{ — число молекул, } k\text{ — постоянная Больцмана. Перенесем объем влево: } p V = N k T.$$</div>
+        <p>Распишем эту формулу отдельно для начального (1) и конечного (2) состояний газа:</p>
+        <ol>
+          <li>$p V_1 = N k T_1$</li>
+          <li>$p V_2 = N k T_2$</li>
+        </ol>
+        <p>Поскольку давление $p$ постоянно, разделим второе уравнение на первое. Все неизменные величины ($p, N, k$) при этом сократятся:</p>
+        <div class="math-scroll">$$\frac{V_2}{V_1} = \frac{T_2}{T_1}$$</div>
+        <p>Выразим параметры конечного состояния газа через числа из условия задачи:</p>
+        <ul>
+          <li>Конечный объем: $V_2 = V_1 + 0{,}01 V_1 = 1{,}01 V_1$</li>
+          <li>Конечная температура: $T_2 = T_1 + 3$</li>
+        </ul>
+        <p>Подставим эти выражения в наше отношение:</p>
+        <div class="math-scroll">$$\frac{1{,}01 V_1}{V_1} = \frac{T_1 + 3}{T_1}$$</div>
+        <p>Сократим одинаковую букву $V_1$ в левой части уравнения:</p>
+        <div class="math-scroll">$$1{,}01 = \frac{T_1 + 3}{T_1}$$</div>
+        <div class="math-scroll">$$T_1 = 300\text{ К}$$</div>
+        <strong>Ответ:</strong> $T_1 = 3 \cdot 10^2\text{ К}$ (или $300\text{ К}$).
+      </div>
+    </div>
+
+    <!-- Задача 21 (№97) -->
+    <div class="card" id="task-21">
+      <div class="task-num">Задача 21</div>
+      <div class="task-title">После того как объем, занимаемый идеальным газом, уменьшили на $\alpha = 10\%$, а температуру увеличили на $\Delta T = 24\text{ К}$, давление газа возросло на $\beta = 20\%$. Определите конечную температуру газа.</div>
+      <div class="task-desc">Введите конечную температуру в градусах Цельсия ($^\circ\text{C}$) или Кельвинах ($\text{К}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-21-input" />
+        <button class="btn-main" onclick="validateCalculation(21)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-21"></div>
+      <button class="btn-solution" id="btn-sol-21" onclick="toggleSolution(21)">Показать Решение</button>
+      <div class="solution-box" id="sol-21">
+        <ul>
+          <li>$\alpha = 10\% = 0{,}1$ — относительное уменьшение объема.</li>
+          <li>$\Delta T = 24\text{ К}$ — изменение температуры.</li>
+          <li>$\beta = 20\% = 0{,}2$ — относительное увеличение давления.</li>
+          <li><strong>Найти:</strong> $T_2$ (конечную температуру).</li>
+        </ul>
+        <p>Связь давления ($p$), объема ($V$) и температуры ($T$) выражается формулой:</p>
+        <div class="math-scroll">$$p = \frac{N}{V} k T,\text{ где } N\text{ — число молекул, } k\text{ — постоянная Больцмана. Перенесем объем влево: } p V = N k T.\text{ Произведение } N k\text{ остается неизменным.}$$</div>
+        <p>Распишем эту формулу отдельно для начального (1) и конечного (2) состояний газа:</p>
+        <ol>
+          <li>$p_1 V_1 = N k T_1$</li>
+          <li>$p_2 V_2 = N k T_2$</li>
+        </ol>
+        <p>Выразим отношение параметров, разделив второе уравнение на первое. Постоянные $N$ и $k$ при этом сократятся:</p>
+        <div class="math-scroll">$$\frac{p_2 V_2}{p_1 V_1} = \frac{T_2}{T_1}$$</div>
+        <p>Выразим параметры конечного состояния газа через числа из условия задачи:</p>
+        <ul>
+          <li>Конечный объем: $V_2 = V_1 - 0{,}1 V_1 = 0{,}9 V_1$</li>
+          <li>Конечное давление: $p_2 = p_1 + 0{,}2 p_1 = 1{,}2 p_1$</li>
+          <li>Начальная температура: $T_1 = T_2 - 24$</li>
+        </ul>
+        <p>Подставим эти выражения в наше отношение:</p>
+        <div class="math-scroll">$$\frac{1{,}2 p_1 \cdot 0{,}9 V_1}{p_1 V_1} = \frac{T_2}{T_2 - 24}$$</div>
+        <p>Сократим одинаковые буквы $p_1$ и $V_1$ в левой части уравнения:</p>
+        <div class="math-scroll">$$1{,}2 \cdot 0{,}9 = \frac{T_2}{T_2 - 24}$$</div>
+        <div class="math-scroll">$$T_2 = 324\text{ К}$$</div>
+        <strong>Ответ:</strong> $t_2 = 51\text{ }^\circ\text{C}$ (или $T_2 = 324\text{ К}$).
+      </div>
+    </div>
+
+    <!-- Задача 22 (№100) -->
+    <div class="card" id="task-22">
+      <div class="task-num">Задача 22</div>
+      <div class="task-title">Идеальный газ объемом $V = 1\text{ л}$ при температуре $t = 0\text{ }^\circ\text{C}$ и давлении $p = 100\text{ кПа}$ имеет массу $m = 89\text{ мг}$. Определите молярную массу газа.</div>
+      <div class="task-desc">Введите молярную массу в граммах на моль ($\text{г/моль}$) или кг/моль:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-22-input" />
+        <button class="btn-main" onclick="validateCalculation(22)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-22"></div>
+      <button class="btn-solution" id="btn-sol-22" onclick="toggleSolution(22)">Показать Решение</button>
+      <div class="solution-box" id="sol-22">
+        <ul>
+          <li>$V = 1\text{ л} = 10^{-3}\text{ м}^3$ — объем газа.</li>
+          <li>$t = 0\text{ }^\circ\text{C} \implies T = 273\text{ К}$ — температура газа.</li>
+          <li>$p = 100\text{ кПа} = 10^5\text{ Па}$ — давление газа.</li>
+          <li>$m = 89\text{ мг} = 89 \cdot 10^{-6}\text{ кг}$ — масса газа.</li>
+          <li><strong>Найти:</strong> $M$ (молярную массу).</li>
+        </ul>
+        <p>Давление газа выражается через его параметры формулой: $p = n k T$, где $n = \frac{N}{V}$ — концентрация молекул, а $k$ — постоянная Больцмана ($k \approx 1{,}38 \cdot 10^{-23}\text{ Дж/К}$).</p>
+        <p>Подставим концентрацию:</p>
+        <div class="math-scroll">$$p = \frac{N}{V} k T.$$</div>
+        <p>Число молекул газа ($N$) связано с его массой ($m$) и молярной массой ($M$) через постоянную Авогадро ($N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$) формулой: $N = \frac{m}{M} N_A$.</p>
+        <p>Подставим выражение для $N$ в формулу давления:</p>
+        <div class="math-scroll">$$p = \frac{m N_A k T}{M V}$$</div>
+        <p>Поскольку произведение постоянной Больцмана и числа Авогадро равно универсальной газовой постоянной ($k \cdot N_A = R \approx 8{,}31\text{ Дж/(моль}\cdot\text{К)}$), формула принимает простой вид:</p>
+        <div class="math-scroll">$$p = \frac{m R T}{M V}$$</div>
+        <p>Выразим отсюда искомую молярную массу, получая рабочую формулу:</p>
+        <div class="math-scroll">$$M = \frac{m R T}{p V}$$</div>
+        <p>Подставим числовые значения в системе СИ:</p>
+        <div class="math-scroll">$$M = \frac{89 \cdot 10^{-6} \cdot 8{,}31 \cdot 273}{10^5 \cdot 10^{-3}} = \frac{0{,}2019}{100} \approx 0{,}002\text{ кг/моль}\text{ (или } 2\text{ г/моль, что соответствует водороду }\text{H}_2\text{)}.$$</div>
+        <strong>Ответ:</strong> $M = 2\text{ }\frac{\text{г}}{\text{моль}}$ (или $0{,}002\text{ кг/моль}$).
+      </div>
+    </div>
+
+    <!-- Задача 23 (№102) -->
+    <div class="card" id="task-23">
+      <div class="task-num">Задача 23</div>
+      <div class="task-title">В баллоне содержится $m_1 = 3\text{ кг}$ идеального газа при температуре $T_1 = 270\text{ К}$. Определите массу газа, который нужно выпустить из баллона, чтобы при температуре $T_2 = 300\text{ К}$ давление газа в баллоне осталось прежним.</div>
+      <div class="task-desc">Введите массу выпущенного газа в килограммах ($\text{кг}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-23-input" />
+        <button class="btn-main" onclick="validateCalculation(23)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-23"></div>
+      <button class="btn-solution" id="btn-sol-23" onclick="toggleSolution(23)">Показать Решение</button>
+      <div class="solution-box" id="sol-23">
+        <ul>
+          <li>$m_1 = 3\text{ кг}$ — начальная масса газа.</li>
+          <li>$T_1 = 270\text{ К}$ — начальная температура.</li>
+          <li>$T_2 = 300\text{ К}$ — конечная температура.</li>
+          <li>$p = \text{const}$ — неизменное давление газа.</li>
+          <li>$V = \text{const}$ — неизменный объем баллона.</li>
+          <li><strong>Найти:</strong> $\Delta m$ (массу выпущенного газа).</li>
+        </ul>
+        <p>Используем формулу давления газа через его массу, объем и температуру:</p>
+        <div class="math-scroll">$$p = \frac{m R T}{M V},\text{ где } R\text{ — газовая постоянная, а } M\text{ — молярная масса газа.}$$</div>
+        <p>Распишем эту формулу для начального (1) и конечного (2) состояний газа в баллоне:</p>
+        <ol>
+          <li>$p = \frac{m_1 R T_1}{M V}$</li>
+          <li>$p = \frac{m_2 R T_2}{M V}$</li>
+        </ol>
+        <p>По условию давление $p$ и объем баллона $V$ не изменились. Приравняем правые части уравнений:</p>
+        <div class="math-scroll">$$\frac{m_1 R T_1}{M V} = \frac{m_2 R T_2}{M V}$$</div>
+        <p>Сократим одинаковые буквы $R, M$ и $V$ с обеих сторон:</p>
+        <div class="math-scroll">$$m_1 T_1 = m_2 T_2$$</div>
+        <p>Подставим известные числа из условия задачи:</p>
+        <div class="math-scroll">$$3 \cdot 270 = m_2 \cdot 300$$</div>
+        <div class="math-scroll">$$810 = 300 m_2$$</div>
+        <p>Найдем массу оставшегося в баллоне газа $m_2$:</p>
+        <div class="math-scroll">$$m_2 = \frac{810}{300} = 2{,}7\text{ кг}$$</div>
+        <p>Чтобы найти массу вылетевшего газа ($\Delta m$), из начальной массы вычтем оставшуюся. Получаем рабочую формулу:</p>
+        <div class="math-scroll">$$\Delta m = m_1 - m_2$$</div>
+        <p>Вычислим итоговое значение:</p>
+        <div class="math-scroll">$$\Delta m = 3 - 2{,}7 = 0{,}3\text{ кг}$$</div>
+        <strong>Ответ:</strong> $|\Delta m| = 0{,}3\text{ кг}$.
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Рендеринг формул KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      // 1: 5e9
+      if (taskId === 1) isCorrect = Math.abs(val - 5e9) < 0.2e9;
+      // 2: 0.19 МПа или 1.9e5 Па
+      else if (taskId === 2) isCorrect = Math.abs(val - 1.9e5) < 0.1e5 || Math.abs(val - 0.19) < 0.02 || Math.abs(val - 189618) < 5000;
+      // 3: 6 г или 0.006 кг
+      else if (taskId === 3) isCorrect = Math.abs(val - 6) < 0.2 || Math.abs(val - 0.006) < 0.0005;
+      // 4: 500 м/с или 0.5 км/с
+      else if (taskId === 4) isCorrect = Math.abs(val - 500) < 5 || Math.abs(val - 0.5) < 0.05;
+      // 5: 80 кПа или 80000 Па
+      else if (taskId === 5) isCorrect = Math.abs(val - 80) < 2 || Math.abs(val - 80000) < 1000 || Math.abs(val - 8e4) < 1000;
+      // 6: 707 м/с
+      else if (taskId === 6) isCorrect = Math.abs(val - 707) < 6;
+      // 7: 1e-21 Дж
+      else if (taskId === 7) isCorrect = Math.abs(val - 1e-21) < 0.15e-21;
+      // 8: 2.6e21 или 2.58e21
+      else if (taskId === 8) isCorrect = Math.abs(val - 2.6e21) < 0.2e21 || Math.abs(val - 2.58e21) < 0.2e21;
+      // 9: 69%
+      else if (taskId === 9) isCorrect = Math.abs(val - 69) < 1 || Math.abs(val - 0.69) < 0.02;
+      // 10: 1.2e-20 или 1.25e-20 Дж
+      else if (taskId === 10) isCorrect = Math.abs(val - 1.2e-20) < 0.15e-20 || Math.abs(val - 1.25e-20) < 0.15e-20;
+      // 11: 3e-20 или 2.99e-20 Дж
+      else if (taskId === 11) isCorrect = Math.abs(val - 3e-20) < 0.2e-20 || Math.abs(val - 2.99e-20) < 0.2e-20;
+      // 12: 1.2 кДж или 1200 Дж
+      else if (taskId === 12) isCorrect = Math.abs(val - 1200) < 20 || Math.abs(val - 1.2) < 0.05;
+      // 13: 3.9 раза
+      else if (taskId === 13) isCorrect = Math.abs(val - 3.9) < 0.1;
+      // 14: 302 К
+      else if (taskId === 14) isCorrect = Math.abs(val - 302) < 2;
+      // 15: 69 °C или 342 К
+      else if (taskId === 15) isCorrect = Math.abs(val - 69) < 1 || Math.abs(val - 342) < 2;
+      // 16: 10%
+      else if (taskId === 16) isCorrect = Math.abs(val - 10) < 0.5 || Math.abs(val - 0.1) < 0.02;
+      // 17: 412 м/с или 0.4 км/с
+      else if (taskId === 17) isCorrect = Math.abs(val - 412.5) < 5 || Math.abs(val - 412) < 5 || Math.abs(val - 400) < 5 || Math.abs(val - 0.4) < 0.05;
+      // 18: 2.4e25 или 2.415e25
+      else if (taskId === 18) isCorrect = Math.abs(val - 2.4e25) < 0.2e25 || Math.abs(val - 2.415e25) < 0.2e25;
+      // 19: 0.80 кг/м3
+      else if (taskId === 19) isCorrect = Math.abs(val - 0.8) < 0.05 || Math.abs(val - 0.801) < 0.05;
+      // 20: 300 К
+      else if (taskId === 20) isCorrect = Math.abs(val - 300) < 3;
+      // 21: 51 °C или 324 К
+      else if (taskId === 21) isCorrect = Math.abs(val - 51) < 1 || Math.abs(val - 324) < 2;
+      // 22: 2 г/моль или 0.002 кг/моль
+      else if (taskId === 22) isCorrect = Math.abs(val - 2) < 0.1 || Math.abs(val - 0.002) < 0.0002;
+      // 23: 0.3 кг
+      else if (taskId === 23) isCorrect = Math.abs(val - 0.3) < 0.05;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>
