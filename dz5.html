@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дз 7-8 • Уравнение Менделеева-Клапейрона</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 40px;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Кнопки вариантов ответов */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .options-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-option {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .options-vertical .btn-option {
+      justify-content: flex-start;
+      text-align: left;
+      padding: 14px 20px;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background: rgba(45, 55, 80, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-option:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background: var(--success) !important;
+      border-color: var(--success) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--success-glow) !important;
+    }
+
+    .btn-option.incorrect {
+      background: var(--error) !important;
+      border-color: var(--error) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--error-glow) !important;
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    /* Блок решения с полной адаптивностью */
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solution-box p, .solution-box div {
+      margin-bottom: 10px;
+    }
+
+    .solution-box ol, .solution-box ul {
+      margin-left: 22px;
+      margin-bottom: 12px;
+    }
+
+    .solution-box li {
+      margin-bottom: 6px;
+    }
+
+    .math-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-scroll::-webkit-scrollbar,
+    .task-title::-webkit-scrollbar,
+    .solution-box::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .math-scroll::-webkit-scrollbar-thumb,
+    .task-title::-webkit-scrollbar-thumb,
+    .solution-box::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0;
+      margin: 6px 0 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .katex-display::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">Дз 7-8</div>
+      <h1>Уравнение Менделеева-Клапейрона</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 (№7) -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Плотность газа при температуре $t = 0\text{ }^\circ\text{C}$ и давлении $p = 100\text{ кПа}$ $\rho = 1{,}29\text{ кг/м}^3$. Молярная масса газа равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(1, '1', this)">1) $2{,}0\text{ г/моль}$</button>
+        <button class="btn-option" onclick="handleChoice(1, '2', this)">2) $18\text{ г/моль}$</button>
+        <button class="btn-option" onclick="handleChoice(1, '3', this)">3) $29\text{ г/моль}$</button>
+        <button class="btn-option" onclick="handleChoice(1, '4', this)">4) $32\text{ г/моль}$</button>
+        <button class="btn-option" onclick="handleChoice(1, '5', this)">5) $44\text{ г/моль}$</button>
+      </div>
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <p>$t = 0\text{ }^\circ\text{C} \implies T = 273\text{ К}$<br/>
+        $p = 100\text{ кПа} = 10^5\text{ Па}$<br/>
+        $\rho = 1{,}29\text{ кг/м}^3$<br/>
+        $R \approx 8{,}31\text{ Дж/(моль}\cdot\text{К)}$<br/>
+        $M = ?\text{ — молярная масса газа}$</p>
+        <p><strong>1. Связь плотности газа с уравнением Менделеева — Клапейрона:</strong><br/>
+        Запишем классическое уравнение состояния идеального газа:</p>
+        <div class="math-scroll">
+          $$pV = \frac{m}{M} RT$$
+        </div>
+        <p>Разделим обе части уравнения на объем $V$:</p>
+        <div class="math-scroll">
+          $$p = \frac{m}{V} \cdot \frac{RT}{M}$$
+        </div>
+        <p>Так как отношение массы газа к его объему — это плотность ($\rho = \frac{m}{V}$), перепишем формулу давления через плотность:</p>
+        <div class="math-scroll">
+          $$p = \frac{\rho RT}{M}$$
+        </div>
+        <p>Выразим из полученной формулы молярную массу газа:</p>
+        <div class="math-scroll">
+          $$M = \frac{\rho RT}{p}$$
+        </div>
+        <p>Подставим числовые значения из условия:</p>
+        <div class="math-scroll">
+          $$M = \frac{1{,}29 \cdot 8{,}31 \cdot 273}{10^5} = \frac{2926{,}5}{10^5} \approx 0{,}029\text{ кг/моль} = 29\text{ г/моль}$$
+        </div>
+        <strong>Ответ:</strong> вариант 3 ($29\text{ г/моль}$).
+      </div>
+    </div>
+
+    <!-- Задача 2 (№8) -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Если давление идеального газа постоянной массы уменьшить в $n = 2$ раза, а его объем увеличить в $k = 3$ раза, то температура газа:</div>
+      <div class="options-vertical">
+        <button class="btn-option" onclick="handleChoice(2, '1', this)">1) уменьшится в 1,5 раза</button>
+        <button class="btn-option" onclick="handleChoice(2, '2', this)">2) увеличится в 1,5 раза</button>
+        <button class="btn-option" onclick="handleChoice(2, '3', this)">3) уменьшится в 6 раз</button>
+        <button class="btn-option" onclick="handleChoice(2, '4', this)">4) увеличится в 6 раз</button>
+        <button class="btn-option" onclick="handleChoice(2, '5', this)">5) увеличится в 9 раз</button>
+      </div>
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <p>По условию задачи масса газа постоянна ($m = \text{const}$). Обозначим начальные параметры как $p_1, V_1$ и $T_1$, а конечные — как $p_2, V_2$ и $T_2$. Изменения величин запишутся в виде отношений:</p>
+        <p>$p_2 = \frac{p_1}{n} = \frac{p_1}{2}\text{ (давление уменьшилось в 2 раза)}$<br/>
+        $V_2 = k \cdot V_1 = 3 \cdot V_1\text{ (объем увеличился в 3 раза)}$</p>
+        <p><strong>2. Применение объединенного газового закона:</strong><br/>
+        Для постоянной массы идеального газа справедливо уравнение Клапейрона:</p>
+        <div class="math-scroll">
+          $$\frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2}$$
+        </div>
+        <p>Выразим из этой пропорции конечную температуру $T_2$:</p>
+        <div class="math-scroll">
+          $$T_2 = T_1 \cdot \frac{p_2 V_2}{p_1 V_1}$$
+        </div>
+        <p><strong>3. Подстановка соотношений и расчет:</strong><br/>
+        Подставим новые значения давления $p_2$ и объема $V_2$ в полученную формулу:</p>
+        <div class="math-scroll">
+          $$T_2 = T_1 \cdot \frac{\left(\frac{p_1}{2}\right) \cdot (3V_1)}{p_1 V_1}$$
+        </div>
+        <p>Сократим переменные $p_1$ и $V_1$ в числителе и знаменателе:</p>
+        <div class="math-scroll">
+          $$T_2 = T_1 \cdot \frac{3}{2} = 1{,}5 \cdot T_1$$
+        </div>
+        <p>Следовательно, конечная абсолютная температура газа увеличилась в 1,5 раза.</p>
+        <strong>Ответ:</strong> вариант 2 (увеличится в 1,5 раза).
+      </div>
+    </div>
+
+    <!-- Задача 3 (А2) -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">В одном из баллонов содержится углекислый газ $\left(M_{\text{уг}} = 44\text{ }\frac{\text{г}}{\text{моль}}\right)$, в другом — неон $\left(M_{\text{н}} = 20\text{ }\frac{\text{г}}{\text{моль}}\right)$. Если объемы, температуры и давления газов одинаковы, то отношение масс газов $\frac{m_{\text{уг}}}{m_{\text{н}}}$ равно:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(3, '1', this)">1) $1{,}1$</button>
+        <button class="btn-option" onclick="handleChoice(3, '2', this)">2) $2{,}0$</button>
+        <button class="btn-option" onclick="handleChoice(3, '3', this)">3) $2{,}2$</button>
+        <button class="btn-option" onclick="handleChoice(3, '4', this)">4) $4{,}4$</button>
+        <button class="btn-option" onclick="handleChoice(3, '5', this)">5) $8{,}8$</button>
+      </div>
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <ul>
+          <li>Объемы баллонов одинаковы: $V_1 = V_2 = V$.</li>
+          <li>Температуры газов одинаковы: $T_1 = T_2 = T$.</li>
+          <li>Давления газов одинаковы: $p_1 = p_2 = p$.</li>
+        </ul>
+        <p>Молярные массы газов:</p>
+        <ul>
+          <li>Углекислый газ: $M_{\text{уг}} = 44\text{ г/моль}$</li>
+          <li>Неон: $M_{\text{н}} = 20\text{ г/моль}$</li>
+        </ul>
+        <p>Запишем уравнение Менделеева — Клапейрона для каждого газа:</p>
+        <ul>
+          <li>Для углекислого газа:
+            <div class="math-scroll">$$pV = \frac{m_{\text{уг}}}{M_{\text{уг}}} RT$$</div>
+          </li>
+          <li>Для неона:
+            <div class="math-scroll">$$pV = \frac{m_{\text{н}}}{M_{\text{н}}} RT$$</div>
+          </li>
+        </ul>
+        <p>Так как левые части уравнений одинаковы ($pV$), приравняем их правые части:</p>
+        <div class="math-scroll">
+          $$\frac{m_{\text{уг}}}{M_{\text{уг}}} RT = \frac{m_{\text{н}}}{M_{\text{н}}} RT$$
+        </div>
+        <p>Разделим обе части равенства на произведение $RT$:</p>
+        <div class="math-scroll">
+          $$\frac{m_{\text{уг}}}{M_{\text{уг}}} = \frac{m_{\text{н}}}{M_{\text{н}}}$$
+        </div>
+        <p>Выразим искомое отношение масс газов $\frac{m_{\text{уг}}}{m_{\text{н}}}$:</p>
+        <div class="math-scroll">
+          $$\frac{m_{\text{уг}}}{m_{\text{н}}} = \frac{M_{\text{уг}}}{M_{\text{н}}}$$
+          $$\frac{m_{\text{уг}}}{m_{\text{н}}} = \frac{44}{20} = 2{,}2$$
+        </div>
+        <strong>Ответ:</strong> вариант 3 ($2{,}2$).
+      </div>
+    </div>
+
+    <!-- Задача 4 (№2) -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">В баллоне содержится газ при температуре $t_1 = 17\text{ }^\circ\text{C}$ и давлении $p_1 = 1{,}0\text{ МПа}$. Если температура газа понизится до $t_2 = -23\text{ }^\circ\text{C}$, то его давление:</div>
+      <div class="options-vertical">
+        <button class="btn-option" onclick="handleChoice(4, '1', this)">1) повысится на 0,16 МПа</button>
+        <button class="btn-option" onclick="handleChoice(4, '2', this)">2) понизится на 0,14 МПа</button>
+        <button class="btn-option" onclick="handleChoice(4, '3', this)">3) понизится на 0,16 МПа</button>
+        <button class="btn-option" onclick="handleChoice(4, '4', this)">4) повысится на 0,35 МПа</button>
+        <button class="btn-option" onclick="handleChoice(4, '5', this)">5) понизится на 0,26 МПа</button>
+      </div>
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <p>Начальная температура: $T_1 = 17 + 273 = 290\text{ К}$<br/>
+        Конечная температура: $T_2 = -23 + 273 = 250\text{ К}$</p>
+        <p>Так как газ находится в закрытом баллоне, его объем $V$ и количество вещества $\nu$ не меняются.</p>
+        <ul>
+          <li>Для начального состояния:
+            <div class="math-scroll">$$p_1 V = \nu R T_1 \implies \nu R = \frac{p_1 V}{T_1}$$</div>
+          </li>
+          <li>Для конечного состояния:
+            <div class="math-scroll">$$p_2 V = \nu R T_2 \implies \nu R = \frac{p_2 V}{T_2}$$</div>
+          </li>
+        </ul>
+        <p><strong>3. Объединение уравнений и расчет:</strong><br/>
+        Приравняем правые части, так как $\nu R = \text{const}$:</p>
+        <div class="math-scroll">
+          $$\frac{p_1 V}{T_1} = \frac{p_2 V}{T_2}$$
+        </div>
+        <p>Сократим объем $V$ с обеих сторон:</p>
+        <div class="math-scroll">
+          $$\frac{p_1}{T_1} = \frac{p_2}{T_2}$$
+        </div>
+        <p>Выразим и найдем конечное давление $p_2$:</p>
+        <div class="math-scroll">
+          $$p_2 = p_1 \cdot \frac{T_2}{T_1} = 1{,}0 \cdot \frac{250}{290} \approx 0{,}86\text{ МПа}$$
+        </div>
+        <p><strong>4. Нахождение изменения давления:</strong></p>
+        <div class="math-scroll">
+          $$\Delta p = p_1 - p_2 = 1{,}0 - 0{,}86 = 0{,}14\text{ МПа}$$
+        </div>
+        <p>Давление уменьшилось (понизилось) на 0,14 МПа.</p>
+        <strong>Ответ:</strong> вариант 2 (понизится на 0,14 МПа).
+      </div>
+    </div>
+
+    <!-- Задача 5 (№8 комната) -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">Температура в комнате объемом $V = 50{,}0\text{ м}^3$ увеличилась от $t_1 = 7{,}00\text{ }^\circ\text{C}$ до $t_2 = 27{,}0\text{ }^\circ\text{C}$. Чтобы давление в комнате $p = 100\text{ кПа}$ осталось неизменным, из комнаты нужно удалить массу воздуха, равную:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(5, '1', this)">1) $2{,}84\text{ кг}$</button>
+        <button class="btn-option" onclick="handleChoice(5, '2', this)">2) $3{,}22\text{ кг}$</button>
+        <button class="btn-option" onclick="handleChoice(5, '3', this)">3) $3{,}75\text{ кг}$</button>
+        <button class="btn-option" onclick="handleChoice(5, '4', this)">4) $4{,}15\text{ кг}$</button>
+        <button class="btn-option" onclick="handleChoice(5, '5', this)">5) $5{,}36\text{ кг}$</button>
+      </div>
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <p>$T_1 = 7 + 273 = 280\text{ К}$<br/>
+        $T_2 = 27 + 273 = 300\text{ К}$<br/>
+        Объем комнаты $V = 50{,}0\text{ м}^3$, давление $p = 10^5\text{ Па}$ и молярная масса воздуха ($M = 0{,}029\text{ кг/моль}$) остаются неизменными.</p>
+        <ul>
+          <li>До нагревания:
+            <div class="math-scroll">$$pV = \frac{m_1}{M} R T_1 \implies m_1 = \frac{pVM}{RT_1}$$</div>
+          </li>
+          <li>После нагревания:
+            <div class="math-scroll">$$pV = \frac{m_2}{M} R T_2 \implies m_2 = \frac{pVM}{RT_2}$$</div>
+          </li>
+        </ul>
+        <p><strong>3. Нахождение удаленной массы воздуха $\Delta m$:</strong><br/>
+        Вынесем общие множители за скобки:</p>
+        <div class="math-scroll">
+          $$\Delta m = m_1 - m_2 = \frac{pVM}{R} \cdot \left(\frac{1}{T_1} - \frac{1}{T_2}\right) = \frac{pVM(T_2 - T_1)}{R T_1 T_2}$$
+        </div>
+        <p><strong>4. Расчет:</strong></p>
+        <div class="math-scroll">
+          $$\Delta m = \frac{10^5 \cdot 50{,}0 \cdot 0{,}029 \cdot (300 - 280)}{8{,}31 \cdot 280 \cdot 300} = \frac{145\,000 \cdot 20}{698\,040} = \frac{2\,900\,000}{698\,040} \approx 4{,}154\text{ кг} \approx 4{,}15\text{ кг}$$
+        </div>
+        <strong>Ответ:</strong> вариант 4 ($4{,}15\text{ кг}$).
+      </div>
+    </div>
+
+    <!-- Задача 6 (№9) -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">В сосуде объемом $V = 1{,}50\text{ л}$ находится смесь кислорода и углекислого газа. Масса смеси $m = 40{,}0\text{ г}$, температура $T = 300\text{ К}$, давление $p = 2{,}00\text{ МПа}$. Масса одного из газов равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(6, '1', this)">1) $5{,}50\text{ г}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '2', this)">2) $7{,}00\text{ г}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '3', this)">3) $11{,}0\text{ г}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '4', this)">4) $14{,}8\text{ г}$</button>
+        <button class="btn-option" onclick="handleChoice(6, '5', this)">5) $16{,}5\text{ г}$</button>
+      </div>
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <ul>
+          <li>Объем: $V = 1{,}50\text{ л} = 1{,}50 \times 10^{-3}\text{ м}^3$</li>
+          <li>Давление: $p = 2{,}00\text{ МПа} = 2{,}00 \times 10^6\text{ Па}$</li>
+          <li>Универсальная газовая постоянная: $R \approx 8{,}31\text{ Дж/(моль}\cdot\text{К)}$</li>
+        </ul>
+        <p>Молярные массы газов, составляющих смесь:</p>
+        <ul>
+          <li>Кислород ($\text{O}_2$): $M_1 = 32\text{ г/моль} = 32 \times 10^{-3}\text{ кг/моль}$</li>
+          <li>Углекислый газ ($\text{CO}_2$): $M_2 = 44\text{ г/моль} = 44 \times 10^{-3}\text{ кг/моль}$</li>
+        </ul>
+        <p>По закону Дальтона и уравнению Менделеева — Клапейрона для смеси газов:</p>
+        <div class="math-scroll">
+          $$pV = \nu_{\text{общ}} RT$$
+        </div>
+        <p>где $\nu_{\text{общ}} = \nu_1 + \nu_2$ — общее количество вещества смеси.<br/>
+        Выразим количество вещества через массы газов ($m_1$ и $m_2$):</p>
+        <div class="math-scroll">
+          $$pV = \left(\frac{m_1}{M_1} + \frac{m_2}{M_2}\right) RT$$
+        </div>
+        <p>Также известно, что общая масса смеси равна $m$:</p>
+        <div class="math-scroll">
+          $$m_1 + m_2 = m = 40{,}0\text{ г}$$
+        </div>
+        <p>Отсюда выразим массу кислорода: $m_1 = m - m_2$.<br/>
+        Найдем общее количество вещества в сосуде:</p>
+        <div class="math-scroll">
+          $$\nu_{\text{общ}} = \frac{pV}{RT} = \frac{2{,}00 \times 10^6 \cdot 1{,}50 \times 10^{-3}}{8{,}31 \cdot 300} = \frac{3000}{2493} \approx 1{,}2034\text{ моль}$$
+        </div>
+        <p>Выразим $\nu_1$ и $\nu_2$ через массы газов в граммах и их молярные массы:</p>
+        <ul>
+          <li>Количество вещества кислорода: $\nu_1 = \frac{40 - m_2}{32}$</li>
+          <li>Количество вещества углекислого газа: $\nu_2 = \frac{m_2}{44}$</li>
+        </ul>
+        <p>Подставим эти выражения в сумму:</p>
+        <div class="math-scroll">
+          $$\frac{40 - m_2}{32} + \frac{m_2}{44} = 1{,}2034$$
+          $$m_2 = \frac{0{,}0466}{0{,}00852} \approx 5{,}47\text{ г} \approx 5{,}50\text{ г}$$
+        </div>
+        <strong>Ответ:</strong> вариант 1 ($5{,}50\text{ г}$).
+      </div>
+    </div>
+
+    <!-- Задача 7 (№10) -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">Вода полностью занимает сосуд объемом $V = 1000\text{ см}^3$. Температура воды $t = 27{,}0\text{ }^\circ\text{C}$. Если силы взаимодействия между молекулами воды исчезнут (вода превратится в пар при тех же объеме и температуре), то в сосуде установится давление:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(7, '1', this)">1) $46{,}0\text{ МПа}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '2', this)">2) $62{,}0\text{ МПа}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '3', this)">3) $72{,}0\text{ МПа}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '4', this)">4) $139\text{ МПа}$</button>
+        <button class="btn-option" onclick="handleChoice(7, '5', this)">5) $216\text{ МПа}$</button>
+      </div>
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <p>Объем сосуда: $V = 1000\text{ см}^3 = 10^{-3}\text{ м}^3$<br/>
+        Температура: $t = 27{,}0\text{ }^\circ\text{C} \implies T = 27{,}0 + 273 = 300\text{ К}$<br/>
+        Плотность воды: $\rho = 1000\text{ кг/м}^3 = 1\text{ г/см}^3$<br/>
+        Молярная масса воды ($\text{H}_2\text{O}$): $M = 18\text{ г/моль} = 18 \cdot 10^{-3}\text{ кг/моль}$<br/>
+        Универсальная газовая постоянная: $R \approx 8{,}31\text{ Дж/(моль}\cdot\text{К)}$</p>
+        <p>Так как вода полностью занимает сосуд, её масса равна:</p>
+        <div class="math-scroll">
+          $$m = \rho \cdot V = 1000\text{ кг/м}^3 \cdot 10^{-3}\text{ м}^3 = 1\text{ кг}$$
+        </div>
+        <p>По условию, силы взаимодействия между молекулами исчезают, а значит, образовавшийся пар ведет себя как <strong>идеальный газ</strong>. Применим уравнение Менделеева — Клапейрона:</p>
+        <div class="math-scroll">
+          $$p \cdot V = \frac{m}{M} \cdot R \cdot T$$
+        </div>
+        <p>Выразим давление $p$:</p>
+        <div class="math-scroll">
+          $$p = \frac{m \cdot R \cdot T}{M \cdot V}$$
+        </div>
+        <p>Так как $m = \rho \cdot V$, объем $V$ сокращается, и формула принимает вид:</p>
+        <div class="math-scroll">
+          $$p = \frac{\rho \cdot R \cdot T}{M}$$
+        </div>
+        <p>Подставим числовые значения:</p>
+        <div class="math-scroll">
+          $$p = \frac{1000 \cdot 8{,}31 \cdot 300}{18 \cdot 10^{-3}} = \frac{2\,493\,000}{0{,}018} \approx 138{,}5 \cdot 10^6\text{ Па} = 138{,}5\text{ МПа} \approx 139\text{ МПа}$$
+        </div>
+        <strong>Ответ:</strong> вариант 4 ($139\text{ МПа}$).
+      </div>
+    </div>
+
+    <!-- Задача 8 (№5) -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title">В баллоне емкостью $V = 0{,}20\text{ м}^3$ находится гелий под давлением $p_1 = 0{,}10\text{ МПа}$ при температуре $T_1 = 290\text{ К}$. Если после подкачивания гелия давление повысилось до $p_2 = 0{,}30\text{ МПа}$, а температура увеличилась до $T_2 = 320\text{ К}$, то масса гелия увеличилась на ... г.</div>
+      <div class="task-desc">Введите увеличение массы в граммах ($\text{г}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-8-input" />
+        <button class="btn-main" onclick="validateCalculation(8)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <ul>
+          <li>Вместимость баллона: $V = 0{,}20\text{ м}^3$</li>
+          <li>Молярная масса гелия ($\text{He}$): $M = 4 \cdot 10^{-3}\text{ кг/моль} = 4\text{ г/моль}$</li>
+          <li>Универсальная газовая постоянная: $R \approx 8{,}31\text{ Дж/(моль}\cdot\text{К)}$</li>
+        </ul>
+        <p>Начальное состояние:</p>
+        <ul>
+          <li>Давление: $p_1 = 0{,}10\text{ МПа} = 0{,}10 \cdot 10^6\text{ Па}$</li>
+          <li>Температура: $T_1 = 290\text{ К}$</li>
+        </ul>
+        <p>Конечное состояние:</p>
+        <ul>
+          <li>Давление: $p_2 = 0{,}30\text{ МПа} = 0{,}30 \cdot 10^6\text{ Па}$</li>
+          <li>Температура: $T_2 = 320\text{ К}$</li>
+        </ul>
+        <p>Используем уравнение Менделеева — Клапейрона для выражения массы газа в обоих состояниях:</p>
+        <div class="math-scroll">
+          $$pV = \frac{m}{M} RT \implies m = \frac{pVM}{RT}$$
+        </div>
+        <p>Нам необходимо найти изменение массы газа ($\Delta m$):</p>
+        <div class="math-scroll">
+          $$\Delta m = m_2 - m_1$$
+        </div>
+        <ul>
+          <li>Начальная масса газа:
+            <div class="math-scroll">$$m_1 = \frac{p_1 VM}{RT_1}$$</div>
+          </li>
+          <li>Конечная масса газа:
+            <div class="math-scroll">$$m_2 = \frac{p_2 VM}{RT_2}$$</div>
+          </li>
+        </ul>
+        <p>Подставим вместо $m_2$ и $m_1$ их выраженные формулы:</p>
+        <div class="math-scroll">
+          $$\Delta m = \frac{p_2 VM}{RT_2} - \frac{p_1 VM}{RT_1}$$
+        </div>
+        <p>В обоих слагаемых дроби содержат одинаковые буквы в числителе ($V$ и $M$) и в знаменателе ($R$). Вынесем общий дробный множитель $\frac{VM}{R}$ за скобки:</p>
+        <div class="math-scroll">
+          $$\Delta m = \frac{VM}{R} \cdot \left(\frac{p_2}{T_2} - \frac{p_1}{T_1}\right)$$
+          $$\Delta m = \frac{0{,}20 \cdot 4}{8{,}31} \cdot \left(\frac{0{,}30 \cdot 10^6}{320} - \frac{0{,}10 \cdot 10^6}{290}\right)$$
+          $$= \frac{0{,}8}{8{,}31} \cdot 592{,}67 \approx 0{,}09627 \cdot 592{,}67 \approx 57{,}05\text{ г}$$
+        </div>
+        <strong>Ответ:</strong> $57\text{ г}$ (или $57{,}05\text{ г}$).
+      </div>
+    </div>
+
+    <!-- Задача 9 (№6) -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title">Если кислород ($M = 32\text{ кг/кмоль}$), содержащийся в баллоне, заменить на водород ($M = 2{,}0\text{ кг/кмоль}$) такой же массы и при той же температуре, то давление в баллоне изменится в ... раз (раза).</div>
+      <div class="task-desc">Введите, во сколько раз изменится давление:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-9-input" />
+        <button class="btn-main" onclick="validateCalculation(9)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <ul>
+          <li>Баллон тот же самый, значит, его объем не меняется: $V = \text{const}$.</li>
+          <li>Масса газа осталась прежней: $m_1 = m_2 = m = \text{const}$.</li>
+          <li>Температура не изменилась: $T = \text{const}$.</li>
+        </ul>
+        <p>Молярные массы газов:</p>
+        <ul>
+          <li>Кислород ($\text{O}_2$): $M_1 = 32\text{ кг/кмоль}$</li>
+          <li>Водород ($\text{H}_2$): $M_2 = 2{,}0\text{ кг/кмоль}$</li>
+        </ul>
+        <p>Запишем уравнение Менделеева — Клапейрона для обоих случаев:</p>
+        <ul>
+          <li>Для кислорода:
+            <div class="math-scroll">$$p_1 V = \frac{m}{M_1} RT$$</div>
+          </li>
+          <li>Для водорода:
+            <div class="math-scroll">$$p_2 V = \frac{m}{M_2} RT$$</div>
+          </li>
+        </ul>
+        <p>Выразим давление газа ($p_1$ и $p_2$) из каждого уравнения:</p>
+        <div class="math-scroll">
+          $$p_1 = \frac{mRT}{V \cdot M_1}$$
+          $$p_2 = \frac{mRT}{V \cdot M_2}$$
+        </div>
+        <p>Чтобы узнать, во сколько раз изменится давление, найдем отношение конечного давления к начальному ($\frac{p_2}{p_1}$):</p>
+        <div class="math-scroll">
+          $$\frac{p_2}{p_1} = \frac{\frac{mRT}{V \cdot M_2}}{\frac{mRT}{V \cdot M_1}}$$
+          $$\frac{p_2}{p_1} = \frac{M_1}{M_2}$$
+          $$\frac{p_2}{p_1} = \frac{32}{2{,}0} = 16$$
+        </div>
+        <p>Давление в баллоне увеличится в 16 раз.</p>
+        <strong>Ответ:</strong> в 16 раз.
+      </div>
+    </div>
+
+    <!-- Задача 10 (№7) -->
+    <div class="card" id="task-10">
+      <div class="task-num">Задача 10</div>
+      <div class="task-title">Баллон, содержащий азот массой $m = 1{,}0\text{ кг}$, при испытании взорвался при температуре $T_1 = 630\text{ К}$. При температуре $T_2 = 270\text{ К}$ в таком баллоне, имея десятикратный запас прочности, можно хранить водород в количестве ... г.</div>
+      <div class="task-desc">Введите массу водорода в граммах ($\text{г}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-10-input" />
+        <button class="btn-main" onclick="validateCalculation(10)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-10"></div>
+      <button class="btn-solution" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <ul>
+          <li>Вместимость баллона не меняется: $V = \text{const}$.</li>
+          <li>Молярная масса азота ($\text{N}_2$): $M_1 = 28\text{ г/моль}$.</li>
+          <li>Молярная масса водорода ($\text{H}_2$): $M_2 = 2\text{ г/моль}$.</li>
+        </ul>
+        <p>Состояние азота в момент взрыва:</p>
+        <ul>
+          <li>Масса: $m_1 = 1{,}0\text{ кг} = 1000\text{ г}$</li>
+          <li>Температура: $T_1 = 630\text{ К}$</li>
+        </ul>
+        <p>Безопасное состояние хранения водорода:</p>
+        <ul>
+          <li>Температура: $T_2 = 270\text{ К}$</li>
+          <li>Десятикратный запас прочности означает, что безопасное давление $p_{\text{без}}$ должно быть в 10 раз меньше давления взрыва:
+            <div class="math-scroll">$$p_{\text{взр}} = 10 \cdot p_{\text{доп}}$$</div>
+          </li>
+        </ul>
+        <p><strong>1. Нахождение максимального давления (давления взрыва):</strong><br/>
+        Запишем уравнение Менделеева — Клапейрона для азота в момент разрушения баллона:</p>
+        <div class="math-scroll">
+          $$p_{\text{взр}} V = \frac{m_1}{M_1} RT_1 \implies p_{\text{взр}} = \frac{m_1 RT_1}{M_1 V}$$
+        </div>
+        <p><strong>2. Нахождение безопасного (допустимого) давления:</strong><br/>
+        Так как баллон должен обладать десятикратным запасом прочности, максимально допустимое давление для хранения водорода $p_{\text{доп}}$ должно быть в $k = 10$ раза меньше давления взрыва:</p>
+        <div class="math-scroll">
+          $$p_{\text{доп}} = \frac{p_{\text{взр}}}{k} = \frac{m_1 RT_1}{k \cdot M_1 V}$$
+        </div>
+        <p><strong>3. Составление уравнения для водорода:</strong><br/>
+        Запишем уравнение состояния для водорода при температуре $T_2$ и максимально возможном безопасном давлении $p_{\text{доп}}$:</p>
+        <div class="math-scroll">
+          $$p_{\text{доп}} V = \frac{m_2}{M_2} RT_2$$
+        </div>
+        <p>Подставим выражение для $p_{\text{доп}}$ из предыдущего шага:</p>
+        <div class="math-scroll">
+          $$\left(\frac{m_1 RT_1}{k \cdot M_1 V}\right) \cdot V = \frac{m_2}{M_2} RT_2$$
+        </div>
+        <p><strong>4. Вывод итоговой формулы и расчет:</strong><br/>
+        Объем баллона $V$ и универсальная газовая постоянная $R$ сокращаются:</p>
+        <div class="math-scroll">
+          $$\frac{m_1 T_1}{k \cdot M_1} = \frac{m_2 T_2}{M_2}$$
+        </div>
+        <p>Выразим массу водорода $m_2$:</p>
+        <div class="math-scroll">
+          $$m_2 = \frac{m_1 \cdot T_1 \cdot M_2}{k \cdot M_1 \cdot T_2}$$
+        </div>
+        <p>Подставим числовые значения (массу $m_1$ возьмем сразу в граммах, чтобы получить ответ в граммах):</p>
+        <div class="math-scroll">
+          $$m_2 = \frac{1000 \cdot 630 \cdot 2}{10 \cdot 28 \cdot 270}$$
+        </div>
+        <p>Ответ с округлением до целых: 17 г.</p>
+        <strong>Ответ:</strong> $17\text{ г}$.
+      </div>
+    </div>
+
+    <!-- Задача 11 (В11) -->
+    <div class="card" id="task-11">
+      <div class="task-num">Задача 11</div>
+      <div class="task-title">В закрытом сосуде вместимостью $V = 2{,}0\text{ м}^3$ находится азот $\left(M_1 = 28\text{ }\frac{\text{г}}{\text{моль}}\right)$ массой $m_1 = 280\text{ г}$ и кислород $\left(M_2 = 32\text{ }\frac{\text{г}}{\text{моль}}\right)$ массой $m_2 = 320\text{ г}$. Если температура смеси газов $t = 16\text{ }^\circ\text{C}$, то давление $p$ газовой смеси равно ... кПа.</div>
+      <div class="task-desc">Введите давление в килопаскалях ($\text{кПа}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-11-input" />
+        <button class="btn-main" onclick="validateCalculation(11)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-11"></div>
+      <button class="btn-solution" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <p>По закону Дальтона $p = p_1 + p_2$. Запишем уравнение Клапейрона — Менделеева для азота и кислорода:</p>
+        <div class="math-scroll">
+          $$p_1 V = \frac{m_1}{M_1} RT \quad \text{и} \quad p_2 V = \frac{m_2}{M_2} RT.$$
+        </div>
+        <p>Решая совместно полученные уравнения, найдем ответ:</p>
+        <div class="math-scroll">
+          $$p = \frac{RT}{V} \left(\frac{m_1}{M_1} + \frac{m_2}{M_2}\right) = 24\text{ кПа}.$$
+        </div>
+        <strong>Ответ:</strong> $24\text{ кПа}$.
+      </div>
+    </div>
+
+    <!-- Задача 12 (В2) -->
+    <div class="card" id="task-12">
+      <div class="task-num">Задача 12</div>
+      <div class="task-title">Два сосуда, соединенные трубкой с краном, содержат кислород равной массы при одинаковой температуре. В первом сосуде давление $p_1 = 100\text{ кПа}$, во втором — $p_2 = 300\text{ кПа}$. Если после открытия крана температура кислорода не изменилась, то в сосудах установилось давление $p$, равное ... кПа.</div>
+      <div class="task-desc">Введите установившееся давление в килопаскалях ($\text{кПа}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-12-input" />
+        <button class="btn-main" onclick="validateCalculation(12)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-12"></div>
+      <button class="btn-solution" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <ul>
+          <li>Газ в обоих сосудах одинаковый — кислород ($M = \text{const}$).</li>
+          <li>Массы газа в сосудах изначально равны: $m_1 = m_2 = m$. Следовательно, общая масса газа после открытия крана: $m_{\text{общ}} = m + m = 2m$.</li>
+          <li>Температура на протяжении всего процесса не меняется: $T = \text{const}$.</li>
+          <li>Начальные давления: $p_1 = 100\text{ кПа}$, $p_2 = 300\text{ кПа}$.</li>
+        </ul>
+        <p>Запишем уравнение Менделеева — Клапейрона для каждого сосуда до открытия крана:</p>
+        <ul>
+          <li>Для первого сосуда с объемом $V_1$:
+            <div class="math-scroll">$$p_1 V_1 = \frac{m}{M} RT \implies V_1 = \frac{mRT}{M p_1}$$</div>
+          </li>
+          <li>Для второго сосуда с объемом $V_2$:
+            <div class="math-scroll">$$p_2 V_2 = \frac{m}{M} RT \implies V_2 = \frac{mRT}{M p_2}$$</div>
+          </li>
+        </ul>
+        <p>После открытия крана газы перемешиваются, занимая общий объем $V_{\text{общ}} = V_1 + V_2$. Запишем уравнение состояния для всей системы:</p>
+        <div class="math-scroll">
+          $$p V_{\text{общ}} = \frac{m_{\text{общ}}}{M} RT$$
+        </div>
+        <p>Подставим в это уравнение выражения для объемов и общую массу газа $2m$:</p>
+        <div class="math-scroll">
+          $$p \cdot \left(\frac{mRT}{M p_1} + \frac{mRT}{M p_2}\right) = \frac{2m}{M} RT$$
+        </div>
+        <p>Вынесем общий множитель $\frac{mRT}{M}$ в левой части за скобки:</p>
+        <div class="math-scroll">
+          $$p \cdot \frac{mRT}{M} \cdot \left(\frac{1}{p_1} + \frac{1}{p_2}\right) = 2 \cdot \frac{mRT}{M}$$
+        </div>
+        <p>Сократим одинаковый множитель $\frac{mRT}{M}$ в обеих частях уравнения. Получаем рабочую формулу:</p>
+        <div class="math-scroll">
+          $$p \cdot \left(\frac{1}{p_1} + \frac{1}{p_2}\right) = 2$$
+          $$p = \frac{2 \cdot 300}{4} = \frac{600}{4} = 150\text{ кПа}$$
+        </div>
+        <strong>Ответ:</strong> $150\text{ кПа}$.
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Рендеринг формул KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const correctAnswers = {
+      1: ['3'],
+      2: ['2'],
+      3: ['3'],
+      4: ['2'],
+      5: ['4'],
+      6: ['1'],
+      7: ['4']
+    };
+
+    function handleChoice(taskId, value, buttonEl) {
+      const card = document.getElementById(`task-${taskId}`);
+      const buttons = card.querySelectorAll('.btn-option');
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      const isCorrect = correctAnswers[taskId] && correctAnswers[taskId].includes(value);
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Отличная работа.';
+        btnSol.style.display = 'none';
+      } else {
+        buttonEl.classList.add('incorrect');
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверно. Попробуйте еще раз или посмотрите решение.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      // Задача 8: 57 г (или 57.05 г)
+      if (taskId === 8) isCorrect = Math.abs(val - 57) < 1 || Math.abs(val - 57.05) < 0.2;
+      // Задача 9: в 16 раз
+      else if (taskId === 9) isCorrect = Math.abs(val - 16) < 0.5;
+      // Задача 10: 17 г (или 16.67 г)
+      else if (taskId === 10) isCorrect = Math.abs(val - 17) < 0.5 || Math.abs(val - 16.67) < 0.2;
+      // Задача 11: 24 кПа
+      else if (taskId === 11) isCorrect = Math.abs(val - 24) < 0.5;
+      // Задача 12: 150 кПа
+      else if (taskId === 12) isCorrect = Math.abs(val - 150) < 1;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>
