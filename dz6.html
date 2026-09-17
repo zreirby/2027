@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ДЗ 9-10 • Газовые законы</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 40px;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    /* Блоки с картинками */
+    .task-image-box {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin: 16px 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .task-image-box img {
+      max-width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .img-caption {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .multi-input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .field-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+    }
+
+    .field-item label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 180px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Кнопки вариантов ответов */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .options-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-option {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .options-vertical .btn-option {
+      justify-content: flex-start;
+      text-align: left;
+      padding: 14px 20px;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background: rgba(45, 55, 80, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-option:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background: var(--success) !important;
+      border-color: var(--success) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--success-glow) !important;
+    }
+
+    .btn-option.incorrect {
+      background: var(--error) !important;
+      border-color: var(--error) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--error-glow) !important;
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    /* Блок решения с полной адаптивностью */
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solution-box p, .solution-box div {
+      margin-bottom: 10px;
+    }
+
+    .solution-box ol, .solution-box ul {
+      margin-left: 22px;
+      margin-bottom: 12px;
+    }
+
+    .solution-box li {
+      margin-bottom: 6px;
+    }
+
+    .math-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-scroll::-webkit-scrollbar,
+    .task-title::-webkit-scrollbar,
+    .solution-box::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .math-scroll::-webkit-scrollbar-thumb,
+    .task-title::-webkit-scrollbar-thumb,
+    .solution-box::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0;
+      margin: 6px 0 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .katex-display::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">ДЗ 9-10</div>
+      <h1>Газовые законы</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 (№221) -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Идеальный газ определенной массы изобарно нагревают от температуры $t_1 = 7\text{ }^\circ\text{C}$ до температуры $t_2 = 77\text{ }^\circ\text{C}$. Определите конечный объем газа, если его начальный объем $V_1 = 0{,}48\text{ м}^3$.</div>
+      <div class="task-desc">Введите конечный объем в кубических метрах ($\text{м}^3$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-1-input" />
+        <button class="btn-main" onclick="validateCalculation(1)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$T_1 = 7 + 273 = 280\text{ К}$</li>
+          <li>$T_2 = 77 + 273 = 350\text{ К}$</li>
+          <li>$V_1 = 0{,}48\text{ м}^3$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>По условию процесс изобарный ($P = \text{const}$). Используем закон Гей-Люссака:</p>
+        <div class="math-scroll">
+          $$\frac{V_1}{T_1} = \frac{V_2}{T_2}$$
+        </div>
+        <p>Выразим и рассчитаем конечный объем:</p>
+        <div class="math-scroll">
+          $$V_2 = V_1 \cdot \frac{T_2}{T_1}$$
+          $$V_2 = 0{,}48 \cdot \frac{350}{280} = 0{,}6\text{ м}^3$$
+        </div>
+        <strong>Ответ:</strong> $V_2 = 0{,}6\text{ м}^3$.
+      </div>
+    </div>
+
+    <!-- Задача 2 (№189) -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Идеальный газ определенной массы изотермически расширился от объема $V_1 = 60{,}0\text{ дм}^3$ до объема $V_2 = 76{,}0\text{ дм}^3$. Определите конечное давление газа, если его начальное давление $p_1 = 133\text{ кПа}$.</div>
+      <div class="task-desc">Введите конечное давление в килопаскалях ($\text{кПа}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-2-input" />
+        <button class="btn-main" onclick="validateCalculation(2)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V_1 = 60{,}0\text{ дм}^3 = 60{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$V_2 = 76{,}0\text{ дм}^3 = 76{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$p_1 = 133\text{ кПа} = 133 \cdot 10^3\text{ Па}$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>По условию процесс изотермический ($T = \text{const}$). Используем закон Бойля-Мариотта:</p>
+        <div class="math-scroll">
+          $$p_1 \cdot V_1 = p_2 \cdot V_2$$
+        </div>
+        <p>Выразим и рассчитаем конечное давление:</p>
+        <div class="math-scroll">
+          $$p_2 = p_1 \cdot \frac{V_1}{V_2}$$
+          $$p_2 = \frac{133 \cdot 10^3 \cdot 60{,}0 \cdot 10^{-3}}{76{,}0 \cdot 10^{-3}} = 105 \cdot 10^3\text{ Па} = 105\text{ кПа}$$
+        </div>
+        <strong>Ответ:</strong> $p_2 = 105\text{ кПа}$.
+      </div>
+    </div>
+
+    <!-- Задача 3 (№3) -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">При изобарном охлаждении идеального газа до температуры $t = 17{,}0\text{ }^\circ\text{C}$ его объем уменьшился в $n = 2$ раза. Начальная температура газа была равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(3, '1', this)">1) $580\text{ }^\circ\text{C}$</button>
+        <button class="btn-option" onclick="handleChoice(3, '2', this)">2) $307\text{ }^\circ\text{C}$</button>
+        <button class="btn-option" onclick="handleChoice(3, '3', this)">3) $290\text{ }^\circ\text{C}$</button>
+        <button class="btn-option" onclick="handleChoice(3, '4', this)">4) $34{,}0\text{ }^\circ\text{C}$</button>
+        <button class="btn-option" onclick="handleChoice(3, '5', this)">5) $17{,}0\text{ }^\circ\text{C}$</button>
+      </div>
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$T_2 = 17{,}0 + 273 = 290\text{ К}$</li>
+          <li>$\frac{V_1}{V_2} = 2$</li>
+        </ul>
+        <p>По условию процесс изобарный ($P = \text{const}$). Используем закон Гей-Люссака:</p>
+        <div class="math-scroll">
+          $$\frac{V_1}{T_1} = \frac{V_2}{T_2}$$
+        </div>
+        <p>Выразим начальную абсолютную температуру $T_1$:</p>
+        <div class="math-scroll">
+          $$T_1 = T_2 \cdot \frac{V_1}{V_2}$$
+          $$T_1 = 290 \cdot 2 = 580\text{ К}$$
+        </div>
+        <p>Переведем ответ обратно в градусы Цельсия для выбора варианта:</p>
+        <div class="math-scroll">
+          $$t_1 = T_1 - 273 = 580 - 273 = 307\text{ }^\circ\text{C}$$
+        </div>
+        <strong>Ответ:</strong> вариант 2 ($307\text{ }^\circ\text{C}$).
+      </div>
+    </div>
+
+    <!-- Задача 4 (№190) -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">Объем идеального газа, находящегося в эластичной оболочке, изотермически уменьшили от $V_1 = 1{,}8\text{ л}$ до $V_2 = 1{,}5\text{ л}$. Во сколько раз увеличилось давление газа?</div>
+      <div class="task-desc">Введите, во сколько раз увеличилось давление:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-4-input" />
+        <button class="btn-main" onclick="validateCalculation(4)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$V_1 = 1{,}8\text{ л} = 1{,}8 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$V_2 = 1{,}5\text{ л} = 1{,}5 \cdot 10^{-3}\text{ м}^3$</li>
+        </ul>
+        <p>По условию процесс изотермический ($T = \text{const}$). Используем закон Бойля-Мариотта:</p>
+        <div class="math-scroll">
+          $$p_1 \cdot V_1 = p_2 \cdot V_2$$
+        </div>
+        <p>Выразим отношение конечного давления к начальному, чтобы узнать, во сколько раз оно увеличилось:</p>
+        <div class="math-scroll">
+          $$\frac{p_2}{p_1} = \frac{V_1}{V_2}$$
+          $$\frac{p_2}{p_1} = \frac{1{,}8 \cdot 10^{-3}}{1{,}5 \cdot 10^{-3}} = \frac{1{,}8}{1{,}5} = 1{,}2$$
+        </div>
+        <strong>Ответ:</strong> увеличилось в 1,2 раза.
+      </div>
+    </div>
+
+    <!-- Задача 5 (№4) -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">При изотермическом сжатии газа его объем уменьшился на $\Delta V_1 = 2{,}0\text{ л}$, а давление возросло на $\eta = 50\%$. Если первоначальный объем уменьшить на $\Delta V_2 = 1{,}0\text{ л}$, то его давление возрастет на:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(5, '1', this)">1) 75%</button>
+        <button class="btn-option" onclick="handleChoice(5, '2', this)">2) 40%</button>
+        <button class="btn-option" onclick="handleChoice(5, '3', this)">3) 25%</button>
+        <button class="btn-option" onclick="handleChoice(5, '4', this)">4) 20%</button>
+        <button class="btn-option" onclick="handleChoice(5, '5', this)">5) 10%</button>
+      </div>
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <strong>Перевод величин в СИ:</strong>
+        <ul>
+          <li>$\Delta V_1 = 2{,}0\text{ л} = 2{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$\eta = 50\% = 0{,}5$</li>
+          <li>$\Delta V_2 = 1{,}0\text{ л} = 1{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+        </ul>
+        <p>Процесс изотермический ($T = \text{const}$). Используем закон Бойля-Мариотта для первого случая:</p>
+        <div class="math-scroll">
+          $$p_1 \cdot V_1 = p_2 \cdot V_2$$
+        </div>
+        <p>По условию объем уменьшился на $\Delta V_1$, а давление выросло на $\eta = 0{,}5$ (то есть на 50%):</p>
+        <div class="math-scroll">
+          $$V_2 = V_1 - \Delta V_1$$
+          $$p_2 = p_1 + 0{,}5p_1 = 1{,}5p_1$$
+        </div>
+        <p>Подставим эти выражения в закон Бойля-Мариотта:</p>
+        <div class="math-scroll">
+          $$p_1 \cdot V_1 = 1{,}5p_1 \cdot (V_1 - \Delta V_1)$$
+        </div>
+        <p>Разделим на $p_1$ и найдем начальный объем $V_1$:</p>
+        <div class="math-scroll">
+          $$V_1 = 1{,}5 \cdot (V_1 - 2{,}0 \cdot 10^{-3})$$
+          $$0{,}5V_1 = 3{,}0 \cdot 10^{-3} \implies V_1 = 6{,}0 \cdot 10^{-3}\text{ м}^3$$
+        </div>
+        <ul>
+          <li>Новый объем: $V_3 = V_1 - 1 = 6 - 1 = 5\text{ л}$</li>
+        </ul>
+        <p>Запишем закон для начального и нового состояний:</p>
+        <div class="math-scroll">
+          $$p_1 \cdot V_1 = p_3 \cdot V_3$$
+          $$p_1 \cdot 6 = p_3 \cdot 5$$
+        </div>
+        <p>Выразим новое давление $p_3$:</p>
+        <div class="math-scroll">
+          $$p_3 = \frac{6}{5} \cdot p_1 = 1{,}2p_1$$
+        </div>
+        <p>Давление стало $1{,}2p_1$, то есть увеличилось на 20%.</p>
+        <strong>Ответ:</strong> вариант 4 (20%).
+      </div>
+    </div>
+
+    <!-- Задача 6 (№5) -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">Сосуд объемом $V_1 = 12\text{ л}$, содержащий газ при давлении $p_1 = 4{,}0 \times 10^5\text{ Па}$, соединяют с другим сосудом объемом $V_2 = 3{,}0\text{ л}$, из которого полностью откачан воздух. Если процесс изотермический, то конечное давление газа составит:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(6, '1', this)">1) 0,10 МПа</button>
+        <button class="btn-option" onclick="handleChoice(6, '2', this)">2) 0,13 МПа</button>
+        <button class="btn-option" onclick="handleChoice(6, '3', this)">3) 0,16 МПа</button>
+        <button class="btn-option" onclick="handleChoice(6, '4', this)">4) 0,20 МПа</button>
+        <button class="btn-option" onclick="handleChoice(6, '5', this)">5) 0,32 МПа</button>
+      </div>
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$V_1 = 12\text{ л} = 12 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$p_1 = 4{,}0 \cdot 10^5\text{ Па}$</li>
+          <li>$V_2 = 3{,}0\text{ л} = 3{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>Для изотермического процесса выполняется закон Бойля-Мариотта:</p>
+        <div class="math-scroll">
+          $$p_1 V_1 = p_2 V_{\text{общ}}$$
+        </div>
+        <p>Конечный объем системы после соединения сосудов равен:</p>
+        <div class="math-scroll">
+          $$V_{\text{общ}} = V_1 + V_2 = 12 \cdot 10^{-3} + 3{,}0 \cdot 10^{-3} = 15 \cdot 10^{-3}\text{ м}^3$$
+        </div>
+        <p>Выразим и рассчитаем конечное давление $p_2$:</p>
+        <div class="math-scroll">
+          $$p_2 = \frac{p_1 V_1}{V_{\text{общ}}} = \frac{4{,}0 \cdot 10^5 \cdot 12 \cdot 10^{-3}}{15 \cdot 10^{-3}} = 3{,}2 \cdot 10^5\text{ Па} = 0{,}32\text{ МПа}$$
+        </div>
+        <strong>Ответ:</strong> вариант 5 ($0{,}32\text{ МПа}$).
+      </div>
+    </div>
+
+    <!-- Задача 7 (А1) -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">Объем идеального газа изотермически уменьшили от $V_1 = 0{,}15\text{ м}^3$ до $V_2 = 0{,}10\text{ м}^3$. Если при этом давление газа увеличилось на $\Delta p = 0{,}2\text{ МПа}$, то его первоначальное давление $p_1$ было равно:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(7, '1', this)">1) 0,3 МПа</button>
+        <button class="btn-option" onclick="handleChoice(7, '2', this)">2) 0,4 МПа</button>
+        <button class="btn-option" onclick="handleChoice(7, '3', this)">3) 0,5 МПа</button>
+        <button class="btn-option" onclick="handleChoice(7, '4', this)">4) 0,6 МПа</button>
+        <button class="btn-option" onclick="handleChoice(7, '5', this)">5) 0,8 МПа</button>
+      </div>
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <p>При изотермическом процессе $p_1 V_1 = p_2 V_2$. Конечное давление газа $p_2 = p_1 + \Delta p$. Из записанных уравнений найдем ответ:</p>
+        <div class="math-scroll">
+          $$p_1 = \frac{V_2 \Delta p}{V_1 - V_2} = 0{,}4\text{ МПа}.$$
+        </div>
+        <strong>Ответ:</strong> вариант 2 ($0{,}4\text{ МПа}$).
+      </div>
+    </div>
+
+    <!-- Задача 8 (А3) -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title">При изохорном нагревании давление идеального газа увеличилось в $k = 1{,}40$ раза. Если при этом температура газа возросла на $\Delta t = 122\text{ }^\circ\text{C}$, то начальная абсолютная температура $T_1$ газа была равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(8, '1', this)">1) 282 К</button>
+        <button class="btn-option" onclick="handleChoice(8, '2', this)">2) 300 К</button>
+        <button class="btn-option" onclick="handleChoice(8, '3', this)">3) 305 К</button>
+        <button class="btn-option" onclick="handleChoice(8, '4', this)">4) 395 К</button>
+        <button class="btn-option" onclick="handleChoice(8, '5', this)">5) 988 К</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <p>При изохорном процессе $\frac{p_1}{T_1} = \frac{p_2}{T_2}$. Конечное давление газа $p_2 = kp_1$, конечная абсолютная температура $T_2 = T_1 + \Delta T$. Учитывая, что $\Delta T = \Delta t$, из записанных уравнений найдем ответ:</p>
+        <div class="math-scroll">
+          $$T_1 = \frac{\Delta t}{k - 1} = 305\text{ К}.$$
+        </div>
+        <strong>Ответ:</strong> вариант 3 ($305\text{ К}$).
+      </div>
+    </div>
+
+    <!-- Задача 9 (А4) -> image13.png -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title">На рисунке 135 показана зависимость объема $V$ идеального газа постоянной массы от абсолютной температуры $T$. Изобарному охлаждению газа соответствует процесс:</div>
+      <div class="task-image-box">
+        <img src="image13.png" alt="Рис. 135" onerror="this.src='https://via.placeholder.com/350x220?text=image13.png';" />
+        <div class="img-caption">Рис. 135</div>
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(9, '1', this)">1) $1 \to 2$</button>
+        <button class="btn-option" onclick="handleChoice(9, '2', this)">2) $2 \to 3$</button>
+        <button class="btn-option" onclick="handleChoice(9, '3', this)">3) $3 \to 4$</button>
+        <button class="btn-option" onclick="handleChoice(9, '4', this)">4) $4 \to 5$</button>
+        <button class="btn-option" onclick="handleChoice(9, '5', this)">5) $5 \to 1$</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <p>Из двух изобарных процессов $1 \to 2$ и $4 \to 5$, показанных на рисунке 135, изобарному охлаждению соответствует процесс $4 \to 5$.</p>
+        <strong>Ответ:</strong> вариант 4 ($4 \to 5$).
+      </div>
+    </div>
+
+    <!-- Задача 10 (А8) -> image14.png -->
+    <div class="card" id="task-10">
+      <div class="task-num">Задача 10</div>
+      <div class="task-title">На рисунке 139 показана зависимость давления $p$ идеального газа от его объема $V$. Если в состоянии 1 абсолютная температура $T_1 = T_0$, то в состоянии 3 абсолютная температура $T_3$ газа равна:</div>
+      <div class="task-image-box">
+        <img src="image14.png" alt="Рис. 139" onerror="this.src='https://via.placeholder.com/350x220?text=image14.png';" />
+        <div class="img-caption">Рис. 139</div>
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(10, '1', this)">1) $2T_0$</button>
+        <button class="btn-option" onclick="handleChoice(10, '2', this)">2) $3T_0$</button>
+        <button class="btn-option" onclick="handleChoice(10, '3', this)">3) $4T_0$</button>
+        <button class="btn-option" onclick="handleChoice(10, '4', this)">4) $5T_0$</button>
+        <button class="btn-option" onclick="handleChoice(10, '5', this)">5) $6T_0$</button>
+      </div>
+      <div class="status-msg" id="status-10"></div>
+      <button class="btn-solution" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <p>При изобарном процессе $\frac{V_0}{T_0} = \frac{2V_0}{T_2}$. При изохорном процессе $\frac{p_0}{T_2} = \frac{3p_0}{T_3}$. Из записанных уравнений найдем ответ:</p>
+        <div class="math-scroll">
+          $$T_3 = 6T_0.$$
+        </div>
+        <strong>Ответ:</strong> вариант 5 ($6T_0$).
+      </div>
+    </div>
+
+    <!-- Задача 11 (№165) -> image15.png -->
+    <div class="card" id="task-11">
+      <div class="task-num">Задача 11</div>
+      <div class="task-title">На рисунке 9 представлено пять процессов изменения состояния идеального газа определенной массы, образующих замкнутый цикл. Укажите процессы:</div>
+      <div class="task-image-box">
+        <img src="image15.png" alt="Рис. 9" onerror="this.src='https://via.placeholder.com/350x220?text=image15.png';" />
+        <div class="img-caption">Рис. 9</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>а) Изохорное нагревание:</label>
+          <input type="text" class="input-text" id="calc-11-a" />
+        </div>
+        <div class="field-item">
+          <label>б) Изотермическое расширение:</label>
+          <input type="text" class="input-text" id="calc-11-b" />
+        </div>
+        <div class="field-item">
+          <label>в) Изобарное охлаждение:</label>
+          <input type="text" class="input-text" id="calc-11-c" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask11()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-11"></div>
+      <button class="btn-solution" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <ul>
+          <li><strong>а) изохорному нагреванию</strong> соответствует процесс <strong>2–3</strong>. Объем неизменен ($V = \text{const}$), давление $p$ растет, следовательно, температура $T$ увеличивается.</li>
+          <li><strong>б) изотермическому расширению</strong> соответствует процесс <strong>5–1</strong>. График представляет собой гиперболу ($pV = \text{const}$), при этом объем $V$ увеличивается.</li>
+          <li><strong>в) изобарному охлаждению</strong> соответствует процесс <strong>3–4</strong>. Давление неизменно ($p = \text{const}$), объем $V$ уменьшается, следовательно, температура $T$ падает.</li>
+        </ul>
+        <strong>Ответ:</strong> а) 2–3; б) 5–1; в) 3–4.
+      </div>
+    </div>
+
+    <!-- Задача 12 (№183) -> image16.png -->
+    <div class="card" id="task-12">
+      <div class="task-num">Задача 12</div>
+      <div class="task-title">Идеальный газ неизменной массы переводят из состояния 1 в состояние 3 (рис. 24). Определите абсолютную температуру газа в состояниях 1 и 3, если в состоянии 2 абсолютная температура $T_2 = 300\text{ К}$.</div>
+      <div class="task-image-box">
+        <img src="image16.png" alt="Рис. 24" onerror="this.src='https://via.placeholder.com/350x220?text=image16.png';" />
+        <div class="img-caption">Рис. 24</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Температура $T_1$ ($\text{К}$):</label>
+          <input type="text" class="input-text" id="calc-12-t1" />
+        </div>
+        <div class="field-item">
+          <label>Температура $T_3$ ($\text{К}$):</label>
+          <input type="text" class="input-text" id="calc-12-t3" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask12()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-12"></div>
+      <button class="btn-solution" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$T_2 = 300\text{ К}$</li>
+        </ul>
+        <p>Из графика определим параметры газа в состояниях 1, 2 и 3 по осям давления $p$ и объема $V$:</p>
+        <ul>
+          <li>Состояние 1: $p_1, V_1$</li>
+          <li>Состояние 2: $\frac{p_1}{2}, V_1$</li>
+          <li>Состояние 3: $\frac{p_1}{2}, 3V_1$</li>
+        </ul>
+        <ol>
+          <li><strong>Процесс 1–2 (изохорный, $V = \text{const}$):</strong><br/>
+            По закону Шарля:
+            <div class="math-scroll">
+              $$\frac{p_1}{T_1} = \frac{p_2}{T_2} \implies \frac{p_1}{T_1} = \frac{p_1}{2T_2} \implies T_1 = 2T_2$$
+              $$T_1 = 2 \cdot 300 = 600\text{ К}$$
+            </div>
+          </li>
+          <li><strong>Процесс 2–3 (изобарный, $p = \text{const}$):</strong><br/>
+            По закону Гей-Люссака:
+            <div class="math-scroll">
+              $$\frac{V_2}{T_2} = \frac{V_3}{T_3} \implies \frac{V_1}{T_2} = \frac{3V_1}{T_3} \implies T_3 = 3T_2$$
+              $$T_3 = 3 \cdot 300 = 900\text{ К}$$
+            </div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $T_1 = 600\text{ К}$; $T_3 = 900\text{ К}$.
+      </div>
+    </div>
+
+    <!-- Задача 13 (№185) -> image17.png -->
+    <div class="card" id="task-13">
+      <div class="task-num">Задача 13</div>
+      <div class="task-title">На рисунке 26 представлен график зависимости объема идеального газа определенной массы от абсолютной температуры. В состоянии 1 давление газа $p_1 = 60\text{ кПа}$. Определите давление газа в состояниях 2 и 3.</div>
+      <div class="task-image-box">
+        <img src="image17.png" alt="Рис. 26" onerror="this.src='https://via.placeholder.com/350x220?text=image17.png';" />
+        <div class="img-caption">Рис. 26</div>
+      </div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Давление $p_2$ ($\text{кПа}$):</label>
+          <input type="text" class="input-text" id="calc-13-p2" />
+        </div>
+        <div class="field-item">
+          <label>Давление $p_3$ ($\text{кПа}$):</label>
+          <input type="text" class="input-text" id="calc-13-p3" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask13()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-13"></div>
+      <button class="btn-solution" id="btn-sol-13" onclick="toggleSolution(13)">Показать Решение</button>
+      <div class="solution-box" id="sol-13">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$p_1 = 60\text{ кПа} = 60 \cdot 10^3\text{ Па}$</li>
+        </ul>
+        <strong>Решение:</strong>
+        <p>Пусть одна клетка по оси температур равна $T_0$, а по оси объемов — $V_0$. Тогда параметры состояний равны:</p>
+        <ul>
+          <li>Точка 1: $T_1 = 2T_0, V_1 = 3V_0$</li>
+          <li>Точка 2: $T_2 = 4T_0, V_2 = 6V_0$</li>
+          <li>Точка 3: $T_3 = 4T_0, V_3 = 1V_0$</li>
+        </ul>
+        <ol>
+          <li><strong>Процесс 1–2 (изобарный, $p = \text{const}$):</strong><br/>
+            Линия направлена в начало координат, следовательно, давление постоянно:
+            <div class="math-scroll">
+              $$p_2 = p_1 = 60\text{ кПа}$$
+            </div>
+          </li>
+          <li><strong>Процесс 2–3 (изотермический, $T = \text{const}$):</strong><br/>
+            Температура постоянна ($T_2 = T_3 = 4T_0$). Применим закон Бойля-Мариотта:
+            <div class="math-scroll">
+              $$p_2 V_2 = p_3 V_3$$
+            </div>
+            Выразим и рассчитаем давление $p_3$:
+            <div class="math-scroll">
+              $$p_3 = p_2 \cdot \frac{V_2}{V_3} = 60 \cdot \frac{6V_0}{1V_0} = 60 \cdot 6 = 360\text{ кПа}$$
+            </div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $p_2 = 60\text{ кПа}$; $p_3 = 360\text{ кПа}$.
+      </div>
+    </div>
+
+    <!-- Задача 14 (№224) -->
+    <div class="card" id="task-14">
+      <div class="task-num">Задача 14</div>
+      <div class="task-title">Идеальный газ, масса которого $m = 60{,}0\text{ г}$, занимает объем $V_1 = 12{,}0\text{ л}$ при абсолютной температуре $T_1 = 240\text{ К}$. Определите, до какой абсолютной температуры следует нагреть газ при постоянном давлении, чтобы его плотность стала $\rho = 2{,}40\text{ }\frac{\text{кг}}{\text{м}^3}$.</div>
+      <div class="task-desc">Введите абсолютную температуру в Кельвинах ($\text{К}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-14-input" />
+        <button class="btn-main" onclick="validateCalculation(14)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-14"></div>
+      <button class="btn-solution" id="btn-sol-14" onclick="toggleSolution(14)">Показать Решение</button>
+      <div class="solution-box" id="sol-14">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$m = 60{,}0\text{ г} = 60{,}0 \cdot 10^{-3}\text{ кг}$</li>
+          <li>$V_1 = 12{,}0\text{ л} = 12{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$T_1 = 240\text{ К}$</li>
+          <li>$\rho = 2{,}40\text{ }\frac{\text{кг}}{\text{м}^3}$</li>
+        </ul>
+        <ol>
+          <li>Нагревание газа происходит при постоянном давлении ($p = \text{const}$). Согласно закону Гей-Люссака для изобарного процесса:
+            <div class="math-scroll">
+              $$\frac{V_1}{T_1} = \frac{V_2}{T_2}$$
+            </div>
+          </li>
+          <li>Выразим конечный объем газа $V_2$ через его массу и конечную плотность $\rho$:
+            <div class="math-scroll">
+              $$V_2 = \frac{m}{\rho}$$
+            </div>
+          </li>
+          <li>Подставим $V_2$ в закон Гей-Люссака:
+            <div class="math-scroll">
+              $$\frac{V_1}{T_1} = \frac{m}{\rho \cdot T_2}$$
+            </div>
+          </li>
+          <li>Выразим и рассчитаем конечную абсолютную температуру $T_2$:
+            <div class="math-scroll">
+              $$T_2 = \frac{m \cdot T_1}{\rho \cdot V_1}$$
+              $$T_2 = \frac{60{,}0 \cdot 10^{-3} \cdot 240}{2{,}40 \cdot 12{,}0 \cdot 10^{-3}} = \frac{14{,}4}{0{,}0288} = 500\text{ К}$$
+            </div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $T_2 = 500\text{ К}$.
+      </div>
+    </div>
+
+    <!-- Задача 15 (№232) -->
+    <div class="card" id="task-15">
+      <div class="task-num">Задача 15</div>
+      <div class="task-title">Манометр, подключенный к баллону со сжатым газом, температура которого $t_1 = 22\text{ }^\circ\text{C}$, показывает давление $p_1 = 5{,}9\text{ МПа}$. Определите, какое давление будет показывать манометр, если температура газа в баллоне понизится до температуры $T_2 = 275\text{ К}$.</div>
+      <div class="task-desc">Введите давление в мегапаскалях ($\text{МПа}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-15-input" />
+        <button class="btn-main" onclick="validateCalculation(15)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-15"></div>
+      <button class="btn-solution" id="btn-sol-15" onclick="toggleSolution(15)">Показать Решение</button>
+      <div class="solution-box" id="sol-15">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$T_1 = 22 + 273 = 295\text{ К}$</li>
+          <li>$p_1 = 5{,}9\text{ МПа} = 5{,}9 \cdot 10^6\text{ Па}$</li>
+          <li>$T_2 = 275\text{ К}$</li>
+        </ul>
+        <p>Так как газ находится в жестком баллоне, его объем остается неизменным ($V = \text{const}$). Согласно закону Шарля для изохорного процесса:</p>
+        <div class="math-scroll">
+          $$\frac{p_1}{T_1} = \frac{p_2}{T_2}$$
+        </div>
+        <p>Выразим и рассчитаем конечное давление $p_2$:</p>
+        <div class="math-scroll">
+          $$p_2 = p_1 \cdot \frac{T_2}{T_1}$$
+          $$p_2 = 5{,}9 \cdot 10^6 \cdot \frac{275}{295} \approx 5{,}5 \cdot 10^6\text{ Па} = 5{,}5\text{ МПа}$$
+        </div>
+        <strong>Ответ:</strong> $p_2 = 5{,}5\text{ МПа}$.
+      </div>
+    </div>
+
+    <!-- Задача 16 (№227) -> image18.png в решении -->
+    <div class="card" id="task-16">
+      <div class="task-num">Задача 16</div>
+      <div class="task-title">Температура воздуха в цилиндре, закрытом гладким поршнем, $t_1 = 7\text{ }^\circ\text{C}$. На сколько переместится поршень при изобарном нагревании воздуха на $\Delta T = 20\text{ К}$, если до нагревания расстояние от дна цилиндра до поршня было $h = 14\text{ см}$?</div>
+      <div class="task-desc">Введите перемещение поршня в сантиметрах ($\text{см}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-16-input" />
+        <button class="btn-main" onclick="validateCalculation(16)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-16"></div>
+      <button class="btn-solution" id="btn-sol-16" onclick="toggleSolution(16)">Показать Решение</button>
+      <div class="solution-box" id="sol-16">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$T_1 = 7 + 273 = 280\text{ К}$</li>
+          <li>$\Delta T = 20\text{ К}$</li>
+          <li>$h = 14\text{ см} = 0{,}14\text{ м}$</li>
+        </ul>
+        <div class="task-image-box">
+          <img src="image18.png" alt="Чертёж цилиндра" onerror="this.src='https://via.placeholder.com/450x220?text=image18.png';" />
+        </div>
+        <strong>Решение:</strong>
+        <p>Процесс является изобарным ($p = \text{const}$). Согласно закону Гей-Люссака:</p>
+        <div class="math-scroll">
+          $$\frac{V_1}{T_1} = \frac{V_2}{T_2}$$
+        </div>
+        <p>Пусть $S$ — площадь поперечного сечения цилиндра, а $\Delta h$ — расстояние, на которое переместится поршень. Тогда:</p>
+        <ul>
+          <li>Начальный объем: $V_1 = S \cdot h$</li>
+          <li>Конечный объем: $V_2 = S \cdot (h + \Delta h)$</li>
+          <li>Конечная температура: $T_2 = T_1 + \Delta T$</li>
+        </ul>
+        <p>Подставим выражения объемов в уравнение закона:</p>
+        <div class="math-scroll">
+          $$\frac{S \cdot h}{T_1} = \frac{S \cdot (h + \Delta h)}{T_1 + \Delta T} \implies \frac{h}{T_1} = \frac{h + \Delta h}{T_1 + \Delta T}$$
+        </div>
+        <p>Раскроем пропорцию:</p>
+        <div class="math-scroll">
+          $$h \cdot T_1 + h \cdot \Delta T = h \cdot T_1 + T_1 \cdot \Delta h \implies h \cdot \Delta T = T_1 \cdot \Delta h$$
+        </div>
+        <p>Выразим и рассчитаем перемещение поршня $\Delta h$:</p>
+        <div class="math-scroll">
+          $$\Delta h = h \cdot \frac{\Delta T}{T_1}$$
+          $$\Delta h = 0{,}14 \cdot \frac{20}{280} = 0{,}01\text{ м} = 1\text{ см}$$
+        </div>
+        <strong>Ответ:</strong> $\Delta h = 1\text{ см}$.
+      </div>
+    </div>
+
+    <!-- Задача 17 (А11) -->
+    <div class="card" id="task-17">
+      <div class="task-num">Задача 17</div>
+      <div class="task-title">Пузырек воздуха поднимается со дна водоема. Атмосферное давление $p_0 = 100\text{ кПа}$. Если температура воздуха в пузырьке остается постоянной, то глубина $h$, на которой радиус пузырька был в $n = 2{,}0$ раза меньше, чем у поверхности воды $\left(\rho = 1{,}0\text{ }\frac{\text{г}}{\text{см}^3}\right)$, равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(17, '1', this)">1) 20 м</button>
+        <button class="btn-option" onclick="handleChoice(17, '2', this)">2) 40 м</button>
+        <button class="btn-option" onclick="handleChoice(17, '3', this)">3) 60 м</button>
+        <button class="btn-option" onclick="handleChoice(17, '4', this)">4) 70 м</button>
+        <button class="btn-option" onclick="handleChoice(17, '5', this)">5) 80 м</button>
+      </div>
+      <div class="status-msg" id="status-17"></div>
+      <button class="btn-solution" id="btn-sol-17" onclick="toggleSolution(17)">Показать Решение</button>
+      <div class="solution-box" id="sol-17">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$p_0 = 100\text{ кПа} = 10^5\text{ Па}$</li>
+          <li>$n = 2{,}0$</li>
+          <li>$\rho = 1{,}0\text{ г/см}^3 = 1000\text{ кг/м}^3$</li>
+          <li>$g = 10\text{ м/с}^2$</li>
+        </ul>
+        <ol>
+          <li>Температура воздуха постоянна ($T = \text{const}$). Согласно закону Бойля-Мариотта:
+            <div class="math-scroll">
+              $$p_1 V_1 = p_2 V_2$$
+            </div>
+          </li>
+          <li>Обозначим радиус пузырька на дне за $R_1$. У поверхности воды его радиус $R_2 = n \cdot R_1$. Объем шара $V = \frac{4}{3}\pi R^3$, поэтому объемы равны:
+            <ul>
+              <li>На дне: $V_1 = \frac{4}{3}\pi R_1^3$</li>
+              <li>У поверхности: $V_2 = \frac{4}{3}\pi (nR_1)^3 = n^3 V_1$</li>
+            </ul>
+          </li>
+          <li>Подставляя $n = 2$:
+            <ul>
+              <li>На дне: $V_1$</li>
+              <li>У поверхности: $V_2 = 2^3 \cdot V_1 = 8V_1$</li>
+            </ul>
+          </li>
+          <li>Подставим значения объемов и давлений в закон Бойля-Мариотта:
+            <div class="math-scroll">
+              $$(p_0 + \rho gh) \cdot V_1 = p_0 \cdot 8V_1 \implies p_0 + \rho gh = 8p_0$$
+            </div>
+          </li>
+          <li>Упростим уравнение и выразим глубину $h$:
+            <div class="math-scroll">
+              $$\rho gh = 7p_0 \implies h = \frac{7p_0}{\rho g}$$
+              $$h = \frac{7 \cdot 10^5}{1000 \cdot 10} = \frac{700000}{10000} = 70\text{ м}$$
+            </div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> вариант 4 ($70\text{ м}$).
+      </div>
+    </div>
+
+    <!-- Задача 18 (№1) -> image19.png в решении -->
+    <div class="card" id="task-18">
+      <div class="task-num">Задача 18</div>
+      <div class="task-title">В цилиндре под поршнем находится газ. Масса поршня $m = 600\text{ г}$, площадь поршня $S = 20{,}0\text{ см}^2$, атмосферное давление $p_0 = 100\text{ кПа}$. Чтобы объем газа в цилиндре уменьшился втрое, на поршень необходимо подействовать добавочной силой, равной ... Н.</div>
+      <div class="task-desc">Введите добавочную силу в Ньютонах ($\text{Н}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-18-input" />
+        <button class="btn-main" onclick="validateCalculation(18)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-18"></div>
+      <button class="btn-solution" id="btn-sol-18" onclick="toggleSolution(18)">Показать Решение</button>
+      <div class="solution-box" id="sol-18">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$m = 600\text{ г} = 0{,}6\text{ кг}$</li>
+          <li>$S = 20{,}0\text{ см}^2 = 20{,}0 \cdot 10^{-4}\text{ м}^2$</li>
+          <li>$p_0 = 100\text{ кПа} = 10^5\text{ Па}$</li>
+          <li>$g = 10\text{ м/с}^2$</li>
+        </ul>
+        <div class="task-image-box">
+          <img src="image19.png" alt="Чертёж сил" onerror="this.src='https://via.placeholder.com/450x220?text=image19.png';" />
+        </div>
+        <p>В каждом состоянии поршень покоится, поэтому векторная сумма сил равна нулю. Проектируя силы на вертикальную ось (вверх — положительное направление), получаем, что сила, направленная вверх, равна сумме сил, направленных вниз.</p>
+        <ol>
+          <li><strong>Состояние 1 (до сжатия):</strong><br/>
+            Условие равновесия сил:
+            <div class="math-scroll">
+              $$F_{\text{газ}1} = F_{\text{атм}} + F_{\text{тяж}}$$
+            </div>
+            Подставляем формулы сил через давление и площадь ($F = pS$ и $F_{\text{тяж}} = mg$):
+            <div class="math-scroll">
+              $$p_1 S = p_0 S + mg$$
+            </div>
+            Разделим обе части на $S$ и найдем начальное давление $p_1$:
+            <div class="math-scroll">
+              $$p_1 = p_0 + \frac{mg}{S} = 10^5 + \frac{0{,}6 \cdot 10}{20{,}0 \cdot 10^{-4}} = 10^5 + 3000 = 103\,000\text{ Па}$$
+            </div>
+          </li>
+          <li>По условию объем газа должен уменьшиться в 3 раза, то есть $V_2 = \frac{V_1}{3}$. Подставим это в закон:
+            <div class="math-scroll">
+              $$p_1 V_1 = p_2 \cdot \frac{V_1}{3} \implies p_2 = 3p_1$$
+            </div>
+          </li>
+          <li><strong>Состояние 2 (после сжатия):</strong><br/>
+            Условие равновесия сил с учетом добавочной внешней силы $F$:
+            <div class="math-scroll">
+              $$F_{\text{газ}2} = F_{\text{атм}} + F_{\text{тяж}} + F$$
+            </div>
+            Подставляем формулы сил через давление и площадь:
+            <div class="math-scroll">
+              $$p_2 S = p_0 S + mg + F$$
+            </div>
+            Так как из первого уравнения $p_0 S + mg = p_1 S$, а также $p_2 = 3p_1$, подставим эти выражения:
+            <div class="math-scroll">
+              $$3p_1 S = p_1 S + F$$
+              $$F = 3p_1 S - p_1 S = 2p_1 S$$
+            </div>
+          </li>
+          <li><strong>Расчет добавочной силы:</strong>
+            <div class="math-scroll">
+              $$F = 2 \cdot 103000 \cdot 20{,}0 \cdot 10^{-4} = 412\text{ Н}$$
+            </div>
+          </li>
+        </ol>
+        <strong>Ответ:</strong> $412\text{ Н}$.
+      </div>
+    </div>
+
+    <!-- Задача 19 (№206) -->
+    <div class="card" id="task-19">
+      <div class="task-num">Задача 19</div>
+      <div class="task-title">Камеру футбольного мяча вместимостью $V = 4{,}0\text{ л}$ накачивают поршневым насосом до давления $p = 150\text{ кПа}$. Сколько ходов потребуется сделать поршню насоса, если при каждом ходе он засасывает $V_0 = 200\text{ см}^3$ воздуха? Атмосферное давление $p_0 = 100\text{ кПа}$. Первоначально камера мяча была пустой. Изменением температуры воздуха пренебречь.</div>
+      <div class="task-desc">Введите количество ходов поршня:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-19-input" />
+        <button class="btn-main" onclick="validateCalculation(19)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-19"></div>
+      <button class="btn-solution" id="btn-sol-19" onclick="toggleSolution(19)">Показать Решение</button>
+      <div class="solution-box" id="sol-19">
+        <strong>СИ:</strong>
+        <ul>
+          <li>$V = 4{,}0\text{ л} = 4{,}0 \cdot 10^{-3}\text{ м}^3$</li>
+          <li>$p = 150\text{ кПа} = 150 \cdot 10^3\text{ Па}$</li>
+          <li>$V_0 = 200\text{ см}^3 = 200 \cdot 10^{-6}\text{ м}^3$</li>
+          <li>$p_0 = 100\text{ кПа} = 10^5\text{ Па}$</li>
+        </ul>
+        <p>Так как камера мяча изначально пустая, весь воздух в ней появляется постепенно из насоса. Процесс изотермический ($T = \text{const}$).</p>
+        <ol>
+          <li><strong>После 1-го хода поршня:</strong><br/>
+            Насос забирает из атмосферы порцию воздуха объемом $V_0$ при давлении $p_0$ и загоняет её внутрь мяча в объем $V$. По закону Бойля-Мариотта этот воздух создаст в мяче давление $p_{(1)}$:
+            <div class="math-scroll">
+              $$p_0 \cdot V_0 = p_{(1)} \cdot V$$
+            </div>
+          </li>
+          <li><strong>После $N$ ходов поршня:</strong><br/>
+            Когда поршень сделает $N$ ходов, суммарный объем воздуха, взятого из атмосферы при давлении $p_0$, составит $N \cdot V_0$. Внутри мяча объемом $V$ этот воздух окажется сжатым до требуемого конечного давления $p$:
+            <div class="math-scroll">
+              $$p_0 \cdot (N \cdot V_0) = p \cdot V$$
+            </div>
+          </li>
+        </ol>
+        <p>Выразим и рассчитаем количество ходов поршня:</p>
+        <div class="math-scroll">
+          $$N = \frac{p \cdot V}{p_0 \cdot V_0}$$
+          $$N = \frac{150 \cdot 10^3 \cdot 4{,}0 \cdot 10^{-3}}{10^5 \cdot 200 \cdot 10^{-6}} = \frac{600}{20} = 30\text{ ходов}$$
+        </div>
+        <strong>Ответ:</strong> $30\text{ ходов}$.
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Рендеринг формул KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const correctAnswers = {
+      3: ['2'],
+      5: ['4'],
+      6: ['5'],
+      7: ['2'],
+      8: ['3'],
+      9: ['4'],
+      10: ['5'],
+      17: ['4']
+    };
+
+    function handleChoice(taskId, value, buttonEl) {
+      const card = document.getElementById(`task-${taskId}`);
+      const buttons = card.querySelectorAll('.btn-option');
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      const isCorrect = correctAnswers[taskId] && correctAnswers[taskId].includes(value);
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Отличная работа.';
+        btnSol.style.display = 'none';
+      } else {
+        buttonEl.classList.add('incorrect');
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверно. Попробуйте еще раз или посмотрите решение.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function parseStrVal(str) {
+      if (!str) return '';
+      return str.trim().toLowerCase().replace(/\s+/g, '').replace('–', '-').replace('—', '-');
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      // Задача 1: 0.6 м^3
+      if (taskId === 1) isCorrect = Math.abs(val - 0.6) < 0.05;
+      // Задача 2: 105 кПа
+      else if (taskId === 2) isCorrect = Math.abs(val - 105) < 1;
+      // Задача 4: 1.2 раза
+      else if (taskId === 4) isCorrect = Math.abs(val - 1.2) < 0.05;
+      // Задача 14: 500 К
+      else if (taskId === 14) isCorrect = Math.abs(val - 500) < 5;
+      // Задача 15: 5.5 МПа
+      else if (taskId === 15) isCorrect = Math.abs(val - 5.5) < 0.1 || Math.abs(val - 5500) < 50;
+      // Задача 16: 1 см
+      else if (taskId === 16) isCorrect = Math.abs(val - 1) < 0.1 || Math.abs(val - 0.01) < 0.002;
+      // Задача 18: 412 Н
+      else if (taskId === 18) isCorrect = Math.abs(val - 412) < 2;
+      // Задача 19: 30 ходов
+      else if (taskId === 19) isCorrect = Math.abs(val - 30) < 1;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask11() {
+      const a = parseStrVal(document.getElementById('calc-11-a').value);
+      const b = parseStrVal(document.getElementById('calc-11-b').value);
+      const c = parseStrVal(document.getElementById('calc-11-c').value);
+      const status = document.getElementById('status-11');
+      const btnSol = document.getElementById('btn-sol-11');
+
+      const isA = (a === '2-3' || a === '2->3' || a === '23');
+      const isB = (b === '5-1' || b === '5->1' || b === '51');
+      const isC = (c === '3-4' || c === '3->4' || c === '34');
+
+      if (isA && isB && isC) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Все процессы определены абсолютно верно!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ В определении некоторых процессов есть ошибка.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask12() {
+      const t1 = parseVal(document.getElementById('calc-12-t1').value);
+      const t3 = parseVal(document.getElementById('calc-12-t3').value);
+      const status = document.getElementById('status-12');
+      const btnSol = document.getElementById('btn-sol-12');
+
+      if (Math.abs(t1 - 600) < 5 && Math.abs(t3 - 900) < 5) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Температуры T1 и T3 найдены правильно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверный расчет температур.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask13() {
+      const p2 = parseVal(document.getElementById('calc-13-p2').value);
+      const p3 = parseVal(document.getElementById('calc-13-p3').value);
+      const status = document.getElementById('status-13');
+      const btnSol = document.getElementById(`btn-sol-13`);
+
+      if (Math.abs(p2 - 60) < 1 && Math.abs(p3 - 360) < 2) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Отлично! Давления p2 и p3 определены точно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в значениях давлений.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>
