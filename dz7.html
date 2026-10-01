@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ДЗ • Влажность воздуха • 10 класс</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX для формул -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --surface-card: rgba(18, 22, 34, 0.72);
+      --surface-elevated: rgba(26, 32, 48, 0.85);
+      --surface-input: rgba(13, 16, 26, 0.7);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #f43f5e;
+      --error-glow: rgba(244, 63, 94, 0.2);
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 40px;
+      padding-bottom: 140px;
+      overflow-x: hidden;
+    }
+
+    /* Главный контейнер */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* Карточки задач */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      margin-bottom: 28px;
+      transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring), border-color 0.35s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 28px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .task-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 4px 12px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+
+    .task-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    /* Таблицы */
+    .table-box {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--surface-elevated);
+      margin: 16px 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    th:last-child, td:last-child {
+      border-right: none;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Поля ввода и кнопки */
+    .input-action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .multi-input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .field-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+    }
+
+    .field-item label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 180px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .input-text:focus {
+      border-color: var(--accent);
+      background: rgba(20, 26, 42, 0.9);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-main {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* Кнопки вариантов ответов */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .options-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-option {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .options-vertical .btn-option {
+      justify-content: flex-start;
+      text-align: left;
+      padding: 14px 20px;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background: rgba(45, 55, 80, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-option:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background: var(--success) !important;
+      border-color: var(--success) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--success-glow) !important;
+    }
+
+    .btn-option.incorrect {
+      background: var(--error) !important;
+      border-color: var(--error) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 24px var(--error-glow) !important;
+    }
+
+    /* Уведомления и решение */
+    .status-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      animation: smoothSlideIn 0.35s var(--ease-spring) forwards;
+    }
+
+    .status-msg.correct {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-msg.incorrect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 63, 94, 0.1);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-solution {
+      display: none;
+      margin-top: 14px;
+      background: rgba(244, 63, 94, 0.08);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s var(--ease-spring);
+    }
+
+    .btn-solution:hover {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: #f43f5e;
+      transform: translateY(-1px);
+    }
+
+    /* Блок решения с полной адаптивностью */
+    .solution-box {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--accent);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: #e2e8f0;
+      animation: smoothSlideIn 0.4s var(--ease-spring) forwards;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .solution-box strong {
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solution-box p, .solution-box div {
+      margin-bottom: 10px;
+    }
+
+    .solution-box ol, .solution-box ul {
+      margin-left: 22px;
+      margin-bottom: 12px;
+    }
+
+    .solution-box li {
+      margin-bottom: 6px;
+    }
+
+    .math-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-scroll::-webkit-scrollbar,
+    .task-title::-webkit-scrollbar,
+    .solution-box::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .math-scroll::-webkit-scrollbar-thumb,
+    .task-title::-webkit-scrollbar-thumb,
+    .solution-box::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0;
+      margin: 6px 0 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .katex-display::-webkit-scrollbar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 10px;
+    }
+
+    @keyframes smoothSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">10 класс</div>
+      <h1>Влажность воздуха</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 (№263) -->
+    <div class="card" id="task-1">
+      <div class="task-num">Задача 1</div>
+      <div class="task-title">Закрытый сосуд частично заполнен водой. Изменится ли концентрация молекул водяного пара в сосуде при нагревании воды?</div>
+      <div class="options-vertical">
+        <button class="btn-option" onclick="handleChoice(1, '1', this)">1) Концентрация увеличится</button>
+        <button class="btn-option" onclick="handleChoice(1, '2', this)">2) Концентрация уменьшится</button>
+        <button class="btn-option" onclick="handleChoice(1, '3', this)">3) Концентрация не изменится</button>
+      </div>
+      <div class="status-msg" id="status-1"></div>
+      <button class="btn-solution" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <p><strong>Насыщенный пар:</strong> Поскольку сосуд закрыт и частично заполнен водой, над поверхностью жидкости находится насыщенный водяной пар, пребывающий в динамическом равновесии со своей жидкостью.</p>
+        <p><strong>Влияние температуры:</strong> При нагревании возрастает средняя кинетическая энергия молекул воды. Всё большее число молекул получает возможность преодолеть силы межмолекулярного притяжения и покинуть жидкость (процесс испарения начинает преобладать над конденсацией).</p>
+        <p><strong>Смена равновесия:</strong> Чтобы динамическое равновесие восстановилось при более высокой температуре, плотность пара́ должна стать выше. В результате дополнительного испарения число молекул пара в единице объёма (то есть его <strong>концентрация</strong>) увеличивается.</p>
+        <strong>Ответ:</strong> вариант 1 (концентрация увеличится).
+      </div>
+    </div>
+
+    <!-- Задача 2 (№266) -->
+    <div class="card" id="task-2">
+      <div class="task-num">Задача 2</div>
+      <div class="task-title">Являлся ли водяной пар насыщенным, если:<br/>
+      а) при температуре $t = 14\text{ }^\circ\text{C}$ давление водяного пара $p = 1{,}0\text{ кПа}$;<br/>
+      б) при температуре $t = 19\text{ }^\circ\text{C}$ плотность водяного пара $\rho = 16{,}3\text{ }\frac{\text{г}}{\text{м}^3}$;<br/>
+      в) при температуре $t = 22\text{ }^\circ\text{C}$ в $1{,}0\text{ м}^3$ содержится $18\text{ г}$ воды?</div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>а) Состояние пара:</label>
+          <input type="text" class="input-text" id="calc-2-a" />
+        </div>
+        <div class="field-item">
+          <label>б) Состояние пара:</label>
+          <input type="text" class="input-text" id="calc-2-b" />
+        </div>
+        <div class="field-item">
+          <label>в) Состояние пара:</label>
+          <input type="text" class="input-text" id="calc-2-c" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask2()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-2"></div>
+      <button class="btn-solution" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <p><strong>а) При температуре $t = 14\text{ }^\circ\text{C}$ давление $p = 1{,}0\text{ кПа}$:</strong></p>
+        <ul>
+          <li><strong>Справочные данные:</strong> При температуре $14\text{ }^\circ\text{C}$ давление насыщенного водяного пара составляет $p_{\text{н}} \approx 1{,}60\text{ кПа}$.</li>
+          <li><strong>Сравнение:</strong> Заданное давление меньше насыщенного ($1{,}0\text{ кПа} < 1{,}60\text{ кПа}$).</li>
+          <li><strong>Ответ:</strong> Пар является ненасыщенным.</li>
+        </ul>
+        <p><strong>б) При температуре $t = 19\text{ }^\circ\text{C}$ плотность $\rho = 16{,}3\text{ г/м}^3$:</strong></p>
+        <ul>
+          <li><strong>Справочные данные:</strong> Из психрометрических таблиц плотность насыщенного водяного пара при $19\text{ }^\circ\text{C}$ равна ровно $\rho_{\text{н}} = 16{,}3\text{ г/м}^3$.</li>
+          <li><strong>Сравнение:</strong> Заданная плотность в точности равна плотности насыщенного пара ($\rho = \rho_{\text{н}}$).</li>
+          <li><strong>Ответ:</strong> Пар является насыщенным.</li>
+        </ul>
+        <p><strong>в) При температуре $t = 22\text{ }^\circ\text{C}$ в $1{,}0\text{ м}^3$ содержится $18\text{ г}$ воды:</strong></p>
+        <ul>
+          <li><strong>Расчёт текущей плотности:</strong> Плотность пара равна отношению массы к объёму:
+            <div class="math-scroll">$$\rho = \frac{m}{V} = \frac{18\text{ г}}{1{,}0\text{ м}^3} = 18{,}0\text{ г/м}^3$$</div>
+          </li>
+          <li><strong>Справочные данные:</strong> При температуре $22\text{ }^\circ\text{C}$ плотность насыщенного водяного пара составляет $\rho_{\text{н}} = 19{,}4\text{ г/м}^3$.</li>
+          <li><strong>Сравнение:</strong> Текущая плотность пара меньше плотности насыщенного пара ($18{,}0\text{ г/м}^3 < 19{,}4\text{ г/м}^3$).</li>
+          <li><strong>Ответ:</strong> Пар является ненасыщенным.</li>
+        </ul>
+        <strong>Ответ:</strong> а) ненасыщенный; б) насыщенный; в) ненасыщенный.
+      </div>
+    </div>
+
+    <!-- Задача 3 (№267) -->
+    <div class="card" id="task-3">
+      <div class="task-num">Задача 3</div>
+      <div class="task-title">Определите массу насыщенного водяного пара, находящегося в аквариуме объемом $V = 2{,}0\text{ м}^3$ при температуре $t = 25\text{ }^\circ\text{C}$.</div>
+      <div class="task-desc">Введите массу пара в граммах ($\text{г}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-3-input" />
+        <button class="btn-main" onclick="validateCalculation(3)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-3"></div>
+      <button class="btn-solution" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <p><strong>1. Данные из условия и справочника:</strong></p>
+        <ul>
+          <li>Объём аквариума: $V = 2{,}0\text{ м}^3$</li>
+          <li>Температура: $t = 25\text{ }^\circ\text{C}$</li>
+          <li><strong>Справочное значение:</strong> По таблице плотности насыщенного водяного пара при температуре $25\text{ }^\circ\text{C}$ плотность составляет $\rho_{\text{н}} = 23\text{ г/м}^3$.</li>
+        </ul>
+        <p><strong>2. Расчёт массы:</strong><br/>
+        Масса пара находится как произведение его плотности на объём:</p>
+        <div class="math-scroll">
+          $$m = \rho_{\text{н}} \cdot V$$
+          $$m = 23\text{ г/м}^3 \cdot 2{,}0\text{ м}^3 = 46\text{ г}$$
+        </div>
+        <strong>Ответ:</strong> $m = 46\text{ г}$.
+      </div>
+    </div>
+
+    <!-- Задача 4 (№272) -->
+    <div class="card" id="task-4">
+      <div class="task-num">Задача 4</div>
+      <div class="task-title">В помещении объемом $V = 72\text{ м}^3$ при температуре $t = 20\text{ }^\circ\text{C}$ относительная влажность воздуха $\varphi = 36\%$. Определите число молекул водяного пара, содержащегося в помещении.</div>
+      <div class="task-desc">Введите число молекул водяного пара:</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-4-input" />
+        <button class="btn-main" onclick="validateCalculation(4)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-4"></div>
+      <button class="btn-solution" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <p><strong>1. Данные из условия и справочника:</strong></p>
+        <ul>
+          <li>Объём помещения: $V = 72\text{ м}^3$</li>
+          <li>Температура: $t = 20\text{ }^\circ\text{C}$ (в абсолютной шкале $T = 20 + 273 = 293\text{ К}$)</li>
+          <li>Относительная влажность: $\varphi = 36\% = 0{,}36$</li>
+          <li>Молярная масса воды ($\text{H}_2\text{O}$): $M = 18\text{ г/моль} = 18 \cdot 10^{-3}\text{ кг/моль}$</li>
+          <li>Число Авогадро: $N_A \approx 6{,}02 \cdot 10^{23}\text{ моль}^{-1}$</li>
+          <li><strong>Справочное значение:</strong> Плотность насыщенного водяного пара при $20\text{ }^\circ\text{C}$ составляет $\rho_{\text{н}} = 17{,}3\text{ г/м}^3$.</li>
+        </ul>
+        <p><strong>2. Нахождение массы водяного пара:</strong><br/>
+        Сначала определим фактическую плотность пара́ (абсолютную влажность) в комнате:</p>
+        <div class="math-scroll">
+          $$\rho = \varphi \cdot \rho_{\text{н}} = 0{,}36 \cdot 17{,}3\text{ г/м}^3 \approx 6{,}228\text{ г/м}^3$$
+        </div>
+        <p>Теперь найдём общую массу пара во всём объёме помещения:</p>
+        <div class="math-scroll">
+          $$m = \rho \cdot V = 6{,}228\text{ г/м}^3 \cdot 72\text{ м}^3 \approx 448{,}416\text{ г}$$
+        </div>
+        <p><strong>3. Расчёт числа молекул:</strong><br/>
+        Зная массу и молярную массу, найдём количество вещества (число молей):</p>
+        <div class="math-scroll">
+          $$\nu = \frac{m}{M} = \frac{448{,}416\text{ г}}{18\text{ г/моль}} \approx 24{,}912\text{ моль}$$
+        </div>
+        <p>Умножив количество вещества на постоянную Авогадро, получим общее число молекул:</p>
+        <div class="math-scroll">
+          $$N = \nu \cdot N_A = 24{,}912 \cdot 6{,}02 \cdot 10^{23} \approx 1{,}5 \cdot 10^{25}$$
+        </div>
+        <strong>Ответ:</strong> $N \approx 1{,}5 \cdot 10^{25}$.
+      </div>
+    </div>
+
+    <!-- Задача 5 (№273) -->
+    <div class="card" id="task-5">
+      <div class="task-num">Задача 5</div>
+      <div class="task-title">В комнате объемом $V = 100\text{ м}^3$ при температуре $t = 22\text{ }^\circ\text{C}$ относительная влажность воздуха $\varphi_1 = 50\%$. Определите абсолютную влажность воздуха. Какой станет относительная влажность воздуха, если в комнате при той же температуре дополнительно испарить воду массой $\Delta m = 0{,}43\text{ кг}$?</div>
+      <div class="multi-input-grid">
+        <div class="field-item">
+          <label>Абсолютная влажность ($\text{г/м}^3$):</label>
+          <input type="text" class="input-text" id="calc-5-abs" />
+        </div>
+        <div class="field-item">
+          <label>Новая относит. влажность ($\%$):</label>
+          <input type="text" class="input-text" id="calc-5-rel" />
+        </div>
+      </div>
+      <div class="input-action-row">
+        <button class="btn-main" style="width: 100%;" onclick="validateTask5()">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-5"></div>
+      <button class="btn-solution" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <p><strong>1. Данные из условия и справочника:</strong></p>
+        <ul>
+          <li>Объём комнаты: $V = 100\text{ м}^3$</li>
+          <li>Относительная влажность: $\varphi_1 = 50\% = 0{,}5$</li>
+          <li>Дополнительная масса воды: $\Delta m = 0{,}43\text{ кг} = 430\text{ г}$</li>
+          <li><strong>Справочное значение:</strong> Плотность насыщенного водяного пара при $t = 22\text{ }^\circ\text{C}$ составляет $\rho_{\text{н}} = 19{,}4\text{ г/м}^3$.</li>
+        </ul>
+        <p>Так как изначально воздух заполнен влагой лишь наполовину ($\varphi_1 = 50\% = 0{,}5$), фактическая плотность пара равна половине от максимально возможной:</p>
+        <div class="math-scroll">
+          $$\rho_1 = \varphi_1 \cdot \rho_{\text{н}} = 0{,}5 \cdot 19{,}4\text{ г/м}^3 = 9{,}7\text{ г/м}^3$$
+        </div>
+        <p>Чтобы понять, какой станет влажность после испарения добавочной воды $\Delta m = 0{,}43\text{ кг}$, нам нужно прибавить эту массу к той массе пара, которая уже летала в воздухе комнаты. Поэтому сначала выясним, сколько килограмм пара было в комнате изначально.</p>
+        <p>Начальная масса пара ($m_1$) в комнате объёмом $V = 100\text{ м}^3$:</p>
+        <div class="math-scroll">
+          $$m_1 = \rho_1 \cdot V = 9{,}7\text{ г/м}^3 \cdot 100\text{ м}^3 = 970\text{ г} = 0{,}97\text{ кг}$$
+        </div>
+        <p><strong>Шаг 3. Находим общую массу пара после испарения воды:</strong><br/>
+        В воздух к уже имеющимся $0{,}97\text{ кг}$ пара добавляется (испаряется) ещё $\Delta m = 0{,}43\text{ кг}$ воды:</p>
+        <div class="math-scroll">
+          $$m_2 = m_1 + \Delta m = 0{,}97\text{ кг} + 0{,}43\text{ кг} = 1{,}4\text{ кг}\text{ (1400 г)}$$
+        </div>
+        <p><strong>Шаг 4. Находим новую абсолютную влажность ($\rho_2$):</strong><br/>
+        Теперь эти $1400\text{ г}$ пара распределены по всему объёму комнаты ($100\text{ м}^3$). Найдём их новую плотность (новую абсолютную влажность $\rho_2$):</p>
+        <div class="math-scroll">
+          $$\rho_2 = \frac{m_2}{V} = \frac{1400\text{ г}}{100\text{ м}^3} = 14\text{ г/м}^3$$
+        </div>
+        <p><strong>Важная проверка: Может ли воздух вместить в себя столько влаги?</strong><br/>
+        Мы знаем, что предел при данной температуре — это $\rho_{\text{н}} = 19{,}4\text{ г/м}^3$. Поскольку наша новая плотность ($14\text{ г/м}^3$) меньше предела, вся добавленная вода успешно превратится в пар, не превращаясь обратно в капли.</p>
+        <p><strong>Шаг 5. Расчёт итоговой относительной влажности ($\varphi_2$):</strong><br/>
+        Имея новую плотность пара ($14\text{ г/м}^3$), мы соотносим её с максимально возможной ($19{,}4\text{ г/м}^3$), чтобы узнать новый процент влажности:</p>
+        <div class="math-scroll">
+          $$\varphi_2 = \frac{\rho_2}{\rho_{\text{н}}} \cdot 100\% = \frac{14\text{ г/м}^3}{19{,}4\text{ г/м}^3} \cdot 100\% \approx 0{,}7216 \cdot 100\% = 72{,}2\%$$
+        </div>
+        <strong>Ответ:</strong><br/>
+        1. Первоначальная абсолютная влажность воздуха: <strong>$9{,}7\text{ г/м}^3$</strong>.<br/>
+        2. Новая относительная влажность воздуха в комнате: <strong>$72{,}2\%$</strong>.
+      </div>
+    </div>
+
+    <!-- Задача 6 (ЦТ2025) -->
+    <div class="card" id="task-6">
+      <div class="task-num">Задача 6</div>
+      <div class="task-title">Зависимость давления $p_{\text{н}}$ насыщенного водяного пара от температуры $t$ в диапазоне температур от $t_1 = 13\text{ }^\circ\text{C}$ до $t_2 = 23\text{ }^\circ\text{C}$ можно приближённо описать уравнением $p_{\text{н}}(t) = At^2 + Bt + C$, где $A = 6{,}9\text{ }\frac{\text{Па}}{(^\circ\text{C})^2}$, $B = -124\text{ }\frac{\text{Па}}{^\circ\text{C}}$, $C = 1780\text{ Па}$. Если человек в очках заходит с улицы, где температура $t_1 = 13\text{ }^\circ\text{C}$, в помещение, в котором температура $t_2 = 23\text{ }^\circ\text{C}$, то наименьшая относительная влажность воздуха $\varphi$ в помещении, при которой у человека могут запотеть очки, равна ... %.</div>
+      <div class="task-desc">Введите относительную влажность в процентах ($\%$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-6-input" />
+        <button class="btn-main" onclick="validateCalculation(6)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-6"></div>
+      <button class="btn-solution" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <ol>
+          <li>В комнате при температуре $23\text{ }^\circ\text{C}$ летает водяной пар. Он имеет какое-то реальное давление $p$.</li>
+          <li>Когда этот воздух охлаждается до $13\text{ }^\circ\text{C}$, давление самого пара $p$ не меняется. Но табличное давление насыщенного пара ($p_{\text{н}}$) при охлаждении сильно падает.</li>
+          <li>Роса выпадает в тот момент, когда пар становится <strong>насыщенным</strong> (то есть его влажность достигает 100%). Это происходит, когда реальное давление пара $p$ сравнивается с давлением насыщенного пара при холодной температуре:
+            <div class="math-scroll">$$p = p_{\text{н}}(13\text{ }^\circ\text{C})$$</div>
+            <div class="math-scroll">$$p = 6{,}9 \cdot 169 - 1612 + 1780 = 1334{,}1\text{ Па}$$</div>
+          </li>
+        </ol>
+        <p>По той же формуле найдём табличное давление насыщенного пара для комнатной температуры $t_2 = 23\text{ }^\circ\text{C}$:</p>
+        <div class="math-scroll">
+          $$p_{\text{н}}(23) = 6{,}9 \cdot 529 - 2852 + 1780 = 2578{,}1\text{ Па}$$
+        </div>
+        <p>Вспоминаем стандартную формулу влажности из учебника:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{p}{p_{\text{н}}} \cdot 100\%$$
+        </div>
+        <p>Подставляем наши значения для тёплой комнаты:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{1334{,}1\text{ Па}}{2578{,}1\text{ Па}} \cdot 100\% \approx 51{,}7\%$$
+        </div>
+        <strong>Ответ:</strong> $51{,}7\%$ (или $52\%$).
+      </div>
+    </div>
+
+    <!-- Задача 7 (ЦЭ 2023) -->
+    <div class="card" id="task-7">
+      <div class="task-num">Задача 7</div>
+      <div class="task-title">Вечером при температуре воздуха $t_1 = 11{,}0\text{ }^\circ\text{C}$ относительная влажность воздуха была $\varphi = 68\%$. Ночью температура понизилась до $t_2 = 2{,}0\text{ }^\circ\text{C}$. Если плотность насыщенного водяного пара при температурах $t_1$ и $t_2$ равна соответственно $\rho_{\text{н}1} = 10{,}0\text{ }\frac{\text{г}}{\text{м}^3}$ и $\rho_{\text{н}2} = 5{,}6\text{ }\frac{\text{г}}{\text{м}^3}$, то из воздуха объемом $V = 30\text{ м}^3$ выпала роса массой $m$, равной ... г.</div>
+      <div class="task-desc">Введите массу выпавшей росы в граммах ($\text{г}$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-7-input" />
+        <button class="btn-main" onclick="validateCalculation(7)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-7"></div>
+      <button class="btn-solution" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <p><strong>Шаг 1. Находим, сколько грамм пара было в каждом кубическом метре вечером:</strong><br/>
+        Вечером воздух при температуре $t_1 = 11{,}0\text{ }^\circ\text{C}$ был заполнен влагой на $\varphi = 68\%$. Зная из условия, что плотность насыщенного (максимального) пара при этой температуре равна $\rho_{\text{н}1} = 10{,}0\text{ г/м}^3$, найдём реальную плотность пара $\rho_1$:</p>
+        <div class="math-scroll">
+          $$\rho_1 = \varphi \cdot \rho_{\text{н}1} = 0{,}68 \cdot 10{,}0\text{ г/м}^3 = 6{,}8\text{ г/м}^3$$
+        </div>
+        <p><strong>Шаг 2. Находим общую массу пара в комнате вечером:</strong><br/>
+        Умножим плотность пара на весь объём воздуха ($V = 30\text{ м}^3$), чтобы узнать общую массу находящейся в воздухе влаги:</p>
+        <div class="math-scroll">
+          $$m_{\text{вечер}} = \rho_1 \cdot V = 6{,}8\text{ г/м}^3 \cdot 30\text{ м}^3 = 204\text{ г}$$
+        </div>
+        <p><strong>Шаг 3. Находим, сколько пара может максимально остаться в воздухе ночью:</strong><br/>
+        Ночью температура упала до $t_2 = 2{,}0\text{ }^\circ\text{C}$. При такой сильной прохладе пар становится насыщенным, и воздух физически не может удержать плотность выше, чем $\rho_{\text{н}2} = 5{,}6\text{ г/м}^3$. Всё, что окажется лишним, превратится в капли росы.<br/>
+        Найдём максимальную массу пара, которая способна остаться в газообразном состоянии ночью в том же объёме $30\text{ м}^3$:</p>
+        <div class="math-scroll">
+          $$m_{\text{ночь}} = \rho_{\text{н}2} \cdot V = 5{,}6\text{ г/м}^3 \cdot 30\text{ м}^3 = 168\text{ г}$$
+        </div>
+        <p><strong>Шаг 4. Находим массу выпавшей росы:</strong><br/>
+        Разница между вечерней массой пара и той массой, которая смогла остаться ночью, как раз и выпала на землю в виде росы:</p>
+        <div class="math-scroll">
+          $$m = m_{\text{вечер}} - m_{\text{ночь}} = 204\text{ г} - 168\text{ г} = 36\text{ г}$$
+        </div>
+        <strong>Ответ:</strong> $36\text{ г}$.
+      </div>
+    </div>
+
+    <!-- Задача 8 (В10) -->
+    <div class="card" id="task-8">
+      <div class="task-num">Задача 8</div>
+      <div class="task-title">Зависимость давления $p_{\text{н}}$ насыщенного водяного пара от температуры $t$ в диапазоне температур от $t_1 = -1\text{ }^\circ\text{C}$ до $t_2 = 11\text{ }^\circ\text{C}$ можно приближённо описать уравнением $p_{\text{н}}(t) = At^2 + Bt + C$, где $A = 2{,}2\text{ }\frac{\text{Па}}{(^\circ\text{C})^2}$, $B = 46{,}1\text{ }\frac{\text{Па}}{^\circ\text{C}}$, $C = 566\text{ Па}$. Если человек в очках заходит с улицы, где температура $t_1 = -1\text{ }^\circ\text{C}$, в салон автобуса, в котором температура $t_2 = 11\text{ }^\circ\text{C}$, то наименьшая относительная влажность воздуха $\varphi$ в салоне автобуса, при которой у человека могут запотеть очки, равна ... %.</div>
+      <div class="task-desc">Введите относительную влажность в процентах ($\%$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-8-input" />
+        <button class="btn-main" onclick="validateCalculation(8)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-8"></div>
+      <button class="btn-solution" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <ol>
+          <li>Водяной пар находится в тёплом салоне автобуса при температуре $t_2 = 11\text{ }^\circ\text{C}$ и имеет некоторое реальное давление $p$.</li>
+          <li>Когда этот воздух охлаждается до температуры улицы $t_1 = -1\text{ }^\circ\text{C}$, давление самого пара $p$ не изменяется, но табличное давление насыщенного пара сильно падает.</li>
+          <li>Пар становится насыщенным (его влажность доходит до 100%) и начинает выпадать в виде росы (запотевания), когда его реальное давление $p$ в точности сравнивается с давлением насыщенного пара при температуре улицы:
+            <div class="math-scroll">$$p = p_{\text{н}}(-1\text{ }^\circ\text{C})$$</div>
+          </li>
+        </ol>
+        <p><strong>Шаг 1. Находим давление пара, при котором выпадет роса:</strong><br/>
+        Подставим уличную температуру $t_1 = -1\text{ }^\circ\text{C}$ в формулу из условия задачи:</p>
+        <div class="math-scroll">
+          $$p = 2{,}2 \cdot 1 - 46{,}1 + 566 = 2{,}2 - 46{,}1 + 566 = 522{,}1\text{ Па}$$
+        </div>
+        <p>Теперь найдём по той же формуле давление насыщенного пара для температуры внутри автобуса $t_2 = 11\text{ }^\circ\text{C}$:</p>
+        <div class="math-scroll">
+          $$p_{\text{н}}(11) = 266{,}2 + 507{,}1 + 566 = 1339{,}3\text{ Па}$$
+        </div>
+        <p>Применим стандартную формулу влажности воздуха:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{p}{p_{\text{н}}(11)} \cdot 100\%$$
+        </div>
+        <p>Подставим рассчитанные значения:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{522{,}1\text{ Па}}{1339{,}3\text{ Па}} \cdot 100\% \approx 0{,}3898 \cdot 100\% \approx 39\%$$
+        </div>
+        <strong>Ответ:</strong> $39\%$.
+      </div>
+    </div>
+
+    <!-- Задача 9 (ЦТ 2023) -->
+    <div class="card" id="task-9">
+      <div class="task-num">Задача 9</div>
+      <div class="task-title">В сосуде объёмом $V = 4{,}0\text{ м}^3$ при некоторой температуре $t$ находится воздух, относительная влажность которого $\varphi = 60\%$. Если масса водяного пара в сосуде $m = 36\text{ г}$, то плотность $\rho_{\text{н}}$ насыщенного водяного пара при температуре $t$ равна ... $\frac{\text{г}}{\text{м}^3}$.</div>
+      <div class="task-desc">Введите плотность насыщенного пара в граммах на кубический метр ($\text{г/м}^3$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-9-input" />
+        <button class="btn-main" onclick="validateCalculation(9)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-9"></div>
+      <button class="btn-solution" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <p>Плотность — это масса пара, делённая на объём сосуда. Нам известно, что в объёме $V = 4{,}0\text{ м}^3$ находится пар массой $m = 36\text{ г}$:</p>
+        <div class="math-scroll">
+          $$\rho = \frac{m}{V} = \frac{36\text{ г}}{4{,}0\text{ м}^3} = 9\text{ г/м}^3$$
+        </div>
+        <p>Это значит, что сейчас в каждом кубическом метре воздуха содержится ровно 9 грамм водяного пара.</p>
+        <p>Вспоминаем формулу относительной влажности воздуха через плотность:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{\rho}{\rho_{\text{н}}} \cdot 100\%$$
+        </div>
+        <p>Подставим нашу найденную реальную плотность пара ($9\text{ г/м}^3$):</p>
+        <div class="math-scroll">
+          $$\rho_{\text{н}} = \frac{9}{0{,}6} = 15\text{ г/м}^3$$
+        </div>
+        <strong>Ответ:</strong> $15\text{ г/м}^3$.
+      </div>
+    </div>
+
+    <!-- Задача 10 (ЦТ 2022) -->
+    <div class="card" id="task-10">
+      <div class="task-num">Задача 10</div>
+      <div class="task-title">Значения плотности $\rho_{\text{н}}$ насыщенного водяного пара при различных температурах $t$ представлены в таблице. Если в одном кубическом метре комнатного воздуха при температуре $t_0 = 22\text{ }^\circ\text{C}$ содержится $m = 12{,}4\text{ г}$ водяного пара, то относительная влажность $\varphi$ воздуха в комнате равна ... %.</div>
+      
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>$t,\ ^\circ\text{C}$</th>
+              <th>21</th>
+              <th>22</th>
+              <th>23</th>
+              <th>24</th>
+              <th>25</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$\rho_{\text{н}},\ \text{г/м}^3$</td>
+              <td>18,3</td>
+              <td>19,4</td>
+              <td>20,6</td>
+              <td>21,8</td>
+              <td>23,0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task-desc">Введите относительную влажность в процентах ($\%$):</div>
+      <div class="input-action-row">
+        <input type="text" class="input-text" id="calc-10-input" />
+        <button class="btn-main" onclick="validateCalculation(10)">Проверить</button>
+      </div>
+      <div class="status-msg" id="status-10"></div>
+      <button class="btn-solution" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <p>По условию, в <strong>одном кубическом метре ($V = 1\text{ м}^3$)</strong> воздуха содержится $m = 12{,}4\text{ г}$ водяного пара. Плотность пара — это его масса в одном кубометре:</p>
+        <div class="math-scroll">
+          $$\rho = \frac{m}{V} = \frac{12{,}4\text{ г}}{1\text{ м}^3} = 12{,}4\text{ г/м}^3$$
+        </div>
+        <p><strong>Шаг 2. Находим по таблице плотность насыщенного пара ($\rho_{\text{н}}$):</strong><br/>
+        Смотрим в таблицу из условия задачи. Для комнатной температуры $t_0 = 22\text{ }^\circ\text{C}$ плотность насыщенного пара равна:</p>
+        <div class="math-scroll">
+          $$\rho_{\text{н}} = 19{,}4\text{ г/м}^3$$
+        </div>
+        <p><strong>Шаг 3. Находим относительную влажность воздуха ($\varphi$):</strong><br/>
+        Используем стандартную формулу влажности из учебника:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{\rho}{\rho_{\text{н}}} \cdot 100\%$$
+        </div>
+        <p>Подставляем наши числа:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{12{,}4\text{ г/м}^3}{19{,}4\text{ г/м}^3} \cdot 100\% \approx 0{,}63917 \cdot 100\% \approx 64\%$$
+        </div>
+        <strong>Ответ:</strong> $64\%$.
+      </div>
+    </div>
+
+    <!-- Задача 11 (ЦТ 2019) -->
+    <div class="card" id="task-11">
+      <div class="task-num">Задача 11</div>
+      <div class="task-title">Если давление $p_0$ насыщенного водяного пара при некоторой температуре больше парциального давления $p$ водяного пара в воздухе при этой же температуре в $n = 1{,}2$ раза, то относительная влажность $\varphi$ воздуха равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(11, '1', this)">1) 35%</button>
+        <button class="btn-option" onclick="handleChoice(11, '2', this)">2) 46%</button>
+        <button class="btn-option" onclick="handleChoice(11, '3', this)">3) 59%</button>
+        <button class="btn-option" onclick="handleChoice(11, '4', this)">4) 66%</button>
+        <button class="btn-option" onclick="handleChoice(11, '5', this)">5) 83%</button>
+      </div>
+      <div class="status-msg" id="status-11"></div>
+      <button class="btn-solution" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <p>В условии сказано, что давление насыщенного водяного пара ($p_{\text{н}}$) больше парциального давления водяного пара ($p_{\text{п}}$) в $n = 1{,}2$ раза. Запишем это равенство:</p>
+        <div class="math-scroll">
+          $$p_{\text{н}} = 1{,}2 \cdot p_{\text{п}}$$
+        </div>
+        <p><strong>Шаг 2. Записываем формулу относительной влажности:</strong><br/>
+        По определению, относительная влажность ($\varphi$) — это отношение парциального давления водяного пара к давлению насыщенного пара при этой же температуре:</p>
+        <div class="math-scroll">
+          $$\varphi = \frac{p_{\text{п}}}{p_{\text{н}}} \cdot 100\%$$
+          $$\varphi = \frac{1}{1{,}2} \cdot 100\% = \frac{5}{6} \cdot 100\% \approx 0{,}8333 \cdot 100\% \approx 83{,}3\%$$
+        </div>
+        <p>При округлении до целых чисел получаем $83\%$, что соответствует варианту №5.</p>
+        <strong>Ответ:</strong> вариант 5 (83%).
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Рендеринг формул KaTeX
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const correctAnswers = {
+      1: ['1'],
+      11: ['5']
+    };
+
+    function handleChoice(taskId, value, buttonEl) {
+      const card = document.getElementById(`task-${taskId}`);
+      const buttons = card.querySelectorAll('.btn-option');
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+
+      buttons.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+      const isCorrect = correctAnswers[taskId] && correctAnswers[taskId].includes(value);
+
+      if (isCorrect) {
+        buttonEl.classList.add('correct');
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Верно! Отличная работа.';
+        btnSol.style.display = 'none';
+      } else {
+        buttonEl.classList.add('incorrect');
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Неверно. Попробуйте еще раз или посмотрите решение.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+      s = s.replace('·', '*').replace('x', '*').replace('х', '*');
+      s = s.replace(/10\^(\-?\d+)/g, '1e$1');
+      s = s.replace(/\*1e/g, 'e');
+      return parseFloat(s);
+    }
+
+    function parseStrVal(str) {
+      if (!str) return '';
+      return str.trim().toLowerCase().replace(/\s+/g, '');
+    }
+
+    function validateCalculation(taskId) {
+      const inputEl = document.getElementById(`calc-${taskId}-input`);
+      const val = parseVal(inputEl.value);
+      const status = document.getElementById(`status-${taskId}`);
+      const btnSol = document.getElementById(`btn-sol-${taskId}`);
+      let isCorrect = false;
+
+      // Задача 3: 46 г
+      if (taskId === 3) isCorrect = Math.abs(val - 46) < 1;
+      // Задача 4: 1.5e25
+      else if (taskId === 4) isCorrect = Math.abs(val - 1.5e25) < 0.2e25 || Math.abs(val - 1.5) < 0.2;
+      // Задача 6: 51.7% (или 52%)
+      else if (taskId === 6) isCorrect = Math.abs(val - 51.7) < 1 || Math.abs(val - 52) < 0.5;
+      // Задача 7: 36 г
+      else if (taskId === 7) isCorrect = Math.abs(val - 36) < 1;
+      // Задача 8: 39% (или 38.98%)
+      else if (taskId === 8) isCorrect = Math.abs(val - 39) < 1 || Math.abs(val - 38.98) < 0.5;
+      // Задача 9: 15 г/м3
+      else if (taskId === 9) isCorrect = Math.abs(val - 15) < 0.5;
+      // Задача 10: 64% (или 63.9%)
+      else if (taskId === 10) isCorrect = Math.abs(val - 64) < 1 || Math.abs(val - 63.9) < 0.5;
+
+      if (isCorrect) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Правильно! Расчет выполнен верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Не сходится. Перепроверьте расчет.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask2() {
+      const a = parseStrVal(document.getElementById('calc-2-a').value);
+      const b = parseStrVal(document.getElementById('calc-2-b').value);
+      const c = parseStrVal(document.getElementById('calc-2-c').value);
+      const status = document.getElementById('status-2');
+      const btnSol = document.getElementById('btn-sol-2');
+
+      const isA = a.includes('не') || a === 'ненасыщенный' || a === 'нет';
+      const isB = (!b.includes('не') && b.includes('насыщ')) || b === 'насыщенный' || b === 'да';
+      const isC = c.includes('не') || c === 'ненасыщенный' || c === 'нет';
+
+      if (isA && isB && isC) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Состояния пара во всех трех пунктах определены верно!';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ В определении состояния пара есть ошибка.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function validateTask5() {
+      const abs = parseVal(document.getElementById('calc-5-abs').value);
+      const rel = parseVal(document.getElementById('calc-5-rel').value);
+      const status = document.getElementById('status-5');
+      const btnSol = document.getElementById('btn-sol-5');
+
+      if (Math.abs(abs - 9.7) < 0.2 && (Math.abs(rel - 72.2) < 0.5 || Math.abs(rel - 72) < 0.5)) {
+        status.className = 'status-msg correct';
+        status.innerHTML = '✓ Отлично! И абсолютная, и новая относительная влажность найдены верно.';
+        btnSol.style.display = 'none';
+      } else {
+        status.className = 'status-msg incorrect';
+        status.innerHTML = '✕ Ошибка в расчете влажности.';
+        btnSol.style.display = 'inline-block';
+      }
+    }
+
+    function toggleSolution(taskId) {
+      const box = document.getElementById(`sol-${taskId}`);
+      if (box.style.display === 'block') {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+        if (window.renderMathInElement) {
+          renderMathInElement(box, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initMath, 200);
+    });
+  </script>
+</body>
+</html>
