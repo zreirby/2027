@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ДЗ 17. Количество теплоты. Уравнение теплового баланса. 8 класс повторение</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --card-bg: rgba(18, 22, 34, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-main);
+      background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+                        radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+    ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.8); }
+    main { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px 20px; }
+    .hero { text-align: center; margin-bottom: 40px; }
+    .hero-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc; font-size: 0.875rem; font-weight: 600; margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 2.1rem; font-weight: 800; margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--text-muted); font-size: 1.05rem; }
+    .task-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 24px; padding: 28px; margin-bottom: 32px;
+      backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .task-header { margin-bottom: 18px; }
+    .task-badge {
+      display: inline-block; font-size: 0.85rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 8px; background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.25);
+    }
+    .task-text { font-size: 1.02rem; color: #e2e8f0; margin-bottom: 22px; }
+    .task-image-wrap { text-align: center; margin: 18px 0; }
+    .task-image-wrap img {
+      max-width: 100%; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+    .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+    .btn-option {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0; padding: 12px 18px; border-radius: 12px; text-align: left;
+      font-family: inherit; font-size: 0.98rem; cursor: pointer; transition: 0.2s ease;
+    }
+    .btn-option:hover:not(:disabled) { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4); }
+    .btn-option.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; color: #6ee7b7 !important; }
+    .btn-option.incorrect { background: rgba(244, 63, 94, 0.2) !important; border-color: #f43f5e !important; color: #fda4af !important; }
+    .calc-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .calc-row label { font-size: 0.95rem; color: var(--text-muted); }
+    .calc-input-group { display: flex; gap: 12px; align-items: center; }
+    .calc-input {
+      flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px; padding: 12px 16px; color: #fff; font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace; outline: none;
+    }
+    .calc-input:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+    .btn-check {
+      background: var(--primary-gradient); border: none; color: #fff; padding: 12px 24px;
+      border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+    .feedback-msg { display: none; font-size: 0.92rem; font-weight: 600; padding: 8px 12px; border-radius: 8px; margin-top: 10px; }
+    .feedback-msg.correct { display: block; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; }
+    .feedback-msg.incorrect { display: block; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); color: #f87171; }
+    .btn-solution-toggle {
+      display: none; margin-top: 14px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 8px 18px;
+      border-radius: 10px; font-size: 0.88rem; cursor: pointer;
+    }
+    .solution-box {
+      display: none; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 16px; padding: 20px; margin-top: 20px; overflow-x: auto; max-width: 100%;
+    }
+    .solution-title { color: #a5b4fc; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; }
+    .solution-content { font-size: 0.98rem; color: #cbd5e1; line-height: 1.7; }
+    .math-scroll { overflow-x: auto; max-width: 100%; padding: 6px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <div class="hero-badge">ДЗ 17</div>
+      <h1>Количество теплоты. Уравнение теплового баланса. 8 класс повторение</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 -->
+    <div class="task-card" id="task-1">
+      <div class="task-header"><span class="task-badge">Задача 1</span></div>
+      <div class="task-text">Вид теплообмена, который сопровождается переносом вещества:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(1, 1, this)">1) теплопроводность;</button>
+        <button class="btn-option" onclick="handleChoice(1, 2, this)">2) излучение;</button>
+        <button class="btn-option" onclick="handleChoice(1, 3, this)">3) конвекция;</button>
+        <button class="btn-option" onclick="handleChoice(1, 4, this)">4) теплопроводность и конвекция;</button>
+        <button class="btn-option" onclick="handleChoice(1, 5, this)">5) излучение и конвекция.</button>
+      </div>
+      <div class="feedback-msg" id="fb-1"></div>
+      <button class="btn-solution-toggle" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">1 Овет: конвекция</div>
+      </div>
+    </div>
+
+    <!-- Задача 2 -->
+    <div class="task-card" id="task-2">
+      <div class="task-header"><span class="task-badge">Задача 2</span></div>
+      <div class="task-text">Удельная теплоемкость железа $c = 460\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$. Это означает, что:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(2, 1, this)">1) для нагревания любой массы железа на 1 К необходимо 460 Дж теплоты;</button>
+        <button class="btn-option" onclick="handleChoice(2, 2, this)">2) для нагревания 1 кг железа на 1 К необходимо 460 Дж теплоты;</button>
+        <button class="btn-option" onclick="handleChoice(2, 3, this)">3) 1 кг железа при 100 °С сообщается 460 Дж теплоты;</button>
+        <button class="btn-option" onclick="handleChoice(2, 4, this)">4) любой массе железа при 100 °С сообщается 460 Дж теплоты;</button>
+        <button class="btn-option" onclick="handleChoice(2, 5, this)">5) 1 кг железа при 0 °С выделяет 460 Дж теплоты.</button>
+      </div>
+      <div class="feedback-msg" id="fb-2"></div>
+      <button class="btn-solution-toggle" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">1 Ответ: для нагревания 1 кг железа на 1 градус потребуется 460 Дж</div>
+      </div>
+    </div>
+
+    <!-- Задача 3 -->
+    <div class="task-card" id="task-3">
+      <div class="task-header"><span class="task-badge">Задача 3</span></div>
+      <div class="task-text">Если при остывании вещества массой $m = 3000\text{ г}$ на $\Delta T = 2,00\text{ К}$ выделилось 2340 Дж теплоты, то удельная теплоемкость вещества составляет:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(3, 1, this)">1) $293\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$; </button>
+        <button class="btn-option" onclick="handleChoice(3, 2, this)">2) $347\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$; </button>
+        <button class="btn-option" onclick="handleChoice(3, 3, this)">3) $390\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$; </button>
+        <button class="btn-option" onclick="handleChoice(3, 4, this)">4) $1,56\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$; </button>
+        <button class="btn-option" onclick="handleChoice(3, 5, this)">5) $3,51\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-3"></div>
+      <button class="btn-solution-toggle" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 2<br>
+          1. Запишем дано и переведем величины в СИ:<br>
+          1. Масса вещества: $m = 3000\text{ г} = 3\text{ кг}$<br>
+          2. Изменение температуры: $\Delta T = 2,00\text{ К}$<br>
+          3. Выделившееся количество теплоты: $Q = 2340\text{ Дж}$<br><br>
+          2. Используем формулу количества теплоты при остывании:
+          <div class="math-scroll">$$Q = c \cdot m \cdot \Delta T$$</div>
+          где $c$ — удельная теплоемкость вещества.<br><br>
+          3. Выразим и найдем удельную теплоемкость c:
+          <div class="math-scroll">$$c = \frac{Q}{m \cdot \Delta T}$$</div>
+          <div class="math-scroll">$$c = \frac{2340}{3 \cdot 2,00} = \frac{2340}{6} = 390\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="task-card" id="task-4">
+      <div class="task-header"><span class="task-badge">Задача 4</span></div>
+      <div class="task-text">На рисунке изображён график зависимости температуры $t$ от времени $\tau$ для трёх тел (1, 2 и 3) одинаковой массы, помещённых в печь. Если каждому из тел ежесекундно сообщалось одно и то же количество теплоты, то для удельных теплоёмкостей веществ $c_1$, $c_2$ и $c_3$ этих тел выполняется соотношение:</div>
+      <div class="task-image-wrap">
+        <img src="image1.png" alt="График к задаче 4" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+1';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(4, 1, this)">1) $c_1 < c_2 = c_3$</button>
+        <button class="btn-option" onclick="handleChoice(4, 2, this)">2) $c_1 = c_3 < c_2$</button>
+        <button class="btn-option" onclick="handleChoice(4, 3, this)">3) $c_1 < c_3 < c_2$</button>
+        <button class="btn-option" onclick="handleChoice(4, 4, this)">4) $c_2 < c_3 < c_1$</button>
+        <button class="btn-option" onclick="handleChoice(4, 5, this)">5) $c_3 = c_2 < c_1$</button>
+      </div>
+      <div class="feedback-msg" id="fb-4"></div>
+      <button class="btn-solution-toggle" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Удельная теплоемкость определяется формулой $c = \frac{Q}{m\Delta t}$. Поскольку массы тел одинаковы и тела получили одинаковое количество теплоты, то зависимость удельной теплоемкости от изменения температуры обратно пропорциональна. Из графика видно, что изменения температуры связаны соотношением: $\Delta t_2 < \Delta t_3 < \Delta t_1$. Следовательно, для удельных теплоемкостей веществ выполняется соотношение $c_1 < c_3 < c_2$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 5 -->
+    <div class="task-card" id="task-5">
+      <div class="task-header"><span class="task-badge">Задача 5</span></div>
+      <div class="task-text">Два однородных кубика (см. рис.), изготовленные из одинакового материала, привели в контакт. Если начальная температура первого кубика $t_1 = 1,0\text{ }^\circ\text{C}$, а второго — $t_2 = 92\text{ }^\circ\text{C}$, то при отсутствии теплообмена с окружающей средой установившаяся температура $t$ кубиков равна ... °С.</div>
+      <div class="task-image-wrap">
+        <img src="image2.png" alt="Кубики к задаче 5" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%9A%D1%83%D0%B1%D0%B8%D0%BA%D0%B8';">
+      </div>
+      <div class="calc-row">
+        <label>Введите температуру кубиков в $^\circ\text{C}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-5">
+          <button class="btn-check" onclick="validateCalculation(5)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-5"></div>
+      <button class="btn-solution-toggle" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение.<br>
+          Из рисунка видно, что ребро первого кубика $a_1 = 3\text{ клетки}$, а ребро второго $a_2 = 4\text{ клетки}$. Тогда объем кубика: $V = a^3$. Пусть $\rho$ — это плотность кубиков, тогда их масса: $m = \rho V$<br>
+          Уравнение теплового баланса имеет вид:
+          <div class="math-scroll">$$Q_1 = Q_2 \Leftrightarrow c m_1 (t - t_1) = c m_2 (t_2 - t) \Leftrightarrow a_1^3 (t - t_1) = a_2^3 (t_2 - t)$$</div>
+          Выразим отсюда установившуюся температуру:
+          <div class="math-scroll">$$t = \frac{a_2^3 t_2 + a_1^3 t_1}{a_1^3 + a_2^3} = \frac{64 \cdot 365 + 27 \cdot 274}{27 + 64} = 338\text{ К} = 65\text{ }^\circ\text{C}$$</div>
+          Ответ: 65.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 6 -->
+    <div class="task-card" id="task-6">
+      <div class="task-header"><span class="task-badge">Задача 6</span></div>
+      <div class="task-text">Объем воздуха $60\text{ м}^3$, удельная теплоемкость $1000\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$, плотность воздуха $1,29\text{ кг}/\text{м}^3$. Какое количество теплоты необходимо, чтобы нагреть его на $22\text{ }^\circ\text{C}$?</div>
+      <div class="calc-row">
+        <label>Введите количество теплоты в джоулях ($\text{Дж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-6">
+          <button class="btn-check" onclick="validateCalculation(6)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-6"></div>
+      <button class="btn-solution-toggle" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Подробное решение задачи 755<br>
+          Дано:<br>
+          • Объем воздуха: $V = 60\text{ м}^3$<br>
+          • Удельная теплоемкость воздуха: $c = 1000\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$<br>
+          • Плотность воздуха: $\rho = 1,29\text{ кг}/\text{м}^3$<br>
+          • Изменение температуры: $\Delta t = 22\text{ }^\circ\text{C}$<br><br>
+          Решение:<br>
+          1. Находим массу воздуха ($m$), умножив его плотность на объем:
+          <div class="math-scroll">$$m = \rho \cdot V$$</div>
+          <div class="math-scroll">$$m = 1,29\text{ кг}/\text{м}^3 \cdot 60\text{ м}^3 = 77,4\text{ кг}$$</div>
+          2. Рассчитываем количество теплоты ($Q$), необходимое для нагревания этой массы:
+          <div class="math-scroll">$$Q = c \cdot m \cdot \Delta t$$</div>
+          <div class="math-scroll">$$Q = 1000\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 77,4\text{ кг} \cdot 22\text{ }^\circ\text{C} = 1\,702\,800\text{ Дж}$$</div>
+          Для удобства ответ можно перевести в килоджоули или мегаджоули:<br>
+          • $1\,702,8\text{ кДж}$<br>
+          • $\approx 1,7\text{ МДж}$
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 7 -->
+    <div class="task-card" id="task-7">
+      <div class="task-header"><span class="task-badge">Задача 7</span></div>
+      <div class="task-text">В медную кастрюлю массой 2,5 кг налито 8 кг воды при 10 °С. Какое количество теплоты необходимо, чтобы воду в кастрюле нагреть до кипения?</div>
+      <div class="calc-row">
+        <label>Введите количество теплоты в джоулях ($\text{Дж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-7">
+          <button class="btn-check" onclick="validateCalculation(7)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-7"></div>
+      <button class="btn-solution-toggle" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение 758<br>
+          Дано:<br>
+          • $m_1 = 2,5\text{ кг}$ (масса кастрюли)<br>
+          • $m_2 = 8\text{ кг}$ (масса воды)<br>
+          • $t_1 = 10\text{ }^\circ\text{C},\; t_2 = 100\text{ }^\circ\text{C} \rightarrow \Delta t = 90\text{ }^\circ\text{C}$<br>
+          • $c_1 = 380\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ (удельная теплоемкость меди)<br>
+          • $c_2 = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ (удельная теплоемкость воды)<br><br>
+          Когда мы нагреваем воду в кастрюле, тепло получает и сама кастрюля, и налитая в нее вода. Поэтому общее количество теплоты складывается из двух частей: $Q = Q_\text{кастрюли} + Q_\text{воды}$.<br>
+          1. Найдем изменение температуры ($\Delta t$):
+          <div class="math-scroll">$$\Delta t = t_2 - t_1 = 100\text{ }^\circ\text{C} - 10\text{ }^\circ\text{C} = 90\text{ }^\circ\text{C}$$</div>
+          2. Рассчитаем количество теплоты для нагрева кастрюли ($Q_\text{кастрюли}$):
+          <div class="math-scroll">$$Q_\text{кастрюли} = c_\text{меди} \cdot m_\text{кастрюли} \cdot \Delta t$$</div>
+          <div class="math-scroll">$$Q_\text{кастрюли} = 380 \cdot 2,5 \cdot 90 = 85\,500\text{ Дж}$$</div>
+          3. Рассчитаем количество теплоты для нагрева воды ($Q_\text{воды}$):
+          <div class="math-scroll">$$Q_\text{воды} = c_\text{воды} \cdot m_\text{воды} \cdot \Delta t$$</div>
+          <div class="math-scroll">$$Q_\text{воды} = 4200 \cdot 8 \cdot 90 = 3\,024\,000\text{ Дж}$$</div>
+          <div class="math-scroll">$$Q = 85\,500 + 3\,024\,000 = 3\,109\,500\text{ Дж}$$</div>
+          В более крупных единицах измерения:<br>
+          • $3\,109,5\text{ кДж}$<br>
+          • $\approx 3,11\text{ МДж}$
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 8 -->
+    <div class="task-card" id="task-8">
+      <div class="task-header"><span class="task-badge">Задача 8</span></div>
+      <div class="task-text">Какова будет температура смеси, если смешать 600 г воды при 80 °С с 200 г воды при 20 °С?</div>
+      <div class="calc-row">
+        <label>Введите температуру смеси в $^\circ\text{C}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-8">
+          <button class="btn-check" onclick="validateCalculation(8)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-8"></div>
+      <button class="btn-solution-toggle" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение задачи 763<br>
+          Дано:<br>
+          • $m_1 = 600\text{ г} = 0,6\text{ кг}$ (горячая вода)<br>
+          • $t_1 = 80\text{ }^\circ\text{C}$<br>
+          • $m_2 = 200\text{ г} = 0,2\text{ кг}$ (холодная вода)<br>
+          • $t_2 = 200\text{ г} \rightarrow 20\text{ }^\circ\text{C}$<br>
+          • $c = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ (удельная теплоемкость воды)<br>
+          • Конечная температура смеси: $t - ?$<br><br>
+          Решение:<br>
+          1. Запишем уравнение теплового баланса в виде суммы количеств теплоты:<br>
+          При отсутствии теплопотерь в окружающую среду сумма всех полученных и отданных телами количеств теплоты равна нулю:
+          <div class="math-scroll">$$Q_1 + Q_2 = 0$$</div>
+          2. Расписываем каждое количество теплоты (всегда из конечной температуры $t$ вычитаем начальную):<br>
+          1. Для горячей воды: $Q_1 = c \cdot m_1 \cdot (t - t_1)$<br>
+          2. Для холодной воды: $Q_2 = c \cdot m_2 \cdot (t - t_2)$<br>
+          3. Подставляем выражения в уравнение теплового баланса:
+          <div class="math-scroll">$$c \cdot m_1 \cdot (t - t_1) + c \cdot m_2 \cdot (t - t_2) = 0$$</div>
+          4. Разделим обе части уравнения на $c$ (так как удельная теплоемкость одинакова):
+          <div class="math-scroll">$$m_1 \cdot (t - t_1) + m_2 \cdot (t - t_2) = 0$$</div>
+          5. Подставим численные значения масс и начальных температур:
+          <div class="math-scroll">$$0,6 \cdot (t - 80) + 0,2 \cdot (t - 20) = 0$$</div>
+          <div class="math-scroll">$$0,6t - 48 + 0,2t - 4 = 0$$</div>
+          <div class="math-scroll">$$t = \frac{52}{0,8} = 65\text{ }^\circ\text{C}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 9 -->
+    <div class="task-card" id="task-9">
+      <div class="task-header"><span class="task-badge">Задача 9</span></div>
+      <div class="task-text">Медный калориметр весом 100 г вмещает 738 г воды, температура которой 15 °С. В этот калориметр опустили 200 г меди при температуре 100 °С, после чего температура калориметра поднялась до 17 °С. Какова удельная теплоемкость меди?</div>
+      <div class="calc-row">
+        <label>Введите удельную теплоемкость меди в $\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-9">
+          <button class="btn-check" onclick="validateCalculation(9)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-9"></div>
+      <button class="btn-solution-toggle" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение задачи 772 через сумму количеств теплоты<br>
+          В процессе теплообмена участвуют три тела: медный калориметр, вода в нем и опущенный кусок меди.<br><br>
+          Дано:<br>
+          • $m_\text{кал} = 100\text{ г} = 0,1\text{ кг}$ (масса калориметра)<br>
+          • $m_\text{воды} = 738\text{ г} = 0,738\text{ кг}$ (масса воды)<br>
+          • $t_1 = 15\text{ }^\circ\text{C}$ (начальная температура калориметра и воды)<br>
+          • $m_\text{меди} = 200\text{ г} = 0,2\text{ кг}$ (масса куска меди)<br>
+          • $t_2 = 100\text{ }^\circ\text{C}$ (начальная температура меди)<br>
+          • $t = 17\text{ }^\circ\text{C}$ (конечная температура смеси)<br>
+          • $c_\text{воды} = 4200\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          • $c_\text{меди} - ?$<br><br>
+          1. Запишем уравнение теплового баланса в виде суммы количеств теплоты:
+          <div class="math-scroll">$$Q_\text{кал} + Q_\text{воды} + Q_\text{меди} = 0$$</div>
+          2. Распишем каждое количество теплоты (из конечной температуры $t$ вычитаем начальную):<br>
+          1. Для калориметра: $Q_\text{кал} = c_\text{меди} \cdot m_\text{кал} \cdot (t - t_1)$<br>
+          2. Для воды: $Q_\text{воды} = c_\text{воды} \cdot m_\text{воды} \cdot (t - t_1)$<br>
+          3. Для куска меди: $Q_\text{меди} = c_\text{меди} \cdot m_\text{меди} \cdot (t - t_2)$<br><br>
+          3. Подставим численные значения:<br>
+          1. $Q_\text{кал} = c_\text{меди} \cdot 0,1 \cdot (17 - 15) = 0,2 \cdot c_\text{меди}$<br>
+          2. $Q_\text{воды} = 4200 \cdot 0,738 \cdot (17 - 15) = 4200 \cdot 0,738 \cdot 2 = 6199,2$<br>
+          3. $Q_\text{меди} = c_\text{меди} \cdot 0,2 \cdot (17 - 100) = c_\text{меди} \cdot 0,2 \cdot (-83) = -16,6 \cdot c_\text{меди}$<br><br>
+          4. Составим общее уравнение и найдем $c_\text{меди}$:
+          <div class="math-scroll">$$0,2 \cdot c_\text{меди} + 6199,2 - 16,6 \cdot c_\text{меди} = 0$$</div>
+          <div class="math-scroll">$$-16,4 \cdot c_\text{меди} = -6199,2$$</div>
+          <div class="math-scroll">$$c_\text{меди} = \frac{-6199,2}{-16,4} = 380\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 10 -->
+    <div class="task-card" id="task-10">
+      <div class="task-header"><span class="task-badge">Задача 10</span></div>
+      <div class="task-text">Смешали три жидкости массами $m_2 = 2m_1$, $m_3 = 2m_2$ и разной температуры $T_1 = 300\text{ К}$, $T_2 = 320\text{ К}$, $T_3 = 280\text{ К}$. Удельные теплоемкости жидкостей $c_2 = 2c_1$, $c_3 = 1,5c_1$, где $c_1$ — удельная теплоемкость жидкости массой $m_1$. Температура $\Theta$ смеси, которая установится в сосуде, равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(10, 1, this)">1) 304 К;</button>
+        <button class="btn-option" onclick="handleChoice(10, 2, this)">2) 300 К;</button>
+        <button class="btn-option" onclick="handleChoice(10, 3, this)">3) 299 К;</button>
+        <button class="btn-option" onclick="handleChoice(10, 4, this)">4) 296 К;</button>
+        <button class="btn-option" onclick="handleChoice(10, 5, this)">5) 292 К.</button>
+      </div>
+      <div class="feedback-msg" id="fb-10"></div>
+      <button class="btn-solution-toggle" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение Задачи 1<br>
+          решение<br>
+          Система жидкостей теплоизолирована и суммарная внутренняя энергия системы не изменяется:
+          <div class="math-scroll">$$Q_1 + Q_2 + Q_3 = 0,$$</div>
+          где $Q_1$, $Q_2$, $Q_3$ — количества теплоты, получаемые (или отдаваемые) каждой жидкостью при теплообмене.<br>
+          Если $\Theta$ — температура смеси, которая установится в сосуде, то:
+          <div class="math-scroll">$$Q_1 = c_1 m_1 (\Theta - T_1);$$</div>
+          <div class="math-scroll">$$Q_2 = c_2 m_2 (\Theta - T_2) = 2c_1 \cdot 2m_1 (\Theta - T_2);$$</div>
+          <div class="math-scroll">$$Q_3 = c_3 m_3 (\Theta - T_3) = 1,5c_1 \cdot 4m_1 (\Theta - T_3).$$</div>
+          Значит, $c_1 m_1 (\Theta - T_1) + 4c_1 m_1 (\Theta - T_2) + 6c_1 m_1 (\Theta - T_3) = 0$, откуда
+          <div class="math-scroll">$$\Theta = \frac{T_1 + 4T_2 + 6T_3}{1 + 4 + 6} = \frac{300\text{ К} + 4 \cdot 320\text{ К} + 6 \cdot 280\text{ К}}{11} = 296\text{ К}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 11 -->
+    <div class="task-card" id="task-11">
+      <div class="task-header"><span class="task-badge">Задача 11</span></div>
+      <div class="task-text">Для приготовления ванны вместимостью $V = 180\text{ л}$ смешивают горячую воду с холодной, температуры которых соответственно $t_1 = 55\text{ }^\circ\text{C}$ и $t_2 = 10\text{ }^\circ\text{C}$. Если окончательная температура воды должна быть $\Theta = 40\text{ }^\circ\text{C}$, то необходимо, чтобы объемы горячей $V_1$ и холодной $V_2$ воды были равны:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(11, 1, this)">1) 120 л; 60,0 л;</button>
+        <button class="btn-option" onclick="handleChoice(11, 2, this)">2) 60,0 л; 120 л;</button>
+        <button class="btn-option" onclick="handleChoice(11, 3, this)">3) 90,0 л; 90,0 л;</button>
+        <button class="btn-option" onclick="handleChoice(11, 4, this)">4) 30,0 л; 150 л;</button>
+        <button class="btn-option" onclick="handleChoice(11, 5, this)">5) 150 л; 30,0 л.</button>
+      </div>
+      <div class="feedback-msg" id="fb-11"></div>
+      <button class="btn-solution-toggle" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 2<br>
+          Решение<br>
+          Система «горячая — холодная вода» теплоизолирована. Уравнение теплового баланса
+          <div class="math-scroll">$$Q_1 + Q_2 = 0,$$</div>
+          где $Q_1 = c m_1 (\Theta - t_1) = c V_1 \rho (\Theta - t_1)$ — количество теплоты, отданное горячей водой; $Q_2 = c m_2 (\Theta - t_2) = c V_2 \rho (\Theta - t_2)$ — полученное холодной водой; $c$ — удельная теплоемкость воды; $\rho$ — плотность воды; $V_1$ — объем горячей воды; $V_2 = V - V_1$ — объем холодной воды.
+          <div class="math-scroll">$$V_1 (\Theta - t_1) + (V - V_1)(\Theta - t_2) = 0;$$</div>
+          <div class="math-scroll">$$V_1 = V \frac{\Theta - t_2}{t_1 - t_2} = \frac{180\text{ л} \cdot (40\text{ }^\circ\text{C} - 10\text{ }^\circ\text{C})}{55\text{ }^\circ\text{C} - 10\text{ }^\circ\text{C}} = 120\text{ л}.$$</div>
+          Объем холодной воды $V_2 = 60,0\text{ л}$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 12 -->
+    <div class="task-card" id="task-12">
+      <div class="task-header"><span class="task-badge">Задача 12</span></div>
+      <div class="task-text">Какой объем занимает машинное масло в канистре, если при увеличении его температуры на $\Delta t_1 = 5,0\text{ }^\circ\text{C}$ поглощается такое же количество теплоты, какое требуется для увеличения температуры воды массой $m_2 = 5,0\text{ кг}$ на $\Delta t_2 = 1,8\text{ }^\circ\text{C}$? Плотность масла $\rho_\text{м} = 900\text{ }\frac{\text{кг}}{\text{м}^3}$. Удельная теплоемкость масла $c_\text{м} = 1670\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$.</div>
+      <div class="calc-row">
+        <label>Введите объем масла в литрах ($\text{л}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-12">
+          <button class="btn-check" onclick="validateCalculation(12)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-12"></div>
+      <button class="btn-solution-toggle" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №115<br>
+          Дано:<br>
+          • $\Delta t_1 = 5,0\text{ }^\circ\text{C}$ — увеличение температуры масла<br>
+          • $m_2 = 5,0\text{ кг}$ — масса воды<br>
+          • $\Delta t_2 = 1,8\text{ }^\circ\text{C}$ — увеличение температуры воды<br>
+          • $\rho_\text{м} = 900\text{ кг}/\text{м}^3$ — плотность масла<br>
+          • $c_\text{м} = 1670\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ — удельная теплоемкость масла<br>
+          • $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ — удельная теплоемкость воды<br><br>
+          Решение:<br>
+          1. Количество теплоты для нагревания воды:
+          <div class="math-scroll">$$Q_\text{воды} = c_\text{в} \cdot m_2 \cdot \Delta t_2$$</div>
+          2. Количество теплоты для нагревания масла:
+          <div class="math-scroll">$$Q_\text{масла} = c_\text{м} \cdot \rho_\text{м} \cdot V_\text{м} \cdot \Delta t_1$$</div>
+          3. Приравниваем процессы ($Q_\text{масла} = Q_\text{воды}$):
+          <div class="math-scroll">$$c_\text{м} \cdot \rho_\text{м} \cdot V_\text{м} \cdot \Delta t_1 = c_\text{в} \cdot m_2 \cdot \Delta t_2$$</div>
+          4. Вычисляем объем масла ($V_\text{м}$):
+          <div class="math-scroll">$$V_\text{м} = \frac{c_\text{в} \cdot m_2 \cdot \Delta t_2}{c_\text{м} \cdot \rho_\text{м} \cdot \Delta t_1}$$</div>
+          Подставляем значения с $c_\text{в} = 4200$:
+          <div class="math-scroll">$$V_\text{м} = \frac{4200 \cdot 5,0 \cdot 1,8}{1670 \cdot 900 \cdot 5,0} = \frac{37800}{7515000} \approx 0,00503\text{ м}^3$$</div>
+          $V_\text{м} \approx 0,00503\text{ м}^3$ (или 5, 03 л). При округлении до одной значащей цифры получается 0, 005 м$^3$ (5 л).
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 13 -->
+    <div class="task-card" id="task-13">
+      <div class="task-header"><span class="task-badge">Задача 13</span></div>
+      <div class="task-text">Какая масса древесного угля может заменить 60 т нефти?</div>
+      <div class="calc-row">
+        <label>Введите массу угля в тоннах ($\text{т}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-13">
+          <button class="btn-check" onclick="validateCalculation(13)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-13"></div>
+      <button class="btn-solution-toggle" id="btn-sol-13" onclick="toggleSolution(13)">Показать Решение</button>
+      <div class="solution-box" id="sol-13">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №793<br>
+          Дано:<br>
+          • $m_\text{н} = 60\text{ т}$ — масса нефти<br>
+          • $q_\text{н} = 44\text{ МДж}/\text{кг}$ (или $4,4\cdot 10^7\text{ Дж}/\text{кг}$) — удельная теплота сгорания нефти<br>
+          • $q_\text{у} = 29,7\text{ МДж}/\text{кг}$ (или $2,97\cdot 10^7\text{ Дж}/\text{кг}$) — удельная теплота сгорания древесного угля<br><br>
+          1. Из условия равенства выделившейся теплоты ($Q_\text{у} = Q_\text{н}$):
+          <div class="math-scroll">$$q_\text{у} \cdot m_\text{у} = q_\text{н} \cdot m_\text{н}$$</div>
+          2. Выразим массу древесного угля:
+          <div class="math-scroll">$$m_\text{у} = \frac{q_\text{н} \cdot m_\text{н}}{q_\text{у}}$$</div>
+          3. Подставим значения:
+          <div class="math-scroll">$$m_\text{у} = \frac{44 \cdot 60}{29,7} = \frac{2640}{29,7} \approx 88,89\text{ т}$$</div>
+          Ответ:88,9 или 89т
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 14 -->
+    <div class="task-card" id="task-14">
+      <div class="task-header"><span class="task-badge">Задача 14</span></div>
+      <div class="task-text">При полном сгорании керосина объемом $V = 1,00\text{ л}$ выделяется количество теплоты $Q = 34,5\text{ МДж}$. Вычислите плотность керосина.</div>
+      <div class="calc-row">
+        <label>Введите плотность керосина в $\frac{\text{кг}}{\text{м}^3}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-14">
+          <button class="btn-check" onclick="validateCalculation(14)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-14"></div>
+      <button class="btn-solution-toggle" id="btn-sol-14" onclick="toggleSolution(14)">Показать Решение</button>
+      <div class="solution-box" id="sol-14">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №137<br>
+          Дано:<br>
+          • $V = 1,00\text{ л} = 0,001\text{ м}^3$ — объем керосина<br>
+          • $Q = 34,5\text{ МДж} = 34,5 \cdot 10^6\text{ Дж}$ — выделившееся количество теплоты<br>
+          • $q = 43\text{ МДж}/\text{кг} = 43 \cdot 10^6\text{ Дж}/\text{кг}$ (основное табличное значение, дающее стандартную плотность)<br><br>
+          1. Формула количества теплоты при сгорании топлива:
+          <div class="math-scroll">$$Q = q \cdot m$$</div>
+          2. Связь массы с объемом и плотностью:<br>
+          Масса керосина равна произведению его плотности на объем:
+          <div class="math-scroll">$$m = \rho \cdot V$$</div>
+          3. Подставим массу в первую формулу:
+          <div class="math-scroll">$$Q = q \cdot \rho \cdot V$$</div>
+          4. Выразим и рассчитаем плотность ($\rho$):
+          <div class="math-scroll">$$\rho = \frac{Q}{q \cdot V}$$</div>
+          1. Вариант 1 (если в ваших таблицах $q = 43\text{ МДж}/\text{кг}$):
+          <div class="math-scroll">$$\rho = \frac{34,5 \cdot 10^6}{43 \cdot 10^6 \cdot 0,001} = \frac{34,5}{0,043} \approx 802,3\text{ кг}/\text{м}^3$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 15 -->
+    <div class="task-card" id="task-15">
+      <div class="task-header"><span class="task-badge">Задача 15</span></div>
+      <div class="task-text">Начальная температура двух литров воды 20 °С. До какой температуры можно было бы нагреть эту воду при сжигании 10 г спирта? (Считать, что теплота сгорания спирта целиком пошла на нагревание воды.)</div>
+      <div class="calc-row">
+        <label>Введите температуру в $^\circ\text{C}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-15">
+          <button class="btn-check" onclick="validateCalculation(15)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-15"></div>
+      <button class="btn-solution-toggle" id="btn-sol-15" onclick="toggleSolution(15)">Показать Решение</button>
+      <div class="solution-box" id="sol-15">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №796<br>
+          Дано:<br>
+          • $V = 2\text{ л} \Longrightarrow m_\text{в} = 2\text{ кг}$ — масса воды (при плотности $\rho = 1000\text{ кг}/\text{м}^3$)<br>
+          • $t_1 = 20\text{ }^\circ\text{C}$ — начальная температура воды<br>
+          • $m_\text{сп} = 10\text{ г} = 0,01\text{ кг}$ — масса сожженного спирта<br>
+          • $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ — удельная теплоемкость воды<br>
+          • $q_\text{сп} = 2,7 \cdot 10^7\text{ Дж}/\text{кг}$ — удельная теплота сгорания спирта (из таблиц учебника Пёрышкина)<br><br>
+          1. Процесс №1: Сгорание спирта.<br>
+          Количество теплоты, выделившееся при полном сгорании спирта:
+          <div class="math-scroll">$$Q_\text{выд} = q_\text{сп} \cdot m_\text{сп}$$</div>
+          2. Процесс №2: Нагревание воды.<br>
+          Количество теплоты, необходимое для нагревания воды от $t_1$ до конечной температуры $t_2$:
+          <div class="math-scroll">$$Q_\text{погл} = c_\text{в} \cdot m_\text{в} \cdot (t_2 - t_1)$$</div>
+          3. Сравнение энергий.<br>
+          По условию задачи вся выделившаяся энергия целиком идет на нагревание воды ($Q_\text{выд} = Q_\text{погл}$):
+          <div class="math-scroll">$$q_\text{сп} \cdot m_\text{сп} = c_\text{в} \cdot m_\text{в} \cdot (t_2 - t_1)$$</div>
+          4. Выразим изменение температуры ($\Delta t = t_2 - t_1$):
+          <div class="math-scroll">$$t_2 - t_1 = \frac{q_\text{сп} \cdot m_\text{сп}}{c_\text{в} \cdot m_\text{в}}$$</div>
+          Подставим числа:
+          <div class="math-scroll">$$t_2 - t_1 = \frac{2,7 \cdot 10^7 \cdot 0,01}{4200 \cdot 2} = \frac{270\,000}{8400} \approx 32,14\text{ }^\circ\text{C}$$</div>
+          5. Найдем конечную температуру ($t_2$):
+          <div class="math-scroll">$$t_2 = t_1 + 32,14\text{ }^\circ\text{C} = 20\text{ }^\circ\text{C} + 32,14\text{ }^\circ\text{C} \approx 52,1\text{ }^\circ\text{C}$$</div>
+          Ответ: 52
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 16 -->
+    <div class="task-card" id="task-16">
+      <div class="task-header"><span class="task-badge">Задача 16</span></div>
+      <div class="task-text">Какой объем природного газа сгорает в газовой горелке кухонной плиты при нагревании воды объемом $V_1 = 10\text{ л}$ от температуры $t_1 = 20\text{ }^\circ\text{C}$ до температуры $t_2 = 100\text{ }^\circ\text{C}$, если на нагревание воды идет 60 % выделяющейся при сгорании газа энергии?</div>
+      <div class="calc-row">
+        <label>Введите объем природного газа в кубических метрах ($\text{м}^3$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-16">
+          <button class="btn-check" onclick="validateCalculation(16)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-16"></div>
+      <button class="btn-solution-toggle" id="btn-sol-16" onclick="toggleSolution(16)">Показать Решение</button>
+      <div class="solution-box" id="sol-16">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №133<br>
+          Дано:<br>
+          • $V_1 = 10\text{ л} \Longrightarrow m_1 = 10\text{ кг}$ — масса нагреваемой воды (при плотности $\rho = 1000\text{ кг}/\text{м}^3$)<br>
+          • $t_1 = 20\text{ }^\circ\text{C}$ — начальная температура воды<br>
+          • $t_2 = 100\text{ }^\circ\text{C}$ — конечная температура воды<br>
+          • $\eta = 60\% = 0,6$ — коэффициент полезного действия (КПД) горелки<br>
+          • $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$ — удельная теплоемкость воды<br>
+          • $q_\text{газа} = 35,5\text{ МДж}/\text{м}^3 = 35,5 \cdot 10^6\text{ Дж}/\text{м}^3$ — удельная теплота сгорания природного газа<br><br>
+          1. Запишем базовую формулу КПД ($\eta$):<br>
+          Коэффициент полезного действия показывает, какая часть общего выделившегося тепла пошла на полезную работу:
+          <div class="math-scroll">$$\eta = \frac{Q_\text{пол}}{Q_\text{полн}}$$</div>
+          2. Распишем каждую теплоту из формулы КПД отдельными процессами:<br>
+          1. Полезное количество теплоты ($Q_\text{пол}$) — это энергия, которая пошла на нагревание воды:
+          <div class="math-scroll">$$Q_\text{пол} = c_\text{в} \cdot m_1 \cdot (t_2 - t_1)$$</div>
+          <div class="math-scroll">$$Q_\text{пол} = 4200 \cdot 10 \cdot (100 - 20) = 3\,360\,000\text{ Дж}$$</div>
+          2. Полное количество теплоты ($Q_\text{полн}$) — это вся энергия, которая выделилась при сгорании природного газа:
+          <div class="math-scroll">$$Q_\text{полн} = q_\text{газа} \cdot V_\text{газа}$$</div>
+          3. Свяжем всё вместе и выразим искомый объем газа ($V_\text{газа}$):<br>
+          Подставим выражения для теплоты обратно в формулу КПД:
+          <div class="math-scroll">$$\eta = \frac{c_\text{в} \cdot m_1 \cdot (t_2 - t_1)}{q_\text{газа} \cdot V_\text{газа}}$$</div>
+          Отсюда выразим полный объем сгоревшего газа:
+          <div class="math-scroll">$$V_\text{газа} = \frac{c_\text{в} \cdot m_1 \cdot (t_2 - t_1)}{\eta \cdot q_\text{газа}}$$</div>
+          4. Проведем итоговый расчет:
+          <div class="math-scroll">$$V_\text{газа} = \frac{3\,360\,000}{0,6 \cdot 35,5 \cdot 10^6} = \frac{3\,360\,000}{21\,300\,000} \approx 0,158\text{ м}^3$$</div>
+          $V_\text{газа} \approx 0,16\text{ м}^3$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 17 -->
+    <div class="task-card" id="task-17">
+      <div class="task-header"><span class="task-badge">Задача 17</span></div>
+      <div class="task-text">В автомобильном двигателе за время $t = 10\text{ с}$ сгорает дизельное топливо массой $m = 24\text{ г}$. Какую полезную мощность развивает двигатель автомобиля, если его коэффициент полезного действия (КПД) $\eta = 40\text{ }\%$?</div>
+      <div class="calc-row">
+        <label>Введите полезную мощность в киловаттах ($\text{кВт}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-17">
+          <button class="btn-check" onclick="validateCalculation(17)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-17"></div>
+      <button class="btn-solution-toggle" id="btn-sol-17" onclick="toggleSolution(17)">Показать Решение</button>
+      <div class="solution-box" id="sol-17">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Пример 2<br>
+          Дано:<br>
+          $t = 10\text{ с}$<br>
+          $m = 24\text{ г} = 0,024\text{ кг}$<br>
+          $\eta = 40\% = 0,40$<br>
+          $q = 4,2 \cdot 10^7\text{ }\frac{\text{Дж}}{\text{кг}}$<br>
+          $P_\text{пол} - ?$<br><br>
+          Решение.<br>
+          По определению КПД $\eta = \frac{A_\text{пол}}{A_\text{сов}}$.<br>
+          Полезная работа $A_\text{пол} = P_\text{пол} t$.<br>
+          Совершенная работа $A_\text{сов} = Q_\text{сг}$; $Q_\text{сг} = q m$.<br>
+          Тогда $\eta = \frac{P_\text{пол} t}{q m}$, откуда $P_\text{пол} = \frac{\eta q m}{t}$.
+          <div class="math-scroll">$$P_\text{пол} = \frac{0,40 \cdot 4,2 \cdot 10^7\text{ }\frac{\text{Дж}}{\text{кг}} \cdot 0,024\text{ кг}}{10\text{ с}} = 40\text{ кВт}.$$</div>
+          Ответ: $P_\text{пол} = 40\text{ кВт}$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 18 -->
+    <div class="task-card" id="task-18">
+      <div class="task-header"><span class="task-badge">Задача 18</span></div>
+      <div class="task-text">При сжигании бензина в автомобильном двигателе за время $t = 2,0\text{ с}$ потери энергии составили $Q = 0,30\text{ МДж}$, при этом двигатель развил мощность $P = 50\text{ кВт}$. Определите КПД двигателя.</div>
+      <div class="calc-row">
+        <label>Введите КПД двигателя в процентах ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-18">
+          <button class="btn-check" onclick="validateCalculation(18)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-18"></div>
+      <button class="btn-solution-toggle" id="btn-sol-18" onclick="toggleSolution(18)">Показать Решение</button>
+      <div class="solution-box" id="sol-18">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №144<br>
+          Дано:<br>
+          • $t = 2,0\text{ с}$ — время работы двигателя<br>
+          • $Q_\text{пот} = 0,30\text{ МДж} = 300\,000\text{ Дж}$ — потери энергии<br>
+          • $P = 50\text{ кВт} = 50\,000\text{ Вт}$ — полезная мощность двигателя<br><br>
+          Решение:<br>
+          1. Находим полезную работу ($A_\text{пол}$), совершенную двигателем за это время:
+          <div class="math-scroll">$$A_\text{пол} = P \cdot t$$</div>
+          <div class="math-scroll">$$A_\text{пол} = 50 \cdot 10^3\text{ Вт} \cdot 2,0\text{ с} = 100 \cdot 10^3\text{ Дж} = 100\text{ кДж}$$</div>
+          2. Находим полную (затраченную) энергию ($Q_\text{затр}$), выделившуюся при сжигании бензина. Она равна сумме полезной работы и потерь:
+          <div class="math-scroll">$$Q_\text{затр} = A_\text{пол} + Q_\text{пот}$$</div>
+          <div class="math-scroll">$$Q_\text{затр} = 100\text{ кДж} + 300\text{ кДж} = 400\text{ кДж}$$</div>
+          3. Вычисляем коэффициент полезного действия (КПД) двигателя:
+          <div class="math-scroll">$$\eta = \frac{A_\text{пол}}{Q_\text{затр}}$$</div>
+          <div class="math-scroll">$$\eta = \frac{100\text{ кДж}}{400\text{ кДж}} = 0,25\text{ (или 25%)}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 19 -->
+    <div class="task-card" id="task-19">
+      <div class="task-header"><span class="task-badge">Задача 19</span></div>
+      <div class="task-text">Кусок льда массой $m = 2,0\text{ кг}$ при температуре $t = -20\text{ }^\circ\text{C}$ нагрели, сообщив ему количество теплоты $Q = 1,26\text{ МДж}$. Температура вещества после нагревания:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(19, 1, this)">1) $0\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(19, 2, this)">2) $12\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(19, 3, this)">3) $37\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(19, 4, this)">4) $61\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(19, 5, this)">5) $75\text{ }^\circ\text{C}$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-19"></div>
+      <button class="btn-solution-toggle" id="btn-sol-19" onclick="toggleSolution(19)">Показать Решение</button>
+      <div class="solution-box" id="sol-19">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 4<br>
+          Дано:<br>
+          • Масса льда: $m = 2,0\text{ кг}$<br>
+          • Начальная температура: $t_1 = -20\text{ }^\circ\text{C}$<br>
+          • Сообщенное количество теплоты: $Q = 1,26\text{ МДж} = 1\,260\,000\text{ Дж}$<br>
+          • Удельная теплоемкость льда: $c_\text{льда} = 2100\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$<br>
+          • Удельная теплота плавления льда: $\lambda = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br>
+          • Удельная теплоемкость воды: $c_\text{воды} = 4200\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$<br><br>
+          Общее количество теплоты $Q$, переданное системе, складывается из затрат на каждый последовательный этап:
+          <div class="math-scroll">$$Q = Q_1 + Q_2 + Q_3$$</div>
+          Где:<br>
+          • $Q_1$ — теплота на нагревание льда от $-20\text{ }^\circ\text{C}$ до $0\text{ }^\circ\text{C}$.<br>
+          • $Q_2$ — теплота на плавление льда при $0\text{ }^\circ\text{C}$.<br>
+          • $Q_3$ — теплота на нагревание получившейся воды от $0\text{ }^\circ\text{C}$ до конечной температуры $t_2$.<br><br>
+          Идем последовательно от общего количества теплоты $Q = 1\,260\,000\text{ Дж}$:<br>
+          1. Находим количество теплоты для первого этапа:
+          <div class="math-scroll">$$Q_1 = c_\text{льда} \cdot m \cdot (0 - t_1) = 2100 \cdot 2,0 \cdot (0 - (-20)) = 84\,000\text{ Дж}$$</div>
+          2. Находим количество теплоты для второго этапа:
+          <div class="math-scroll">$$Q_2 = \lambda \cdot m = 330\,000 \cdot 2,0 = 660\,000\text{ Дж}$$</div>
+          3. Теперь выразим из общего уравнения количество теплоты $Q_3$, которое идет на нагревание воды:
+          <div class="math-scroll">$$Q_3 = Q - Q_1 - Q_2$$</div>
+          <div class="math-scroll">$$Q_3 = 1\,260\,000 - 84\,000 - 660\,000 = 516\,000\text{ Дж}$$</div>
+          4. Расписываем формулу для $Q_3$ и находим конечную температуру $t_2$:
+          <div class="math-scroll">$$Q_3 = c_\text{воды} \cdot m \cdot (t_2 - 0)$$</div>
+          <div class="math-scroll">$$t_2 = \frac{516\,000}{8400} \approx 61,4\text{ }^\circ\text{C} \approx 61\text{ }^\circ\text{C}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 20 -->
+    <div class="task-card" id="task-20">
+      <div class="task-header"><span class="task-badge">Задача 20</span></div>
+      <div class="task-text">Если начальная температура воды и эфира $T_1 = 273\text{ К}$ и теплообмен происходит только между эфиром и водой ($\lambda_\text{льда} = 3,3\cdot 10^5\text{ Дж}/\text{кг}$, $L = 84\text{ кДж}/\text{кг}$), то в результате испарения эфира массой $m = 100\text{ г}$ можно превратить в лед массу воды:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(20, 1, this)">1) 25 г;</button>
+        <button class="btn-option" onclick="handleChoice(20, 2, this)">2) 41 г;</button>
+        <button class="btn-option" onclick="handleChoice(20, 3, this)">3) 63 г;</button>
+        <button class="btn-option" onclick="handleChoice(20, 4, this)">4) 82 г;</button>
+        <button class="btn-option" onclick="handleChoice(20, 5, this)">5) 164 г.</button>
+      </div>
+      <div class="feedback-msg" id="fb-20"></div>
+      <button class="btn-solution-toggle" id="btn-sol-20" onclick="toggleSolution(20)">Показать Решение</button>
+      <div class="solution-box" id="sol-20">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 5<br>
+          Дано:<br>
+          • Начальная температура: $T_1 = 273\text{ К} = 0\text{ }^\circ\text{C}$ (температура плавления/кристаллизации воды)<br>
+          • Удельная теплота плавления (кристаллизации) льда: $\lambda_\text{льда} = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br>
+          • Удельная теплота парообразования эфира: $L = 84\text{ кДж}/\text{кг} = 84 \cdot 10^3\text{ Дж}/\text{кг}$<br>
+          • Масса испарившегося эфира: $m_\text{эфира} = 100\text{ г} = 0,1\text{ кг}$<br><br>
+          Запишем уравнение теплового баланса в строгом термодинамическом виде: сумма количеств теплоты в замкнутой системе равна нулю.
+          <div class="math-scroll">$$Q_1 + Q_2 = 0$$</div>
+          Где:<br>
+          • $Q_1$ — количество теплоты, полученное эфиром при испарении (процесс идет с поглощением тепла, поэтому $Q_1 > 0$):
+          <div class="math-scroll">$$Q_1 = L \cdot m_\text{эфира}$$</div>
+          • $Q_2$ — количество теплоты, полученное водой при кристаллизации (процесс идет с выделением тепла, поэтому $Q_2 < 0$):
+          <div class="math-scroll">$$Q_2 = -\lambda_\text{льда} \cdot m_\text{воды}$$</div>
+          1. Записываем уравнение с учетом знаков процессов:
+          <div class="math-scroll">$$L \cdot m_\text{эфира} + (-\lambda_\text{льда} \cdot m_\text{воды}) = 0$$</div>
+          2. Переносим слагаемое с минусом в правую часть:
+          <div class="math-scroll">$$L \cdot m_\text{эфира} = \lambda_\text{льда} \cdot m_\text{воды}$$</div>
+          3. Выражаем массу воды ($m_\text{воды}$):
+          <div class="math-scroll">$$m_\text{воды} = \frac{L \cdot m_\text{эфира}}{\lambda_\text{льда}}$$</div>
+          <div class="math-scroll">$$m_\text{воды} = \frac{84 \cdot 10^3 \cdot 0,1}{3,3 \cdot 10^5} = \frac{8400}{330\,000} \approx 0,02545\text{ кг} \approx 25\text{ г}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 21 -->
+    <div class="task-card" id="task-21">
+      <div class="task-header"><span class="task-badge">Задача 21</span></div>
+      <div class="task-text">Температура льда $t = 0,00\text{ }^\circ\text{C}$. Чтобы алюминиевый куб ($c_\text{Al} = 880\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$; $\rho_\text{Al} = 2700\text{ кг}/\text{м}^3$), положенный на лед, полностью в него погрузился, куб необходимо предварительно нагреть до температуры:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(21, 1, this)">1) $84,0\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 2, this)">2) $127\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 3, this)">3) $125\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 4, this)">4) $212\text{ }^\circ\text{C}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 5, this)">5) $255\text{ }^\circ\text{C}$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-21"></div>
+      <button class="btn-solution-toggle" id="btn-sol-21" onclick="toggleSolution(21)">Показать Решение</button>
+      <div class="solution-box" id="sol-21">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 6<br>
+          Дано:<br>
+          • Начальная температура льда: $t_\text{льда} = 0\text{ }^\circ\text{C}$<br>
+          • Удельная теплоемкость алюминия: $c_\text{Al} = 880\text{ Дж}/(\text{кг}\cdot\text{К})$<br>
+          • Плотность алюминия: $\rho_\text{Al} = 2700\text{ кг}/\text{м}^3$<br>
+          • Удельная теплота плавления льда (из предыдущих задач): $\lambda = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br>
+          • Плотность льда (табличное значение): $\rho_\text{льда} = 900\text{ кг}/\text{м}^3$<br><br>
+          Решение:<br>
+          Чтобы куб полностью погрузился в лед, он должен растопить объем льда, равный собственному объему ($V$). Процесс прекратится, когда куб остынет до температуры плавления льда, то есть до $0\text{ }^\circ\text{C}$.<br>
+          Запишем уравнение теплового баланса через сумму полученных теплот:
+          <div class="math-scroll">$$Q_1 + Q_2 = 0$$</div>
+          Где:<br>
+          • $Q_1$ — количество теплоты, полученное алюминиевым кубом при охлаждении от искомой температуры $t_x$ до $0\text{ }^\circ\text{C}$ (так как куб отдает тепло, $Q_1 < 0$):
+          <div class="math-scroll">$$Q_1 = c_\text{Al} \cdot m_\text{Al} \cdot (0 - t_x) = -c_\text{Al} \cdot \rho_\text{Al} \cdot V \cdot t_x$$</div>
+          • $Q_2$ — количество теплоты, полученное льдом при плавлении (так как лед поглощает тепло, $Q_2 > 0$):
+          <div class="math-scroll">$$Q_2 = \lambda \cdot m_\text{льда} = \lambda \cdot \rho_\text{льда} \cdot V$$</div>
+          Подстановка и расчет:<br>
+          1. Подставляем выражения для $Q_1$ и $Q_2$ в исходное уравнение:
+          <div class="math-scroll">$$-c_\text{Al} \cdot \rho_\text{Al} \cdot V \cdot t_x + \lambda \cdot \rho_\text{льда} \cdot V = 0$$</div>
+          2. Разделим обе части уравнения на объем $V$ (он сокращается) и перенесем отрицательное слагаемое в правую часть:
+          <div class="math-scroll">$$\lambda \cdot \rho_\text{льда} = c_\text{Al} \cdot \rho_\text{Al} \cdot t_x$$</div>
+          3. Выразим начальную температуру куба $t_x$:
+          <div class="math-scroll">$$t_x = \frac{\lambda \cdot \rho_\text{льда}}{c_\text{Al} \cdot \rho_\text{Al}}$$</div>
+          4. Подставляем численные значения:
+          <div class="math-scroll">$$t_x = \frac{3,3 \cdot 10^5 \cdot 900}{880 \cdot 2700} = \frac{3,3 \cdot 10^5}{880 \cdot 3} = \frac{1,1 \cdot 10^5}{880} = \frac{110\,000}{880} = 125\text{ }^\circ\text{C}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 22 -->
+    <div class="task-card" id="task-22">
+      <div class="task-header"><span class="task-badge">Задача 22</span></div>
+      <div class="task-text">Нагретую железную болванку массой $m_\text{ж} = 2,0\text{ кг}$ поставили на лед, имеющий температуру $t_\text{л} = -10\text{ }^\circ\text{C}$. В результате охлаждения болванки до температуры $t = 0\text{ }^\circ\text{C}$ под ней расплавилось $m_\text{л} = 150\text{ г}$ льда. До какой температуры была нагрета болванка? Потерями теплоты пренебречь.</div>
+      <div class="calc-row">
+        <label>Введите температуру болванки в $^\circ\text{C}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-22">
+          <button class="btn-check" onclick="validateCalculation(22)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-22"></div>
+      <button class="btn-solution-toggle" id="btn-sol-22" onclick="toggleSolution(22)">Показать Решение</button>
+      <div class="solution-box" id="sol-22">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Пример 1<br>
+          Дано:<br>
+          $m_\text{ж} = 2,0\text{ кг}$<br>
+          $t_\text{л} = -10\text{ }^\circ\text{C}$<br>
+          $t = 0\text{ }^\circ\text{C}$<br>
+          $m_\text{л} = 150\text{ г} = 0,150\text{ кг}$<br>
+          $c_\text{л} = 2100\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} = 2,1 \cdot 10^3\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          $c_\text{ж} = 460\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          $\lambda = 3,33 \cdot 10^5\text{ }\frac{\text{Дж}}{\text{кг}}$<br>
+          $t_\text{ж} - ?$<br><br>
+          Решение.<br>
+          Запишем уравнение теплового баланса:
+          <div class="math-scroll">$$Q_1 = Q_2 + Q_3,$$</div>
+          где<br>
+          $Q_1 = c_\text{ж} \cdot m_\text{ж} (t_\text{ж} - t)$ — количество теплоты, отданное болванкой при охлаждении до температуры $t = 0\text{ }^\circ\text{C}$.<br>
+          $Q_2 = c_\text{л} \cdot m_\text{л} (t - t_\text{л})$ — количество теплоты, полученное льдом при нагревании от температуры $t_\text{л} = -10\text{ }^\circ\text{C}$ до температуры $t = 0\text{ }^\circ\text{C}$.<br>
+          $Q_3 = \lambda m_\text{л}$ — количество теплоты, необходимое для плавления льда.
+          <div class="math-scroll">$$c_\text{ж} \cdot m_\text{ж} (t_\text{ж} - t) = c_\text{л} \cdot m_\text{л} (t - t_\text{л}) + \lambda m_\text{л},\text{ так как } t = 0\text{ }^\circ\text{C},\text{ то}$$</div>
+          <div class="math-scroll">$$t_\text{ж} = \frac{-c_\text{л} m_\text{л} t_\text{л} + \lambda m_\text{л}}{c_\text{ж} m_\text{ж}}.$$</div>
+          <div class="math-scroll">$$t_\text{ж} = \frac{2,1 \cdot 10^3\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 0,150\text{ кг} \cdot 10\text{ }^\circ\text{C} + 3,33 \cdot 10^5\text{ }\frac{\text{Дж}}{\text{кг}} \cdot 0,150\text{ кг}}{460\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 2,0\text{ кг}} = 58\text{ }^\circ\text{C}.$$</div>
+          Ответ: $t_\text{ж} = 58\text{ }^\circ\text{C}$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 23 -->
+    <div class="task-card" id="task-23">
+      <div class="task-header"><span class="task-badge">Задача 23</span></div>
+      <div class="task-text">Определите объем глицерина, если при его кристаллизации выделилось количество теплоты $|Q| = 240\text{ кДж}$. Плотность глицерина $\rho = 1200\text{ }\frac{\text{кг}}{\text{м}^3}$. Удельная теплота плавления глицерина $\lambda = 1,99\cdot 10^5\text{ }\frac{\text{Дж}}{\text{кг}}$.</div>
+      <div class="calc-row">
+        <label>Введите объем глицерина в литрах ($\text{л}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-23">
+          <button class="btn-check" onclick="validateCalculation(23)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-23"></div>
+      <button class="btn-solution-toggle" id="btn-sol-23" onclick="toggleSolution(23)">Показать Решение</button>
+      <div class="solution-box" id="sol-23">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №162<br>
+          Дано:<br>
+          • Количество выделившейся теплоты по модулю: $|Q| = 240\text{ кДж} = 240 \cdot 10^3\text{ Дж}$<br>
+          • Плотность глицерина: $\rho = 1200\text{ кг}/\text{м}^3$<br>
+          • Удельная теплота плавления (кристаллизации) глицерина: $\lambda = 1,99 \cdot 10^5\text{ Дж}/\text{кг}$<br><br>
+          1. Формула количества теплоты:<br>
+          При кристаллизации вещества выделяется количество теплоты, равное:
+          <div class="math-scroll">$$|Q| = \lambda \cdot m$$</div>
+          где $m$ — масса глицерина.<br><br>
+          2. Связь массы с объемом:<br>
+          Масса вещества выражается через его плотность $\rho$ и объем $V$:
+          <div class="math-scroll">$$m = \rho \cdot V$$</div>
+          3. Вывод формулы для объема:<br>
+          Подставим формулу массы в выражение для количества теплоты:
+          <div class="math-scroll">$$|Q| = \lambda \cdot \rho \cdot V$$</div>
+          Отсюда выразим искомый объем $V$:
+          <div class="math-scroll">$$V = \frac{|Q|}{\lambda \cdot \rho}$$</div>
+          4. Вычисления:
+          <div class="math-scroll">$$V = \frac{240 \cdot 10^3}{1,99 \cdot 10^5 \cdot 1200}$$</div>
+          <div class="math-scroll">$$V = \frac{240 \cdot 10^3}{2,388 \cdot 10^8} \approx 0,001005\text{ м}^3 \approx 1,01 \cdot 10^{-3}\text{ м}^3$$</div>
+          Переведем значение в литры для наглядности (1 м³ = 1000 л):
+          <div class="math-scroll">$$V \approx 1\text{ л}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 24 -->
+    <div class="task-card" id="task-24">
+      <div class="task-header"><span class="task-badge">Задача 24</span></div>
+      <div class="task-text">Для какого вещества построен схематический график зависимости температуры от времени (рис. 17)? К какому состоянию вещества относятся участки I и II графика?</div>
+      <div class="task-image-wrap">
+        <img src="image3.png" alt="Рис. 17 к задаче 24" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+17';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(24, 1, this)">1) Свинец; I — жидкое состояние, II — твердое состояние;</button>
+        <button class="btn-option" onclick="handleChoice(24, 2, this)">2) Олово; I — жидкое состояние, II — твердое состояние;</button>
+        <button class="btn-option" onclick="handleChoice(24, 3, this)">3) Медь; I — газообразное состояние, II — жидкое состояние;</button>
+        <button class="btn-option" onclick="handleChoice(24, 4, this)">4) Цинк; I — твердое состояние, II — твердое состояние.</button>
+      </div>
+      <div class="feedback-msg" id="fb-24"></div>
+      <button class="btn-solution-toggle" id="btn-sol-24" onclick="toggleSolution(24)">Показать Решение</button>
+      <div class="solution-box" id="sol-24">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №164<br>
+          Этот график построен для свинца, так как температура его кристаллизации (плавления) составляет 327 °С.<br><br>
+          Анализ графика:<br>
+          • Вещество: По горизонтальному участку графика видно, что фазовый переход происходит при температуре 327 °С. Согласно таблице температур плавления, это значение соответствует свинцу.<br>
+          • Процесс: График идет вниз, значит, происходит охлаждение жидкого свинца, его кристаллизация (отверждение) и последующее охлаждение твердого вещества.<br><br>
+          Состояние вещества на участках:<br>
+          • Участок I: Вещество находится в жидком состоянии (происходит охлаждение жидкого свинца от 520 °С до температуры кристаллизации 327 °С).<br>
+          • Участок II: Вещество находится в твердом состоянии (после полного затвердевания на горизонтальном участке твердый свинец охлаждается от 327 °С до 200 °С).
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 25 -->
+    <div class="task-card" id="task-25">
+      <div class="task-header"><span class="task-badge">Задача 25</span></div>
+      <div class="task-text">Количество теплоты, необходимое для плавления цинка массой $m = 3,0\text{ кг}$, взятого при температуре $t = 0\text{ }^\circ\text{C}$, составляет (температура плавления цинка $t_\text{пл} = 420\text{ }^\circ\text{C}$, удельная теплоемкость $c = 400\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$, удельная теплота плавления $\lambda = 112\text{ кДж}/\text{кг}$):</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(25, 1, this)">1) 0,84 МДж;</button>
+        <button class="btn-option" onclick="handleChoice(25, 2, this)">2) 0,60 МДж;</button>
+        <button class="btn-option" onclick="handleChoice(25, 3, this)">3) 6,0 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(25, 4, this)">4) 0,54 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(25, 5, this)">5) 0,34 кДж.</button>
+      </div>
+      <div class="feedback-msg" id="fb-25"></div>
+      <button class="btn-solution-toggle" id="btn-sol-25" onclick="toggleSolution(25)">Показать Решение</button>
+      <div class="solution-box" id="sol-25">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 2<br>
+          Дано:<br>
+          • Масса цинка: $m = 3,0\text{ кг}$<br>
+          • Начальная температура: $t = 0\text{ }^\circ\text{C}$<br>
+          • Температура плавления цинка: $t_\text{пл} = 420\text{ }^\circ\text{C}$<br>
+          • Удельная теплоемкость: $c = 400\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$<br>
+          • Удельная теплота плавления: $\lambda = 112\text{ кДж}/\text{кг} = 112 \cdot 10^3\text{ Дж}/\text{кг}$<br><br>
+          Решение:<br>
+          Весь процесс состоит из двух последовательных этапов, для каждого из которых нужно рассчитать теплоту:<br>
+          1. Нагревание твердого цинка до температуры плавления ($Q_1$):
+          <div class="math-scroll">$$Q_1 = c \cdot m \cdot (t_\text{пл} - t)$$</div>
+          <div class="math-scroll">$$Q_1 = 400 \cdot 3,0 \cdot (420 - 0) = 1200 \cdot 420 = 504\,000\text{ Дж} = 0,504\text{ МДж}$$</div>
+          2. Плавление цинка ($Q_2$):
+          <div class="math-scroll">$$Q_2 = \lambda \cdot m$$</div>
+          <div class="math-scroll">$$Q_2 = 112 \cdot 10^3 \cdot 3,0 = 336\,000\text{ Дж} = 0,336\text{ МДж}$$</div>
+          3. Общее количество теплоты ($Q$):
+          <div class="math-scroll">$$Q = Q_1 + Q_2$$</div>
+          <div class="math-scroll">$$Q = 0,504\text{ МДж} + 0,336\text{ МДж} = 0,84\text{ МДж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 26 -->
+    <div class="task-card" id="task-26">
+      <div class="task-header"><span class="task-badge">Задача 26</span></div>
+      <div class="task-text">В сосуд, содержащий воду массой $m = 10\text{ кг}$ при температуре $T_1 = 283\text{ К}$, положили кусок льда, охлажденный до $T_2 = 223\text{ К}$, после чего температура образовавшейся ледяной массы оказалась $T = 269\text{ К}$. Масса льда, положенного в сосуд, равна ... кг. Удельная теплота плавления льда $\lambda = 3,3\cdot 10^5\text{ Дж}/\text{кг}$, удельная теплоемкость $c = 2100\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$</div>
+      <div class="calc-row">
+        <label>Введите массу льда в килограммах ($\text{кг}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-26">
+          <button class="btn-check" onclick="validateCalculation(26)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-26"></div>
+      <button class="btn-solution-toggle" id="btn-sol-26" onclick="toggleSolution(26)">Показать Решение</button>
+      <div class="solution-box" id="sol-26">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 4<br>
+          Дано:<br>
+          • Масса воды: $m_\text{в} = 10\text{ кг}$<br>
+          • Начальная температура воды: $T_1 = 283\text{ К}$<br>
+          • Начальная температура льда: $T_2 = 223\text{ К}$<br>
+          • Конечная температура системы: $T = 269\text{ К}$<br>
+          • Удельная теплота плавления льда: $\lambda = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br>
+          • Удельная теплоемкость льда: $c_\text{л} = 2100\text{ Дж}/(\text{кг}\cdot\text{К})$<br>
+          • Удельная теплоемкость воды (табличное значение): $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot\text{К})$<br>
+          • Температура замерзания воды: $T_0 = 273\text{ К}$<br><br>
+          Конечная температура ледяной массы $T = 269\text{ К}$ находится ниже точки замерзания воды (273 К). Это означает, что вся находившаяся в сосуде вода полностью превратилась в лед и охладилась.<br><br>
+          Запишем уравнение теплового баланса через сумму полученных теплот для всех участников процесса:
+          <div class="math-scroll">$$Q_1 + Q_2 + Q_3 + Q_4 = 0$$</div>
+          Где процессы распределяются следующим образом:<br>
+          1. $Q_1$ — охлаждение исходной воды до температуры замерзания $T_0 = 273\text{ К}$:
+          <div class="math-scroll">$$Q_1 = c_\text{в} \cdot m_\text{в} \cdot (T_0 - T_1) = 4200 \cdot 10 \cdot (273 - 283) = -420\,000\text{ Дж}$$</div>
+          2. $Q_2$ — кристаллизация (замерзание) этой воды при $T_0 = 273\text{ К}$ (процесс идет с выделением тепла):
+          <div class="math-scroll">$$Q_2 = -\lambda \cdot m_\text{в} = -3,3 \cdot 10^5 \cdot 10 = -3\,300\,000\text{ Дж}$$</div>
+          3. $Q_3$ — охлаждение льда, образовавшегося из воды, от $T_0 = 273\text{ К}$ до конечной температуры $T = 269\text{ К}$:
+          <div class="math-scroll">$$Q_3 = c_\text{л} \cdot m_\text{в} \cdot (T - T_0) = 2100 \cdot 10 \cdot (269 - 273) = -84\,000\text{ Дж}$$</div>
+          4. $Q_4$ — нагревание изначально брошенного в сосуд куска льда массой $m_\text{л}$ от $T_2 = 223\text{ К}$ до конечной температуры $T = 269\text{ К}$:
+          <div class="math-scroll">$$Q_4 = c_\text{л} \cdot m_\text{л} \cdot (T - T_2) = 2100 \cdot m_\text{л} \cdot (269 - 223) = 96\,600 \cdot m_\text{л}$$</div>
+          Подстановка в уравнение теплового баланса:
+          <div class="math-scroll">$$-420\,000 - 3\,300\,000 - 84\,000 + 96\,600 \cdot m_\text{л} = 0$$</div>
+          Сложим все отрицательные слагаемые:
+          <div class="math-scroll">$$-3\,804\,000 + 96\,600 \cdot m_\text{л} = 0$$</div>
+          Перенесем числовое значение в правую часть и выразим массу льда ($m_\text{л}$):
+          <div class="math-scroll">$$96\,600 \cdot m_\text{л} = 3\,804\,000$$</div>
+          <div class="math-scroll">$$m_\text{л} = \frac{3\,804\,000}{96\,600} \approx 39,38\text{ кг}$$</div>
+          Округляем до десятых согласно исходным данным задачи:
+          <div class="math-scroll">$$m_\text{л} \approx 39,4\text{ кг}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 27 -->
+    <div class="task-card" id="task-27">
+      <div class="task-header"><span class="task-badge">Задача 27</span></div>
+      <div class="task-text">В калориметр с теплоемкостью $C = 1000\text{ Дж}/\text{К}$, содержащий воду массой $m_1 = 300\text{ г}$ при температуре $t_1 = 17\text{ }^\circ\text{C}$, опустили мокрый снег массой $m_2 = 200\text{ г}$. Когда снег растаял, установилась температура $t = 7,0\text{ }^\circ\text{C}$. Количество льда, которое было в комке мокрого снега, составило ... г.</div>
+      <div class="calc-row">
+        <label>Введите количество льда в граммах ($\text{г}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-27">
+          <button class="btn-check" onclick="validateCalculation(27)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-27"></div>
+      <button class="btn-solution-toggle" id="btn-sol-27" onclick="toggleSolution(27)">Показать Решение</button>
+      <div class="solution-box" id="sol-27">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 3<br>
+          Дано:<br>
+          • Теплоемкость калориметра: $C = 1000\text{ Дж}/\text{К}$<br>
+          • Масса воды в калориметре: $m_1 = 300\text{ г} = 0,3\text{ кг}$<br>
+          • Начальная температура калориметра и воды: $t_1 = 17\text{ }^\circ\text{C}$<br>
+          • Масса мокрого снега: $m_2 = 200\text{ г} = 0,2\text{ кг}$<br>
+          • Установившаяся температура: $t = 7,0\text{ }^\circ\text{C}$<br>
+          • Удельная теплоемкость воды: $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot\text{К})$<br>
+          • Удельная теплота плавления льда: $\lambda = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br><br>
+          Мокрый снег состоит из смеси чистого льда массой $m_\text{л}$ и воды массой $(m_2 - m_\text{л})$. Так как это смесь льда и воды, начальная температура мокрого снега строго равна $t_0 = 0\text{ }^\circ\text{C}$.<br><br>
+          Запишем уравнение теплового баланса через сумму полученных теплот:
+          <div class="math-scroll">$$Q_\text{кал} + Q_\text{воды} + Q_\text{плав} + Q_\text{нагр.снега} = 0$$</div>
+          Где:<br>
+          1. $Q_\text{кал}$ — теплота, полученная калориметром при охлаждении от $t_1$ до $t$:
+          <div class="math-scroll">$$Q_\text{кал} = C \cdot (t - t_1) = 1000 \cdot (7 - 17) = -10\,000\text{ Дж}$$</div>
+          2. $Q_\text{воды}$ — теплота, полученная первоначальной водой при охлаждении от $t_1$ до $t$:
+          <div class="math-scroll">$$Q_\text{воды} = c_\text{в} \cdot m_1 \cdot (t - t_1) = 4200 \cdot 0,3 \cdot (7 - 17) = -12\,600\text{ Дж}$$</div>
+          3. $Q_\text{плав}$ — теплота, поглощенная льдом при плавлении (тает только лед массой $m_\text{л}$):
+          <div class="math-scroll">$$Q_\text{плав} = \lambda \cdot m_\text{л} = 330\,000 \cdot m_\text{л}$$</div>
+          4. $Q_\text{нагр.снега}$ — теплота, поглощенная всем растаявшим мокрым снегом (массой $m_2$) при нагревании от $t_0 = 0\text{ }^\circ\text{C}$ до $t$:
+          <div class="math-scroll">$$Q_\text{нагр.снега} = c_\text{в} \cdot m_2 \cdot (t - t_0) = 4200 \cdot 0,2 \cdot (7 - 0) = 5880\text{ Дж}$$</div>
+          <div class="math-scroll">$$-10\,000 - 12\,600 + 330\,000 \cdot m_\text{л} + 5880 = 0$$</div>
+          Объединим числовые слагаемые:
+          <div class="math-scroll">$$-16\,720 + 330\,000 \cdot m_\text{л} = 0$$</div>
+          Выразим массу льда $m_\text{л}$:
+          <div class="math-scroll">$$330\,000 \cdot m_\text{л} = 16\,720$$</div>
+          <div class="math-scroll">$$m_\text{л} = \frac{16\,720}{330\,000} \approx 0,0507\text{ кг} \approx 50\text{ г}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 28 -->
+    <div class="task-card" id="task-28">
+      <div class="task-header"><span class="task-badge">Задача 28</span></div>
+      <div class="task-text">В открытом сосуде находится смесь воды и льда (удельная теплоёмкость воды $c = 4200\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$, удельная теплота плавления льда $\lambda = 3,4\cdot 10^5\text{ }\frac{\text{Дж}}{\text{кг}}$). Масса воды в смеси $m_\text{в} = 350\text{ г}$. Сосуд внесли в тёплую комнату и сразу же начали измерять температуру содержимого сосуда. График зависимости температуры $t$ смеси от времени $\tau$ изображён на рисунке. Если количество теплоты, ежесекундно передаваемое смеси, постоянно, то масса $m_\text{л}$ льда в смеси в начальный момент времени была равна ... г.</div>
+      <div class="task-image-wrap">
+        <img src="image4.png" alt="График к задаче 28" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+4';">
+      </div>
+      <div class="calc-row">
+        <label>Введите массу льда в граммах ($\text{г}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-28">
+          <button class="btn-check" onclick="validateCalculation(28)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-28"></div>
+      <button class="btn-solution-toggle" id="btn-sol-28" onclick="toggleSolution(28)">Показать Решение</button>
+      <div class="solution-box" id="sol-28">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача ЦТ<br>
+          Решение.<br>
+          При постоянной тепловой мощности нагревателя количество теплоты, потраченное на плавление льда равно $Q_1 = P\tau_1$ и $Q_1 = m_\text{л}\lambda$. Количество теплоты, полученное при нагревании воды $Q_2 = P\tau_2$ и $Q_2 = (m_\text{л} + m_\text{в})c t$. При решении этих уравнений, получаем:
+          <div class="math-scroll">$$m_\text{л} = \frac{m_\text{в} c t \tau_1}{\lambda \tau_2 - c t \tau_1} = \frac{350 \cdot 4200 \cdot 2 \cdot 25}{3,4 \cdot 10^5 \cdot 5 - 4200 \cdot 2 \cdot 25} \approx 49\text{ г}.$$</div>
+          Ответ: 49.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 29 -->
+    <div class="task-card" id="task-29">
+      <div class="task-header"><span class="task-badge">Задача 29</span></div>
+      <div class="task-text">На рисунке представлена зависимость температуры $t$ тела от времени $\tau$. Удельная теплоёмкость вещества тела в твёрдом состоянии $c = 500\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$. Если мощность нагревателя постоянна, а теплообмен с окружающей средой не учитывать, то удельная теплота плавления $\lambda$ вещества равна ... кДж/кг.</div>
+      <div class="task-image-wrap">
+        <img src="image5.png" alt="График к задаче 29" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+5';">
+      </div>
+      <div class="calc-row">
+        <label>Введите удельную теплоту плавления в $\frac{\text{кДж}}{\text{кг}}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-29">
+          <button class="btn-check" onclick="validateCalculation(29)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-29"></div>
+      <button class="btn-solution-toggle" id="btn-sol-29" onclick="toggleSolution(29)">Показать Решение</button>
+      <div class="solution-box" id="sol-29">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 2 ЦТ<br>
+          Решение.<br>
+          Количество теплоты, полученное от нагревателя при нагревании тела, равно $P\tau_1 = m c \Delta t$, где $\Delta t = 30\text{ }^\circ\text{C}$. Количество теплоты, полученное при плавлении $P\tau_2 = m\lambda$, причем по графику $\tau_2 = 9\tau_1$.<br>
+          Тогда удельная теплота плавления вещества равна
+          <div class="math-scroll">$$\lambda = 9 c \Delta t = 9 \cdot 500 \cdot 30 = 135\text{ кДж}/\text{кг}.$$</div>
+          Ответ: 135.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 30 -->
+    <div class="task-card" id="task-30">
+      <div class="task-header"><span class="task-badge">Задача 30</span></div>
+      <div class="task-text">Два образца А и Б одинаковой массы, изготовленные из различных металлов, расплавили в печи. Количество теплоты, подводимое к каждому образцу за одну секунду, было одинаково. На рисунке представлены графики зависимости температуры $t$ образцов от времени $\tau$. Если удельная теплота плавления вещества образца А составляет $\lambda_\text{А} = 240\text{ }\frac{\text{кДж}}{\text{кг}}$, то удельная теплота плавления $\lambda_\text{Б}$ вещества образца Б равна ... $\frac{\text{кДж}}{\text{кг}}$</div>
+      <div class="task-image-wrap">
+        <img src="image6.png" alt="График к задаче 30" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+6';">
+      </div>
+      <div class="calc-row">
+        <label>Введите удельную теплоту плавления образца Б в $\frac{\text{кДж}}{\text{кг}}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-30">
+          <button class="btn-check" onclick="validateCalculation(30)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-30"></div>
+      <button class="btn-solution-toggle" id="btn-sol-30" onclick="toggleSolution(30)">Показать Решение</button>
+      <div class="solution-box" id="sol-30">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          ЦТ 2025<br>
+          Решение.<br>
+          Время плавления образца А 30 мин, а образца Б — 20 мин. Следовательно, на плавление образца А затрачивается в 1,5 раза больше теплоты, чем на плавление образца Б. Учитывая, что массы тел одинаковы, то получаем:
+          <div class="math-scroll">$$\lambda_\text{Б} = \frac{\lambda_\text{А}}{1,5} = \frac{240}{1,5} = 160\text{ кДж}/\text{кг}.$$</div>
+          Ответ: 160.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 31 -->
+    <div class="task-card" id="task-31">
+      <div class="task-header"><span class="task-badge">Задача 31</span></div>
+      <div class="task-text">Вычислите плотность жидкого водорода, если в процессе перехода водорода объемом $V = 1,0\text{ л}$ при температуре кипения в газообразное состояние поглощается количество теплоты $Q = 4,224\text{ кДж}$. Удельная теплота парообразования водорода $L = 59\text{ }\frac{\text{кДж}}{\text{кг}}$.</div>
+      <div class="calc-row">
+        <label>Введите плотность жидкого водорода в $\frac{\text{кг}}{\text{м}^3}$:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-31">
+          <button class="btn-check" onclick="validateCalculation(31)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-31"></div>
+      <button class="btn-solution-toggle" id="btn-sol-31" onclick="toggleSolution(31)">Показать Решение</button>
+      <div class="solution-box" id="sol-31">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №215<br>
+          Дано:<br>
+          • Объем жидкого водорода: $V = 1,0\text{ л} = 1,0 \cdot 10^{-3}\text{ м}^3$<br>
+          • Поглощенное количество теплоты: $Q = 4,224\text{ кДж} = 4,224 \cdot 10^3\text{ Дж}$<br>
+          • Удельная теплота парообразования водорода: $L = 59\text{ кДж}/\text{кг} = 59 \cdot 10^3\text{ Дж}/\text{кг}$<br><br>
+          Решение:<br>
+          Процесс перехода водорода из жидкого состояния в газообразное при температуре кипения — это парообразование.<br>
+          1. Запишем формулу количества теплоты, необходимого для парообразования вещества массой $m$:
+          <div class="math-scroll">$$Q = L \cdot m$$</div>
+          2. Выразим массу водорода ($m$):
+          <div class="math-scroll">$$m = \frac{Q}{L}$$</div>
+          3. Формула плотности вещества ($\rho$) связывает его массу и объем:
+          <div class="math-scroll">$$\rho = \frac{m}{V}$$</div>
+          4. Подставим выражение для массы в формулу плотности:
+          <div class="math-scroll">$$\rho = \frac{Q}{L \cdot V}$$</div>
+          5. Выполним расчет в системе СИ:
+          <div class="math-scroll">$$\rho = \frac{4,224 \cdot 10^3}{59 \cdot 10^3 \cdot 1,0 \cdot 10^{-3}}$$</div>
+          Сократим степени $10^3$ в числителе и знаменателе:
+          <div class="math-scroll">$$\rho = \frac{4,224}{59 \cdot 10^{-3}} = \frac{4224}{59} \approx 71,593\text{ кг}/\text{м}^3 \approx 71,6\text{ кг}/\text{м}^3$$</div>
+          Ответ:<br>
+          $\rho \approx 71,6\text{ кг}/\text{м}^3$<br>
+          Можно округлить до 72 кг/м3
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 32 -->
+    <div class="task-card" id="task-32">
+      <div class="task-header"><span class="task-badge">Задача 32</span></div>
+      <div class="task-text">В калориметр, содержащий воду при температуре кипения, бросили медный шар массой $m = 0,50\text{ кг}$, температура которого $t = 500\text{ }^\circ\text{C}$. Вычислите массу испарившейся воды. Теплоемкостью калориметра пренебречь.</div>
+      <div class="calc-row">
+        <label>Введите массу испарившейся воды в граммах ($\text{г}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-32">
+          <button class="btn-check" onclick="validateCalculation(32)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-32"></div>
+      <button class="btn-solution-toggle" id="btn-sol-32" onclick="toggleSolution(32)">Показать Решение</button>
+      <div class="solution-box" id="sol-32">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 218<br>
+          Дано:<br>
+          • Масса медного шара: $m = 0,50\text{ кг}$<br>
+          • Начальная температура шара: $t = 500\text{ }^\circ\text{C}$<br>
+          • Температура кипения воды (и конечная температура шара): $t_\text{кип} = 100\text{ }^\circ\text{C}$<br>
+          • Удельная теплоемкость меди: $c_\text{меди} = 380\text{ Дж}/(\text{кг}\cdot^\circ\text{C})$<br>
+          • Удельная теплота парообразования воды: $L = 2,26 \cdot 10^6\text{ Дж}/\text{кг}$<br><br>
+          Решение:<br>
+          Так как вода в калориметре уже находится при температуре кипения, вся энергия от остывающего медного шара расходуется только на испарение части этой воды. Процесс завершится, когда температура шара сравняется с температурой кипения воды.<br>
+          Запишем уравнение теплового баланса через сумму полученных теплот, равную нулю:
+          <div class="math-scroll">$$Q_1 + Q_2 = 0$$</div>
+          Где:<br>
+          • $Q_1$ — количество теплоты, полученное медным шаром при его охлаждении:
+          <div class="math-scroll">$$Q_1 = c_\text{меди} \cdot m \cdot (t_\text{кип} - t)$$</div>
+          • $Q_2$ — количество теплоты, полученное водой при ее испарении:
+          <div class="math-scroll">$$Q_2 = L \cdot m_\text{воды}$$</div>
+          Расчет:<br>
+          1. Подставим формулы процессов в уравнение теплового баланса:
+          <div class="math-scroll">$$c_\text{меди} \cdot m \cdot (t_\text{кип} - t) + L \cdot m_\text{воды} = 0$$</div>
+          2. Выразим массу испарившейся воды ($m_\text{воды}$):
+          <div class="math-scroll">$$L \cdot m_\text{воды} = -c_\text{меди} \cdot m \cdot (t_\text{кип} - t)$$</div>
+          <div class="math-scroll">$$m_\text{воды} = \frac{c_\text{меди} \cdot m \cdot (t - t_\text{кип})}{L}$$</div>
+          3. Подставим числовые значения:
+          <div class="math-scroll">$$m_\text{воды} = \frac{380 \cdot 0,50 \cdot (500 - 100)}{2,26 \cdot 10^6} = \frac{190 \cdot 400}{2\,260\,000} = \frac{76\,000}{2\,260\,000} \approx 0,03363\text{ кг}$$</div>
+          Переведем результат в граммы:
+          <div class="math-scroll">$$m_\text{воды} \approx 33,6\text{ г}$$</div>
+          Ответ:<br>
+          $m_\text{воды} \approx 33,6\text{ г}$
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 33 -->
+    <div class="task-card" id="task-33">
+      <div class="task-header"><span class="task-badge">Задача 33</span></div>
+      <div class="task-text">Вычислите удельную теплоту сгорания торфа, если при сжигании торфа массой $m = 1,0\text{ кг}$ выделяется количество теплоты, достаточное для перевода в газообразное состояние кипящей воды объемом $V = 6,64\text{ л}$.</div>
+      <div class="calc-row">
+        <label>Введите удельную теплоту сгорания торфа в мегаджоулях на килограмм ($\frac{\text{МДж}}{\text{кг}}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-33">
+          <button class="btn-check" onclick="validateCalculation(33)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-33"></div>
+      <button class="btn-solution-toggle" id="btn-sol-33" onclick="toggleSolution(33)">Показать Решение</button>
+      <div class="solution-box" id="sol-33">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          №227<br>
+          Дано:<br>
+          • Масса торфа: $m_\text{т} = 1,0\text{ кг}$<br>
+          • Объем кипящей воды: $V = 6,64\text{ л} = 6,64 \cdot 10^{-3}\text{ м}^3$<br>
+          • Плотность воды: $\rho = 1000\text{ кг}/\text{м}^3$<br>
+          • Удельная теплота парообразования воды: $L = 2,26 \cdot 10^6\text{ Дж}/\text{кг}$<br><br>
+          Выделившееся при сжигании торфа тепло полностью расходуется на испарение кипящей воды. Запишем уравнение теплового баланса через сумму полученных теплот, равную нулю:
+          <div class="math-scroll">$$Q_1 + Q_2 = 0$$</div>
+          Где:<br>
+          • $Q_1$ — количество теплоты, полученное (выделившееся) при сгорании торфа массой $m_\text{т}$ (так как тепло отдается системой, $Q_1 < 0$):
+          <div class="math-scroll">$$Q_1 = -q \cdot m_\text{т}$$</div>
+          • $Q_2$ — количество теплоты, полученное водой при ее испарении (так как тепло поглощается, $Q_2 > 0$):
+          <div class="math-scroll">$$Q_2 = L \cdot m_\text{в}$$</div>
+          Массу воды ($m_\text{в}$) выразим через её объем и плотность:
+          <div class="math-scroll">$$m_\text{в} = \rho \cdot V = 1000\text{ кг}/\text{м}^3 \cdot 6,64 \cdot 10^{-3}\text{ м}^3 = 6,64\text{ кг}$$</div>
+          1. Подставим формулы процессов в уравнение теплового баланса:
+          <div class="math-scroll">$$-q \cdot m_\text{т} + L \cdot m_\text{в} = 0$$</div>
+          2. Перенесем слагаемое с минусом в правую часть:
+          <div class="math-scroll">$$L \cdot m_\text{в} = q \cdot m_\text{т}$$</div>
+          3. Выразим удельную теплоту сгорания торфа ($q$):
+          <div class="math-scroll">$$q = \frac{L \cdot m_\text{в}}{m_\text{т}}$$</div>
+          4. Подставим числовые значения:
+          <div class="math-scroll">$$q = \frac{2,26 \cdot 10^6\text{ Дж}/\text{кг} \cdot 6,64\text{ кг}}{1,0\text{ кг}} \approx 15 \cdot 10^6\text{ Дж}/\text{кг}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 34 -->
+    <div class="task-card" id="task-34">
+      <div class="task-header"><span class="task-badge">Задача 34</span></div>
+      <div class="task-text">К открытому калориметру с водой ($L = 2,26\text{ }\frac{\text{МДж}}{\text{кг}}$) ежесекундно подводили количество теплоты $Q = 59\text{ Дж}$. На рисунке представлена зависимость температуры $t$ воды от времени $\tau$. Начальная масса $m$ воды в калориметре равна ... г.</div>
+      <div class="task-image-wrap">
+        <img src="image7.png" alt="График к задаче 34" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+7';">
+      </div>
+      <div class="calc-row">
+        <label>Введите начальную массу воды в граммах ($\text{г}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-34">
+          <button class="btn-check" onclick="validateCalculation(34)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-34"></div>
+      <button class="btn-solution-toggle" id="btn-sol-34" onclick="toggleSolution(34)">Показать Решение</button>
+      <div class="solution-box" id="sol-34">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          ЦТ 2011<br>
+          Решение.<br>
+          Количество теплоты, которое нужно для процесса парообразования $Lm$ равно подведенному количеству теплоты $Q\tau$:
+          <div class="math-scroll">$$Lm = Q\tau,$$</div>
+          <div class="math-scroll">$$m = \frac{Q\tau}{L} = \frac{59 \cdot 1800}{2,26 \cdot 10^6} = 47\text{ г.}$$</div>
+          Ответ: 47.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 35 -->
+    <div class="task-card" id="task-35">
+      <div class="task-header"><span class="task-badge">Задача 35</span></div>
+      <div class="task-text">Воду, имеющую температуру $t_1 = 10\text{ }^\circ\text{C}$, нагревают до температуры $t_2 = 90\text{ }^\circ\text{C}$, пропуская через нее пар, температура которого $t_3 = 100\text{ }^\circ\text{C}$. Во сколько раз увеличится масса воды? Потерями теплоты пренебречь.</div>
+      <div class="calc-row">
+        <label>Введите, во сколько раз увеличится масса воды:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-35">
+          <button class="btn-check" onclick="validateCalculation(35)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-35"></div>
+      <button class="btn-solution-toggle" id="btn-sol-35" onclick="toggleSolution(35)">Показать Решение</button>
+      <div class="solution-box" id="sol-35">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Пример 1<br>
+          Дано:<br>
+          $t_1 = 10\text{ }^\circ\text{C}$<br>
+          $t_2 = 90\text{ }^\circ\text{C}$<br>
+          $t_3 = 100\text{ }^\circ\text{C}$<br>
+          $c_\text{в} = 4,2 \cdot 10^3\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          $L = 2,26 \cdot 10^6\text{ }\frac{\text{Дж}}{\text{кг}}$<br>
+          $\frac{m_\text{в} + m_\text{п}}{m_\text{в}} - ?$<br><br>
+          Решение.<br>
+          Масса воды после пропускания пара увеличится за счет массы сконденсированного пара: $m = m_\text{в} + m_\text{п}$. Запишем уравнение теплового баланса, в котором количество теплоты, отданное паром при конденсации и остывании полученной воды до температуры $t_2 = 90\text{ }^\circ\text{C}$, по модулю равно количеству теплоты, поглощенному водой при нагревании от температуры $t_1 = 10\text{ }^\circ\text{C}$ до температуры $t_2 = 90\text{ }^\circ\text{C}$: $|Q_1 + Q_2| = Q_3$.
+          <div class="math-scroll">$$Q_1 = L m_\text{п};$$</div>
+          <div class="math-scroll">$$Q_2 = c_\text{в} \cdot m_\text{п} (t_3 - t_2);$$</div>
+          <div class="math-scroll">$$Q_3 = c_\text{в} \cdot m_\text{в} (t_2 - t_1).$$</div>
+          <div class="math-scroll">$$L m_\text{п} + c_\text{в} \cdot m_\text{п} (t_3 - t_2) = c_\text{в} \cdot m_\text{в} (t_2 - t_1);$$</div>
+          <div class="math-scroll">$$\frac{m_\text{п}}{m_\text{в}} (L + c_\text{в}(t_3 - t_2)) = c_\text{в}(t_2 - t_1);$$</div>
+          <div class="math-scroll">$$\frac{m_\text{п}}{m_\text{в}} = \frac{c_\text{в}(t_2 - t_1)}{L + c_\text{в}(t_3 - t_2)};$$</div>
+          <div class="math-scroll">$$\frac{m_\text{в} + m_\text{п}}{m_\text{в}} = 1 + \frac{m_\text{п}}{m_\text{в}} = 1 + \frac{c_\text{в}(t_2 - t_1)}{L + c_\text{в}(t_3 - t_2)};$$</div>
+          <div class="math-scroll">$$\frac{m_\text{в} + m_\text{п}}{m_\text{в}} = 1 + \frac{4,2 \cdot 10^3\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 80\text{ }^\circ\text{C}}{2,26 \cdot 10^6\text{ }\frac{\text{Дж}}{\text{кг}} + 4,2 \cdot 10^3\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 10\text{ }^\circ\text{C}} = 1,2.$$</div>
+          Ответ: в 1,2 раза.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 36 -->
+    <div class="task-card" id="task-36">
+      <div class="task-header"><span class="task-badge">Задача 36</span></div>
+      <div class="task-text">В теплоизолированный сосуд с водой, имеющей температуру $t_\text{в} = 60\text{ }^\circ\text{C}$, опустили стальной брусок массой $m_\text{ст} = 400\text{ г}$, нагретый до температуры $t_\text{ст} = 900\text{ }^\circ\text{C}$. Какая масса воды испарилась, если первоначально масса ее была $m_\text{в} = 0,80\text{ кг}$? Теплоемкостью сосуда пренебречь.</div>
+      <div class="calc-row">
+        <label>Введите массу испарившейся воды в граммах ($\text{г}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-36">
+          <button class="btn-check" onclick="validateCalculation(36)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-36"></div>
+      <button class="btn-solution-toggle" id="btn-sol-36" onclick="toggleSolution(36)">Показать Решение</button>
+      <div class="solution-box" id="sol-36">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Пример 2<br>
+          Дано:<br>
+          $t_\text{в} = 60\text{ }^\circ\text{C}$<br>
+          $m_\text{ст} = 400\text{ г} = 0,400\text{ кг}$<br>
+          $t_\text{ст} = 900\text{ }^\circ\text{C}$<br>
+          $m_\text{в} = 0,80\text{ кг}$<br>
+          $t_\text{к} = 100\text{ }^\circ\text{C}$<br>
+          $c_\text{в} = 4200\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          $c_\text{ст} = 460\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}}$<br>
+          $L = 2,26 \cdot 10^6\text{ }\frac{\text{Дж}}{\text{кг}}$<br>
+          $m - ?$<br><br>
+          Решение.<br>
+          Количество теплоты $Q_1$, выделившееся при остывании бруска от температуры $t_\text{ст} = 900\text{ }^\circ\text{C}$ до температуры $t_\text{к} = 100\text{ }^\circ\text{C}$, пошло на нагревание воды до температуры кипения $t_\text{к} = 100\text{ }^\circ\text{C}$ и испарение ее части. Если пренебречь теплоемкостью сосуда, то уравнение теплового баланса будет иметь вид: $|Q_1| = Q_2 + Q_3$.
+          <div class="math-scroll">$$|Q_1| = c_\text{ст} \cdot m_\text{ст} (t_\text{ст} - t_\text{к});$$</div>
+          <div class="math-scroll">$$Q_2 = c_\text{в} \cdot m_\text{в} (t_\text{к} - t_\text{в});$$</div>
+          <div class="math-scroll">$$Q_3 = L m.$$</div>
+          Подставим в уравнение теплового баланса:
+          <div class="math-scroll">$$c_\text{ст} \cdot m_\text{ст} (t_\text{ст} - t_\text{к}) = c_\text{в} \cdot m_\text{в} (t_\text{к} - t_\text{в}) + L m;$$</div>
+          <div class="math-scroll">$$m = \frac{c_\text{ст} m_\text{ст} (t_\text{ст} - t_\text{к}) - c_\text{в} m_\text{в} (t_\text{к} - t_\text{в})}{L};$$</div>
+          <div class="math-scroll">$$m = \frac{460\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 0,400\text{ кг} \cdot 800\text{ }^\circ\text{C} - 4200\text{ }\frac{\text{Дж}}{\text{кг}\cdot^\circ\text{C}} \cdot 0,80\text{ кг} \cdot 40\text{ }^\circ\text{C}}{2,26 \cdot 10^6\text{ }\frac{\text{Дж}}{\text{кг}}} = 5,6\text{ г.}$$</div>
+          Ответ: $m = 5,6\text{ г}$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 37 -->
+    <div class="task-card" id="task-37">
+      <div class="task-header"><span class="task-badge">Задача 37</span></div>
+      <div class="task-text">Для нагревания воды объемом $V = 2,0\text{ л}$, находящейся в алюминиевой кастрюле массой $m_1 = 400\text{ г}$, от $t_1 = 15\text{ }^\circ\text{C}$ до $t_2 = 75\text{ }^\circ\text{C}$ был израсходован газ массой $m_2 = 30\text{ г}$. Коэффициент полезного действия газовой плиты, если считать всю теплоту, израсходованную на нагревание сосуда с водой, полезной, составляет ... %. Удельная теплоемкость алюминия $c = 9200\text{ }\frac{\text{Дж}}{\text{кг}\cdot\text{К}}$, теплота сгорания газа $q = 34\text{ МДж}/\text{кг}$.</div>
+      <div class="calc-row">
+        <label>Введите КПД газовой плиты в процентах ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-37">
+          <button class="btn-check" onclick="validateCalculation(37)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-37"></div>
+      <button class="btn-solution-toggle" id="btn-sol-37" onclick="toggleSolution(37)">Показать Решение</button>
+      <div class="solution-box" id="sol-37">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Задача 5<br>
+          Дано:<br>
+          • Объем воды: $V = 2,0\text{ л} \Longrightarrow m_\text{в} = \rho_\text{в} \cdot V = 1000\text{ кг}/\text{м}^3 \cdot 2,0 \cdot 10^{-3}\text{ м}^3 = 2,0\text{ кг}$<br>
+          • Масса алюминиевой кастрюли: $m_1 = 400\text{ г} = 0,4\text{ кг}$<br>
+          • Начальная температура: $t_1 = 15\text{ }^\circ\text{C}$<br>
+          • Конечная температура: $t_2 = 75\text{ }^\circ\text{C}$<br>
+          • Изменение температуры: $\Delta t = t_2 - t_1 = 75 - 15 = 60\text{ }^\circ\text{C}$<br>
+          • Масса израсходованного газа: $m_2 = 30\text{ г} = 0,03\text{ кг}$<br>
+          • Удельная теплота сгорания газа: $q = 34\text{ МДж}/\text{кг} = 34 \cdot 10^6\text{ Дж}/\text{кг}$<br>
+          • Удельная теплоемкость воды (табличная): $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot\text{К})$<br>
+          • Удельная теплоемкость алюминия (физически верная табличная): $c_\text{Al} = 920\text{ Дж}/(\text{кг}\cdot\text{К})$<br><br>
+          Решение:<br>
+          1. Находим полезное количество теплоты ($Q_\text{пол}$), которое пошло на нагревание воды и алюминиевой кастрюли:
+          <div class="math-scroll">$$Q_\text{пол} = Q_\text{воды} + Q_\text{кастрюли}$$</div>
+          <div class="math-scroll">$$Q_\text{воды} = c_\text{в} \cdot m_\text{в} \cdot \Delta t = 4200 \cdot 2,0 \cdot 60 = 504\,000\text{ Дж}$$</div>
+          <div class="math-scroll">$$Q_\text{кастрюли} = c_\text{Al} \cdot m_1 \cdot \Delta t = 920 \cdot 0,4 \cdot 60 = 22\,080\text{ Дж}$$</div>
+          <div class="math-scroll">$$Q_\text{пол} = 504\,000 + 22\,080 = 526\,080\text{ Дж}$$</div>
+          2. Находим полное (затраченное) количество теплоты ($Q_\text{затр}$), выделившееся при сжигании газа:
+          <div class="math-scroll">$$Q_\text{затр} = q \cdot m_2 = 34 \cdot 10^6 \cdot 0,03 = 1\,020\,000\text{ Дж}$$</div>
+          3. Вычисляем коэффициент полезного действия (КПД) газовой плиты:
+          <div class="math-scroll">$$\eta = \frac{Q_\text{пол}}{Q_\text{затр}} = \frac{526\,080}{1\,020\,000} \approx 0,5157$$</div>
+          Переводим в проценты и округляем до целых:
+          <div class="math-scroll">$$\eta \approx 52\%$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 38 -->
+    <div class="task-card" id="task-38">
+      <div class="task-header"><span class="task-badge">Задача 38</span></div>
+      <div class="task-text">Смесь, состоящую из льда массой $m_1 = 5,0\text{ кг}$ и воды массой $m_2 = 15\text{ кг}$ при общей температуре $t = 0\text{ }^\circ\text{C}$, в сосуде, теплоемкость которого $C = 42\text{ кДж}/\text{К}$ нужно нагреть до температуры $t_1 = 80\text{ }^\circ\text{C}$ пропусканием водяного пара при $t_2 = 100\text{ }^\circ\text{C}$. Необходимое количество пара составляет ... кг.</div>
+      <div class="calc-row">
+        <label>Введите необходимое количество пара в килограммах ($\text{кг}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-38">
+          <button class="btn-check" onclick="validateCalculation(38)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-38"></div>
+      <button class="btn-solution-toggle" id="btn-sol-38" onclick="toggleSolution(38)">Показать Решение</button>
+      <div class="solution-box" id="sol-38">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Решение задачи №6:<br>
+          Дано:<br>
+          • Масса льда: $m_1 = 5,0\text{ кг}$<br>
+          • Масса воды: $m_2 = 15\text{ кг}$<br>
+          • Начальная температура смеси: $t = 0\text{ }^\circ\text{C}$<br>
+          • Теплоемкость сосуда: $C = 42\text{ кДж}/\text{К} = 42\,000\text{ Дж}/\text{К}$<br>
+          • Конечная температура: $t_1 = 80\text{ }^\circ\text{C}$<br>
+          • Начальная температура пара: $t_2 = 100\text{ }^\circ\text{C}$<br>
+          • Удельная теплота плавления льда: $\lambda = 3,3 \cdot 10^5\text{ Дж}/\text{кг}$<br>
+          • Удельная теплота парообразования: $L = 2,26 \cdot 10^6\text{ Дж}/\text{кг}$<br>
+          • Удельная теплоемкость воды: $c_\text{в} = 4200\text{ Дж}/(\text{кг}\cdot\text{К})$<br><br>
+          Решение:<br>
+          Запишем уравнение теплового баланса через сумму полученных теплот, равную нулю:
+          <div class="math-scroll">$$Q_\text{плав} + Q_\text{нагр.сист} + Q_\text{сос} + Q_\text{конд} + Q_\text{охл.пара} = 0$$</div>
+          1. $Q_\text{плав}$ — плавление исходного льда при $0\text{ }^\circ\text{C}$:
+          <div class="math-scroll">$$Q_\text{плав} = \lambda \cdot m_1 = 3,3 \cdot 10^5 \cdot 5 = 1\,650\,000\text{ Дж}$$</div>
+          2. $Q_\text{нагр.сист}$ — нагревание всей воды (изначальной $m_2$ и получившейся из льда $m_1$) от $0\text{ }^\circ\text{C}$ до $80\text{ }^\circ\text{C}$:
+          <div class="math-scroll">$$Q_\text{нагр.сист} = c_\text{в} \cdot (m_1 + m_2) \cdot (t_1 - t) = 4200 \cdot 20 \cdot 80 = 6\,720\,000\text{ Дж}$$</div>
+          3. $Q_\text{сос}$ — нагревание сосуда от $0\text{ }^\circ\text{C}$ до $80\text{ }^\circ\text{C}$:
+          <div class="math-scroll">$$Q_\text{сос} = C \cdot (t_1 - t) = 42\,000 \cdot 80 = 3\,360\,000\text{ Дж}$$</div>
+          4. $Q_\text{конд}$ — конденсация пара массой $m_\text{п}$ при $100\text{ }^\circ\text{C}$ (тепло выделяется, знак минус):
+          <div class="math-scroll">$$Q_\text{конд} = -L \cdot m_\text{п} = -2,26 \cdot 10^6 \cdot m_\text{п}$$</div>
+          5. $Q_\text{охл.пара}$ — охлаждение получившейся из пара воды от $100\text{ }^\circ\text{C}$ до $80\text{ }^\circ\text{C}$:
+          <div class="math-scroll">$$Q_\text{охл.пара} = c_\text{в} \cdot m_\text{п} \cdot (t_1 - t_2) = 4200 \cdot m_\text{п} \cdot (80 - 100) = -84\,000 \cdot m_\text{п}$$</div>
+          Подстановка в уравнение:
+          <div class="math-scroll">$$1\,650\,000 + 6\,720\,000 + 3\,360\,000 - 2\,260\,000 \cdot m_\text{п} - 84\,000 \cdot m_\text{п} = 0$$</div>
+          <div class="math-scroll">$$11\,730\,000 - 2\,344\,000 \cdot m_\text{п} = 0$$</div>
+          <div class="math-scroll">$$2\,344\,000 \cdot m_\text{п} = 11\,730\,000$$</div>
+          <div class="math-scroll">$$m_\text{п} = \frac{11\,730\,000}{2\,344\,000} = 5\text{ кг}$$</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const testAnswers = {
+      1: 3,
+      2: 2,
+      3: 3,
+      4: 3,
+      10: 4,
+      11: 1,
+      19: 4,
+      20: 1,
+      21: 3,
+      24: 1,
+      25: 1
+    };
+
+    const calcAnswers = {
+      5: [65],
+      6: [1702800, 1702.8, 1703, 1.7, 1.7028],
+      7: [3109500, 3109.5, 3110, 3.11, 3.1095],
+      8: [65],
+      9: [380],
+      12: [5, 5.03, 0.005, 0.00503],
+      13: [89, 88.9, 88.89, 89000, 88890],
+      14: [802.3, 802, 802.33],
+      15: [52, 52.1, 52.14],
+      16: [0.16, 0.158, 160, 158],
+      17: [40, 40000],
+      18: [25, 0.25],
+      22: [58],
+      23: [1, 1.01, 1.005, 0.001, 0.001005],
+      26: [39.4, 39.38, 39],
+      27: [50, 50.7, 51, 0.0507, 0.051],
+      28: [49, 48.9, 0.049],
+      29: [135, 135000],
+      30: [160, 160000],
+      31: [71.6, 72, 71.59, 71.593],
+      32: [33.6, 33.63, 0.0336, 0.034],
+      33: [15, 15000000, 1.5e7],
+      34: [47, 0.047],
+      35: [1.2],
+      36: [5.6, 0.0056],
+      37: [52, 51.6, 51.57, 0.52, 0.516],
+      38: [5, 5000]
+    };
+
+    function handleChoice(taskId, selectedVal, btnEl) {
+      const parent = btnEl.closest('.options-grid');
+      const allBtns = parent.querySelectorAll('.btn-option');
+      allBtns.forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+        b.disabled = true;
+      });
+
+      const correctVal = testAnswers[taskId];
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+
+      if (selectedVal === correctVal) {
+        btnEl.classList.add('correct');
+        fb.textContent = 'Правильно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        btnEl.classList.add('incorrect');
+        allBtns[correctVal - 1].classList.add('correct');
+        fb.textContent = 'Неверно, попробуйте еще раз или изучите решение.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase();
+      s = s.replace(/,/g, '.');
+      s = s.replace(/·|\*|x|х/g, '*');
+      s = s.replace(/\s+/g, '');
+      s = s.replace(/10\^([+-]?\d+)/g, '1e$1');
+      if (s.includes('*')) {
+        let parts = s.split('*');
+        if (parts.length === 2) {
+          let a = parseFloat(parts[0]);
+          let b = parseFloat(parts[1]);
+          if (!isNaN(a) && !isNaN(b)) return a * b;
+        }
+      }
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inp = document.getElementById('inp-' + taskId);
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+      const targets = calcAnswers[taskId];
+      const val = parseVal(inp.value);
+
+      if (isNaN(val)) {
+        fb.textContent = 'Пожалуйста, введите числовое значение.';
+        fb.className = 'feedback-msg incorrect';
+        return;
+      }
+
+      let isCorrect = false;
+      for (let t of targets) {
+        let eps = Math.abs(t) * 0.03;
+        if (eps < 0.05) eps = 0.05;
+        if (Math.abs(val - t) <= eps) {
+          isCorrect = true;
+          break;
+        }
+      }
+
+      if (isCorrect) {
+        fb.textContent = 'Верно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        fb.textContent = 'Неверно. Проверьте расчеты.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function toggleSolution(taskId) {
+      const sol = document.getElementById('sol-' + taskId);
+      const btn = document.getElementById('btn-sol-' + taskId);
+      if (!sol) return;
+      const isHidden = sol.style.display === 'none' || !sol.style.display;
+      sol.style.display = isHidden ? 'block' : 'none';
+      btn.textContent = isHidden ? 'Скрыть Решение' : 'Показать Решение';
+      if (isHidden && window.renderMathInElement) {
+        renderMathInElement(sol, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+  </script>
+</body>
+</html>
