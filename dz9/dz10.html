@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Внутренняя энергия. Работа в термодинамике</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --card-bg: rgba(18, 22, 34, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #f43f5e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s ease;
+    }
+    .task-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .task-header {
+      margin-bottom: 18px;
+    }
+    .task-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+    }
+
+    .task-text {
+      font-size: 1.02rem;
+      color: #e2e8f0;
+      margin-bottom: 22px;
+    }
+
+    .task-image-wrap {
+      text-align: center;
+      margin: 18px 0;
+    }
+    .task-image-wrap img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .btn-option {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-option:hover:not(:disabled) {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+    .btn-option.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+    }
+    .btn-option.incorrect {
+      background: rgba(244, 63, 94, 0.2) !important;
+      border-color: #f43f5e !important;
+      color: #fda4af !important;
+    }
+
+    .calc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .calc-row label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .calc-input-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .calc-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .calc-input:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .btn-check {
+      background: var(--primary-gradient);
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-check:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-check:active {
+      transform: translateY(0);
+    }
+
+    .feedback-msg {
+      display: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .feedback-msg.correct {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    .feedback-msg.incorrect {
+      display: block;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #f87171;
+    }
+
+    .btn-solution-toggle {
+      display: none;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-solution-toggle:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .solution-box {
+      display: none;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .solution-title {
+      color: #a5b4fc;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+    .solution-content {
+      font-size: 0.98rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .math-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+      padding: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <div class="hero-badge">ДЗ 23</div>
+      <h1>Внутренняя энергия. Работа в термодинамике</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 -->
+    <div class="task-card" id="task-1">
+      <div class="task-header"><span class="task-badge">Задача 1</span></div>
+      <div class="task-text">В сосуде находится неон $\left(M = 20\text{ }\frac{\text{г}}{\text{моль}}\right)$ массой $m = 14\text{ г}$. Если температура неона $t = 23\text{ }^\circ\text{C}$, то его внутренняя энергия $U$ равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(1, 1, this)">1) 2,6 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(1, 2, this)">2) 3,0 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(1, 3, this)">3) 3,6 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(1, 4, this)">4) 4,2 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(1, 5, this)">5) 5,2 кДж.</button>
+      </div>
+      <div class="feedback-msg" id="fb-1"></div>
+      <button class="btn-solution-toggle" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Внутренняя энергия идеального одноатомного газа:
+          <div class="math-scroll">$$U = \frac{3}{2}\frac{m}{M}RT = 2,6\text{ кДж}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 2 -->
+    <div class="task-card" id="task-2">
+      <div class="task-header"><span class="task-badge">Задача 2</span></div>
+      <div class="task-text">Если в сосуде объемом $V = 20\text{ л}$ находится идеальный одноатомный газ под давлением $p = 70\text{ кПа}$, то его внутренняя энергия $U$ равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(2, 1, this)">1) 1,4 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 2, this)">2) 1,6 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 3, this)">3) 1,8 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 4, this)">4) 2,0 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 5, this)">5) 2,1 кДж.</button>
+      </div>
+      <div class="feedback-msg" id="fb-2"></div>
+      <button class="btn-solution-toggle" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Внутренняя энергия идеального одноатомного газа:
+          <div class="math-scroll">$$U = \frac{3}{2}pV = 2,1\text{ кДж}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 3 -->
+    <div class="task-card" id="task-3">
+      <div class="task-header"><span class="task-badge">Задача 3</span></div>
+      <div class="task-text">При изобарном расширении идеального газа до объема $V = 14,0\text{ л}$ сила давления совершила работу $A = 510\text{ Дж}$. Если давление газа $p = 85\text{ кПа}$, то начальный объем $V_0$ газа равен:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(3, 1, this)">1) 2,3 л;</button>
+        <button class="btn-option" onclick="handleChoice(3, 2, this)">2) 4,0 л;</button>
+        <button class="btn-option" onclick="handleChoice(3, 3, this)">3) 6,0 л;</button>
+        <button class="btn-option" onclick="handleChoice(3, 4, this)">4) 8,0 л;</button>
+        <button class="btn-option" onclick="handleChoice(3, 5, this)">5) 9,0 л.</button>
+      </div>
+      <div class="feedback-msg" id="fb-3"></div>
+      <button class="btn-solution-toggle" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Начальный объем газа:
+          <div class="math-scroll">$$V_0 = V - \frac{A}{p} = 8,0\text{ л}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="task-card" id="task-4">
+      <div class="task-header"><span class="task-badge">Задача 4</span></div>
+      <div class="task-text">Работа, совершенная силой давления водорода $\left(M = 2,0\text{ }\frac{\text{г}}{\text{моль}}\right)$ при изобарном расширении, $A = 48\text{ кДж}$. Если начальная температура газа $T_1 = 250\text{ К}$, а объем газа увеличился в $n = 1,6$ раза, то масса $m$ водорода равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(4, 1, this)">1) 15 г;</button>
+        <button class="btn-option" onclick="handleChoice(4, 2, this)">2) 28 г;</button>
+        <button class="btn-option" onclick="handleChoice(4, 3, this)">3) 45 г;</button>
+        <button class="btn-option" onclick="handleChoice(4, 4, this)">4) 60 г;</button>
+        <button class="btn-option" onclick="handleChoice(4, 5, this)">5) 77 г.</button>
+      </div>
+      <div class="feedback-msg" id="fb-4"></div>
+      <button class="btn-solution-toggle" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Из изобарного процесса $\frac{V_1}{T_1} = \frac{V_2}{T_2}$ найдем конечную температуру газа: $T_2 = nT_1$. Работа, совершенная силой давления газа,
+          <div class="math-scroll">$$A = \frac{m}{M}R(T_2 - T_1).$$</div>
+          Из записанных уравнений найдем массу газа:
+          <div class="math-scroll">$$m = \frac{AM}{(n-1)T_1 R} = 77\text{ г}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 5 -->
+    <div class="task-card" id="task-5">
+      <div class="task-header"><span class="task-badge">Задача 5</span></div>
+      <div class="task-text">Идеальный одноатомный газ массой $m = 0,5\text{ кг}$ находится в сосуде под давлением $p = 8 \cdot 10^4\text{ Па}$. Определите внутреннюю энергию газа, если его плотность $\rho = 0,3\text{ }\frac{\text{кг}}{\text{м}^3}$.</div>
+      <div class="calc-row">
+        <label>Введите внутреннюю энергию в килоджоулях ($\text{кДж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-5">
+          <button class="btn-check" onclick="validateCalculation(5)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-5"></div>
+      <button class="btn-solution-toggle" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Тип газа: идеальный одноатомный<br>
+          Масса газа: $m = 0,5\text{ кг}$<br>
+          Давление: $p = 8 \cdot 10^4\text{ Па}$<br>
+          Плотность: $\rho = 0,3\text{ кг/м}^3$<br><br>
+          Внутренняя энергия $U$ идеального одноатомного газа определяется по формуле:
+          <div class="math-scroll">$$U = \frac{3}{2}\nu RT = \frac{3}{2}pV$$</div>
+          где $p$ — давление, $V$ — объем газа.<br><br>
+          Связь между массой $m$, плотностью $\rho$ и объемом $V$:
+          <div class="math-scroll">$$V = \frac{m}{\rho}$$</div>
+          Объединим формулы, подставив выражение для объема в формулу внутренней энергии:
+          <div class="math-scroll">$$U = \frac{3}{2} \cdot p \cdot \frac{m}{\rho}$$</div>
+          Подставим числовые значения из условия:
+          <div class="math-scroll">$$U = \frac{3}{2} \cdot 8 \cdot 10^4 \cdot \frac{0,5}{0,3}$$</div>
+          <div class="math-scroll">$$U = 1,5 \cdot 80000 \cdot \frac{5}{3} = 200000\text{ Дж} = 200\text{ кДж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 6 -->
+    <div class="task-card" id="task-6">
+      <div class="task-header"><span class="task-badge">Задача 6</span></div>
+      <div class="task-text">Определите внутреннюю энергию смеси, состоящей из гелия массой $m_1 = 20\text{ г}$ и неона массой $m_2 = 30\text{ г}$, имеющей температуру $T = 300\text{ К}$.</div>
+      <div class="calc-row">
+        <label>Введите внутреннюю энергию смеси в килоджоулях ($\text{кДж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-6">
+          <button class="btn-check" onclick="validateCalculation(6)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-6"></div>
+      <button class="btn-solution-toggle" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Масса гелия (He): $m_1 = 20\text{ г} = 20 \cdot 10^{-3}\text{ кг}$<br>
+          Молярная масса гелия: $M_1 = 4 \cdot 10^{-3}\text{ кг/моль}$<br>
+          Масса неона (Ne): $m_2 = 30\text{ г} = 30 \cdot 10^{-3}\text{ кг}$<br>
+          Молярная масса неона: $M_2 = 20 \cdot 10^{-3}\text{ кг/моль}$<br>
+          Температура смеси: $T = 300\text{ К}$<br>
+          Универсальная газовая постоянная: $R = 8,31\text{ Дж/(моль}\cdot\text{К)}$<br><br>
+          Оба газа (гелий и неон) являются инертными одноатомными газами.<br>
+          Внутренняя энергия смеси газов $U$ равна сумме внутренних энергий каждого газа в отдельности:
+          <div class="math-scroll">$$U = U_1 + U_2$$</div>
+          Формула внутренней энергии для одноатомного газа:
+          <div class="math-scroll">$$U_1 = \frac{3}{2}\nu_1 RT = \frac{3}{2}\frac{m_1}{M_1}RT$$</div>
+          <div class="math-scroll">$$U_2 = \frac{3}{2}\nu_2 RT = \frac{3}{2}\frac{m_2}{M_2}RT$$</div>
+          Итоговая рабочая формула:
+          <div class="math-scroll">$$U = \frac{3}{2}RT \cdot \left(\frac{m_1}{M_1} + \frac{m_2}{M_2}\right)$$</div>
+          Найдем количество вещества (число молей) для каждого газа:<br>
+          • Гелий: $\nu_1 = \frac{20\text{ г}}{4\text{ г/моль}} = 5\text{ моль}$<br>
+          • Неон: $\nu_2 = \frac{30\text{ г}}{20\text{ г/моль}} = 1,5\text{ моль}$<br>
+          • Общее количество вещества: $\nu = 5 + 1,5 = 6,5\text{ моль}$<br><br>
+          Подставим значения в общую формулу:
+          <div class="math-scroll">$$U = \frac{3}{2} \cdot 8,31 \cdot 300 \cdot 6,5$$</div>
+          <div class="math-scroll">$$U = 1,5 \cdot 8,31 \cdot 1950 \approx 24306,75\text{ Дж} \approx 24,31\text{ кДж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 7 -->
+    <div class="task-card" id="task-7">
+      <div class="task-header"><span class="task-badge">Задача 7</span></div>
+      <div class="task-text">При уменьшении объема идеального одноатомного газа в $\alpha = 3,0$ раза давление газа увеличилось на $\beta = 20\text{ }\%$. Во сколько раз изменилась внутренняя энергия газа?</div>
+      <div class="calc-row">
+        <label>Введите, во сколько раз изменилась внутренняя энергия газа:</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-7">
+          <button class="btn-check" onclick="validateCalculation(7)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-7"></div>
+      <button class="btn-solution-toggle" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Тип газа: идеальный одноатомный<br>
+          Изменение объема: $V_2 = \frac{V_1}{\alpha}$, где $\alpha = 3,0$ (объем уменьшился в 3 раза)<br>
+          Изменение давления: $p_2 = p_1 \cdot (1 + \beta)$, где $\beta = 20\% = 0,2$ (давление увеличилось на 20%, то есть $p_2 = 1,2 \cdot p_1$)<br><br>
+          Внутренняя энергия $U$ выражается через давление и объем:
+          <div class="math-scroll">$$U = \frac{3}{2}pV$$</div>
+          Начальное состояние: $U_1 = \frac{3}{2}p_1 V_1$<br>
+          Конечное состояние: $U_2 = \frac{3}{2}p_2 V_2$<br><br>
+          Найдем отношение конечной энергии к начальной:
+          <div class="math-scroll">$$\frac{U_2}{U_1} = \frac{\frac{3}{2}p_2 V_2}{\frac{3}{2}p_1 V_1} = \frac{p_2}{p_1} \cdot \frac{V_2}{V_1}$$</div>
+          Подставим коэффициенты изменений из условия:<br>
+          • $\frac{p_2}{p_1} = 1,2$<br>
+          • $\frac{V_2}{V_1} = \frac{1}{3}$
+          <div class="math-scroll">$$\frac{U_2}{U_1} = 1,2 \cdot \frac{1}{3} = 0,4$$</div>
+          Так как получившееся число меньше единицы, энергия уменьшилась. Посчитаем, во сколько именно раз:
+          <div class="math-scroll">$$\frac{U_1}{U_2} = \frac{1}{0,4} = 2,5$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 8 -->
+    <div class="task-card" id="task-8">
+      <div class="task-header"><span class="task-badge">Задача 8</span></div>
+      <div class="task-text">Идеальный одноатомный газ нагрели от температуры $t_1 = 12\text{ }^\circ\text{C}$ до температуры $t_2 = 69\text{ }^\circ\text{C}$. На сколько процентов возросла его внутренняя энергия?</div>
+      <div class="calc-row">
+        <label>Введите процент увеличения внутренней энергии ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-8">
+          <button class="btn-check" onclick="validateCalculation(8)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-8"></div>
+      <button class="btn-solution-toggle" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Начальная внутренняя энергия газа:
+          <div class="math-scroll">$$U_1 = \frac{3}{2}\nu RT_1$$</div>
+          Конечная внутренняя энергия газа:
+          <div class="math-scroll">$$U_2 = \frac{3}{2}\nu RT_2$$</div>
+          Поделим $U_2$ на $U_1$, чтобы узнать, во сколько раз изменилась энергия. При делении все одинаковые величины ($\frac{3}{2}$, количество вещества $\nu$ и газовая постоянная $R$) полностью сокращаются:
+          <div class="math-scroll">$$\frac{U_2}{U_1} = \frac{\frac{3}{2}\nu RT_2}{\frac{3}{2}\nu RT_1}$$</div>
+          <div class="math-scroll">$$\frac{U_2}{U_1} = \frac{T_2}{T_1}$$</div>
+          Подставим значения температур в получившееся отношение:
+          <div class="math-scroll">$$\frac{U_2}{U_1} = \frac{342}{285} = 1,2$$</div>
+          (Это означает, что конечная энергия составляет 1,2 от начальной, то есть $U_2 = 1,2 \cdot U_1$)<br><br>
+          Находим прирост энергии в процентах:
+          <div class="math-scroll">$$\Delta U(\%) = \left(\frac{U_2}{U_1} - 1\right) \cdot 100\% = (1,2 - 1) \cdot 100\% = 20\%$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 9 -->
+    <div class="task-card" id="task-9">
+      <div class="task-header"><span class="task-badge">Задача 9</span></div>
+      <div class="task-text">При переходе идеального одноатомного газа из начального состояния в конечное его давление $p$ изменялось по закону: $p = \alpha T^2$, где $\alpha$ — коэффициент пропорциональности, $T$ — абсолютная температура. В результате перехода внутренняя энергия газа уменьшилась на $|\Delta U| = 48\text{ Дж}$, а объем увеличился в $\beta = 5,0$ раза. Определите давление газа в начальном состоянии, если в этом состоянии объем газа $V_1 = 10\text{ л}$.</div>
+      <div class="calc-row">
+        <label>Введите начальное давление газа в килопаскалях ($\text{кПа}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-9">
+          <button class="btn-check" onclick="validateCalculation(9)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-9"></div>
+      <button class="btn-solution-toggle" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Запишем краткое условие (Дано) сразу в числах СИ:<br>
+          Закон процесса: $p = \alpha T^2$<br>
+          Начальный объем: $V_1 = 10\text{ л} = 10^{-2}\text{ м}^3$<br>
+          Конечный объем (увеличился в 5 раз): $V_2 = 5 \cdot V_1 = 5 \cdot 10^{-2}\text{ м}^3$<br>
+          Уменьшение внутренней энергии: $\Delta U = -48\text{ Дж}$ (знак минус, так как она уменьшилась)<br><br>
+          Так как у нас не дана температура, от нее нужно избавиться, выражаем ее через уравнение Клапейрона — Менделеева.<br>
+          Из уравнения Менделеева — Клапейрона выразим температуру:
+          <div class="math-scroll">$$T = \frac{pV}{\nu R}$$</div>
+          Подставим её в закон процесса $p = \alpha T^2$:
+          <div class="math-scroll">$$p = \alpha \cdot \left(\frac{pV}{\nu R}\right)^2 \Longrightarrow p = \alpha \cdot \frac{p^2 V^2}{(\nu R)^2}$$</div>
+          Сократим обе части на $p$:
+          <div class="math-scroll">$$1 = \frac{\alpha \cdot pV^2}{(\nu R)^2} \Longrightarrow pV^2 = \frac{(\nu R)^2}{\alpha} = \text{const}$$</div>
+          произведение не меняется, так как количество в-ва, постоянная и коэффициент альфа не изменяются.<br><br>
+          Раз произведение $pV^2$ не меняется, запишем делением формулу для двух состояний:
+          <div class="math-scroll">$$\frac{p_2 V_2^2}{p_1 V_1^2} = 1 \Longrightarrow p_2 = p_1 \cdot \left(\frac{V_1}{V_2}\right)^2$$</div>
+          Так как объём увеличился в 5 раз $\left(\frac{V_1}{V_2} = \frac{1}{5}\right)$, получаем связь давлений:
+          <div class="math-scroll">$$p_2 = p_1 \cdot \left(\frac{1}{5}\right)^2 = \frac{p_1}{25}$$</div>
+          Запишем формулу изменения энергии через деление и разность:
+          <div class="math-scroll">$$\Delta U = U_2 - U_1 = \frac{3}{2}p_2 V_2 - \frac{3}{2}p_1 V_1$$</div>
+          Подставим вместо $p_2$ выражение $\frac{p_1}{25}$, а вместо $V_2$ значение $5V_1$:
+          <div class="math-scroll">$$\Delta U = \frac{3}{2} \cdot \left(\frac{p_1}{25}\right) \cdot (5V_1) - \frac{3}{2}p_1 V_1$$</div>
+          <div class="math-scroll">$$\Delta U = \frac{3}{2} \cdot \frac{p_1 V_1}{5} - \frac{3}{2}p_1 V_1$$</div>
+          <div class="math-scroll">$$\Delta U = \frac{3}{2}p_1 V_1 \cdot (-0,8) = -1,2 \cdot p_1 V_1$$</div>
+          <div class="math-scroll">$$p_1 = \frac{48}{0,012} = 4000\text{ Па} = 4\text{ кПа}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 10 -->
+    <div class="task-card" id="task-10">
+      <div class="task-header"><span class="task-badge">Задача 10</span></div>
+      <div class="task-text">При изобарном нагревании воздуха массой $m = 2,00\text{ кг}$ его силой давления совершена работа $A = 166,2\text{ кДж}$. Определите изменение температуры воздуха. Молярная масса воздуха $M = 29\text{ }\frac{\text{г}}{\text{моль}}$.</div>
+      <div class="calc-row">
+        <label>Введите изменение температуры воздуха в кельвинах ($\text{К}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-10">
+          <button class="btn-check" onclick="validateCalculation(10)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-10"></div>
+      <button class="btn-solution-toggle" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Формула работы при изобарном процессе:<br>
+          Для изобарного процесса ($p = \text{const}$) работа газа выражается формулой:
+          <div class="math-scroll">$$A = p \cdot \Delta V$$</div>
+          Связь с уравнением Менделеева — Клапейрона:<br>
+          Запишем уравнение состояния идеального газа для начального и конечного состояний:
+          <div class="math-scroll">$$p \cdot V_1 = \frac{m}{M}RT_1$$</div>
+          <div class="math-scroll">$$p \cdot V_2 = \frac{m}{M}RT_2$$</div>
+          Вычитая из второго уравнения первое, получаем:
+          <div class="math-scroll">$$p \cdot \Delta V = \frac{m}{M}R\Delta T$$</div>
+          Следовательно, работа газа равна:
+          <div class="math-scroll">$$A = \frac{m}{M}R\Delta T$$</div>
+          <div class="math-scroll">$$\Delta T = \frac{A \cdot M}{m \cdot R}$$</div>
+          <div class="math-scroll">$$\Delta T = \frac{166,2 \cdot 10^3 \cdot 29 \cdot 10^{-3}}{2,00 \cdot 8,31} = \frac{166,2 \cdot 29}{16,62}$$</div>
+          Ответ: 290 К
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 11 -->
+    <div class="task-card" id="task-11">
+      <div class="task-header"><span class="task-badge">Задача 11</span></div>
+      <div class="task-text">В изобарном процессе при давлении $p = 120\text{ кПа}$ абсолютная температура идеального газа увеличилась на $\alpha = 65\text{ }\%$. Определите начальный объем газа, если при расширении силой давления газа совершена работа $A = 15,6\text{ Дж}$.</div>
+      <div class="calc-row">
+        <label>Введите начальный объем газа в литрах ($\text{л}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-11">
+          <button class="btn-check" onclick="validateCalculation(11)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-11"></div>
+      <button class="btn-solution-toggle" id="btn-sol-11" onclick="toggleSolution(11)">Показать Решение</button>
+      <div class="solution-box" id="sol-11">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          1. Связь объема и температуры в изобарном процессе:<br>
+          Для изобарного процесса ($p = \text{const}$) справедливо уравнение Гей-Люссака:
+          <div class="math-scroll">$$\frac{V_1}{T_1} = \frac{V_2}{T_2} \Longrightarrow \frac{V_2}{V_1} = \frac{T_2}{T_1}$$</div>
+          По условию задачи, абсолютная температура увеличилась на $\alpha = 65\%$, то есть:
+          <div class="math-scroll">$$T_2 = T_1 + 0,65T_1 = 1,65T_1 \Longrightarrow \frac{T_2}{T_1} = 1,65$$</div>
+          Следовательно, конечный объем выражается через начальный как:
+          <div class="math-scroll">$$V_2 = 1,65V_1$$</div>
+          Работа силы давления газа определяется формулой:
+          <div class="math-scroll">$$A = p \cdot \Delta V = p \cdot (V_2 - V_1)$$</div>
+          Подставим выражение для $V_2$:
+          <div class="math-scroll">$$A = p \cdot (1,65V_1 - V_1) = p \cdot 0,65V_1$$</div>
+          Выразим и рассчитаем начальный объем ($V_1$):
+          <div class="math-scroll">$$V_1 = \frac{A}{0,65 \cdot p}$$</div>
+          <div class="math-scroll">$$V_1 = \frac{15,6}{0,65 \cdot 120 \cdot 10^3} = \frac{15,6}{78 \cdot 10^3} = 0,2 \cdot 10^{-3}\text{ м}^3$$</div>
+          Так как $1\text{ л} = 10^{-3}\text{ м}^3$, запишем ответ в более удобных единицах:
+          <div class="math-scroll">$$V_1 = 0,2\text{ л}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 12 -->
+    <div class="task-card" id="task-12">
+      <div class="task-header"><span class="task-badge">Задача 12</span></div>
+      <div class="task-text">В вертикальном цилиндре под гладким поршнем находился идеальный газ, занимающий объем $V_1 = 0,6\text{ м}^3$. Определите работу, совершенную силой давления газа при его изобарном нагревании, если объем газа увеличился в $n = 1,5$ раза. Атмосферное давление $p_0 = 100\text{ кПа}$, масса поршня $m_{\text{п}} = 10\text{ кг}$. Площадь поперечного сечения цилиндра $S = 10\text{ см}^2$.</div>
+      <div class="calc-row">
+        <label>Введите работу в килоджоулях ($\text{кДж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-12">
+          <button class="btn-check" onclick="validateCalculation(12)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-12"></div>
+      <button class="btn-solution-toggle" id="btn-sol-12" onclick="toggleSolution(12)">Показать Решение</button>
+      <div class="solution-box" id="sol-12">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Поскольку цилиндр вертикальный, поршень гладкий (трения нет) и процесс расширения происходит изобарно, сила давления газа изнутри уравновешивает внешнее атмосферное давление и силу тяжести самого поршня:
+          <div class="math-scroll">$$p \cdot S = p_0 \cdot S + m_{\text{п}} \cdot g$$</div>
+          Разделим обе части на площадь сечения $S$, чтобы выразить полное давление газа $p$:
+          <div class="math-scroll">$$p = p_0 + \frac{m_{\text{п}} \cdot g}{S}$$</div>
+          По условию задачи, объем газа увеличился в $n = 1,5$ раза:
+          <div class="math-scroll">$$V_2 = n \cdot V_1 = 1,5 \cdot V_1$$</div>
+          Следовательно, изменение объема ($\Delta V$) составляет:
+          <div class="math-scroll">$$\Delta V = V_2 - V_1 = 1,5 \cdot V_1 - V_1 = 0,5 \cdot V_1$$</div>
+          Формула работы газа:<br>
+          При изобарном процессе работа силы давления газа рассчитывается по формуле:
+          <div class="math-scroll">$$A = p \cdot \Delta V = \left(p_0 + \frac{m_{\text{п}} \cdot g}{S}\right) \cdot 0,5 \cdot V_1$$</div>
+          Сначала найдем давление газа $p$:
+          <div class="math-scroll">$$p = 10^5 + \frac{10 \cdot 10}{10^{-3}} = 10^5 + \frac{100}{10^{-3}} = 10^5 + 10^5 = 2 \cdot 10^5\text{ Па}$$</div>
+          <div class="math-scroll">$$A = p \cdot 0,5 \cdot V_1 = 2 \cdot 10^5\text{ Па} \cdot 0,5 \cdot 0,6\text{ м}^3 = 60\,000\text{ Дж} = 60\text{ кДж}$$</div>
+          <div class="task-image-wrap">
+            <img src="image7.png" alt="Схема сил, действующих на поршень" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A1%D1%85%D0%B5%D0%BC%D0%B0+%D1%81%D0%B8%D0%BB';">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 13 -->
+    <div class="task-card" id="task-13">
+      <div class="task-header"><span class="task-badge">Задача 13</span></div>
+      <div class="task-text">На рисунке 37 представлен график зависимости давления идеального газа от температуры. На каком процессе силой давления газа совершена наибольшая работа?</div>
+      <div class="task-image-wrap">
+        <img src="image1.png" alt="Рис. 37" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+37';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(13, 1, this)">1) 1–2;</button>
+        <button class="btn-option" onclick="handleChoice(13, 2, this)">2) 2–3;</button>
+        <button class="btn-option" onclick="handleChoice(13, 3, this)">3) 3–4;</button>
+        <button class="btn-option" onclick="handleChoice(13, 4, this)">4) На всех участках работа одинакова.</button>
+      </div>
+      <div class="feedback-msg" id="fb-13"></div>
+      <button class="btn-solution-toggle" id="btn-sol-13" onclick="toggleSolution(13)">Показать Решение</button>
+      <div class="solution-box" id="sol-13">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Процесс 1–2: линия лежит на прямой, проходящей через начало координат (0, 0). В этих координатах это означает изохорный процесс ($V = \text{const}$). Поскольку объём не меняется, работа газа равна нулю ($A_{12} = 0$).<br><br>
+          Процесс 3–4: линия точно так же направлена в начало координат (0, 0) — это тоже изохорный процесс ($V = \text{const}$). Работа газа здесь равна нулю ($A_{34} = 0$).<br><br>
+          Процесс 2–3: температура остаётся неизменной ($T = \text{const}$), а давление падает. Это изотермическое расширение, при котором объём газа увеличивается и он совершает положительную работу ($A_{23} > 0$).
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 14 -->
+    <div class="task-card" id="task-14">
+      <div class="task-header"><span class="task-badge">Задача 14</span></div>
+      <div class="task-text">Сначала идеальный газ, количество молекул которого $N = 1,2 \cdot 10^{20}$, изобарно нагрели (рис. 40), а затем изохорно охладили до первоначальной температуры $T_3 = T_1 = 600\text{ К}$. Определите работу, совершенную силой давления газа при изобарном процессе.</div>
+      <div class="task-image-wrap">
+        <img src="image2.png" alt="Рис. 40" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+40';">
+      </div>
+      <div class="calc-row">
+        <label>Введите работу в джоулях ($\text{Дж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-14">
+          <button class="btn-check" onclick="validateCalculation(14)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-14"></div>
+      <button class="btn-solution-toggle" id="btn-sol-14" onclick="toggleSolution(14)">Показать Решение</button>
+      <div class="solution-box" id="sol-14">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Формула работы газа при постоянном давлении (изобарный процесс 1–2):
+          <div class="math-scroll">$$A_{12} = p_1 \cdot \Delta V = p_1 \cdot (V_2 - V_1)$$</div>
+          По оси объёма $V$:<br>
+          • 2 клетки — это начальный объём $V_1$<br>
+          • 4 клетки — это $2V_1$<br>
+          • 6 клеток — это $3V_1$<br><br>
+          Из графика видно, что точка 1 находится на отметке 2 клетки ($V_1$), а точка 2 — на отметке 6 клеток ($3V_1$).<br><br>
+          Найдём изменение объёма ($\Delta V$) на изобарном участке 1–2:
+          <div class="math-scroll">$$\Delta V = V_2 - V_1 = 3V_1 - V_1 = 2V_1$$</div>
+          Подставляем сюда наше изменение объёма $\Delta V = 2V_1$:
+          <div class="math-scroll">$$A = p_1 \cdot 2V_1 = 2p_1 V_1$$</div>
+          Так как в условии дано число молекул $N$, мы представляем $\nu$ как $\frac{N}{N_{\text{A}}}$:
+          <div class="math-scroll">$$p_1 V_1 = \frac{N}{N_{\text{A}}}RT$$</div>
+          Подставляем это выражение в формулу работы:
+          <div class="math-scroll">$$A = 2 \cdot \frac{N}{N_{\text{A}}}RT = \frac{2NRT}{N_{\text{A}}}$$</div>
+          <div class="math-scroll">$$A = \frac{2 \cdot (1,2 \cdot 10^{20}) \cdot 8,31 \cdot 600}{6,02 \cdot 10^{23}}$$</div>
+          <div class="math-scroll">$$A \approx 1987,8 \cdot 10^{-3}\text{ Дж} \approx 2,0\text{ Дж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 15 -->
+    <div class="task-card" id="task-15">
+      <div class="task-header"><span class="task-badge">Задача 15</span></div>
+      <div class="task-text">Состояние идеального газа, масса которого постоянна, изменялось так, как показано на рисунке 42. На каких участках цикла сила давления газа совершала положительную работу, а на каких — отрицательную?</div>
+      <div class="task-image-wrap">
+        <img src="image3.png" alt="Рис. 42" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+42';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(15, 1, this)">1) Положительная: 1–2, 2–3; отрицательная: 4–5, 5–1;</button>
+        <button class="btn-option" onclick="handleChoice(15, 2, this)">2) Положительная: 1–2; отрицательная: 4–5;</button>
+        <button class="btn-option" onclick="handleChoice(15, 3, this)">3) Положительная: 2–3, 3–4; отрицательная: 5–1;</button>
+        <button class="btn-option" onclick="handleChoice(15, 4, this)">4) Положительная: 4–5, 5–1; отрицательная: 1–2, 2–3;</button>
+        <button class="btn-option" onclick="handleChoice(15, 5, this)">5) Положительная: 1–2, 3–4; отрицательная: 2–3, 5–1.</button>
+      </div>
+      <div class="feedback-msg" id="fb-15"></div>
+      <button class="btn-solution-toggle" id="btn-sol-15" onclick="toggleSolution(15)">Показать Решение</button>
+      <div class="solution-box" id="sol-15">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          <div class="math-scroll">$$A_{12} > 0,\; A_{23} > 0,\; A_{45} < 0,\; A_{51} < 0.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 16 -->
+    <div class="task-card" id="task-16">
+      <div class="task-header"><span class="task-badge">Задача 16</span></div>
+      <div class="task-text">Определите работу, совершенную силой давления идеального газа при циклическом процессе, график которого представлен на рисунке 46. Количество вещества газа $\nu = 3,0\text{ моль}$. В состоянии 1 температура газа $T_1 = 280\text{ К}$.</div>
+      <div class="task-image-wrap">
+        <img src="image4.png" alt="Рис. 46" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+46';">
+      </div>
+      <div class="calc-row">
+        <label>Введите работу за цикл в килоджоулях ($\text{кДж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-16">
+          <button class="btn-check" onclick="validateCalculation(16)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-16"></div>
+      <button class="btn-solution-toggle" id="btn-sol-16" onclick="toggleSolution(16)">Показать Решение</button>
+      <div class="solution-box" id="sol-16">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Геометрический смысл работы в цикле:<br>
+          Полная работа газа за цикл в координатах $(p, V)$ численно равна площади фигуры внутри замкнутого контура (в данном случае — площади прямоугольника 1–2–3–4).
+          <div class="math-scroll">$$A_{\text{цикла}} = \Delta p \cdot \Delta V$$</div>
+          Определяем размеры прямоугольника по графику:<br>
+          1. Высота (изменение давления): от $p_1$ до $5p_1$.
+          <div class="math-scroll">$$\Delta p = 5p_1 - p_1 = 4p_1$$</div>
+          2. Ширина (изменение объема): от $V_1$ до $2V_1$.
+          <div class="math-scroll">$$\Delta V = 2V_1 - V_1 = V_1$$</div>
+          Подставим эти значения в формулу площади:
+          <div class="math-scroll">$$A_{\text{цикла}} = 4p_1 \cdot V_1 = 4p_1 V_1$$</div>
+          В условии нам даны количество вещества $\nu = 3,0\text{ моль}$ и температура в точке 1 ($T_1 = 280\text{ К}$).<br>
+          Запишем уравнение Менделеева — Клапейрона для состояния 1:
+          <div class="math-scroll">$$p_1 V_1 = \nu RT_1$$</div>
+          Подставим это произведение в формулу работы цикла:
+          <div class="math-scroll">$$A_{\text{цикла}} = 4 \cdot (\nu RT_1)$$</div>
+          <div class="math-scroll">$$A_{\text{цикла}} = 12 \cdot 8,31 \cdot 280 = 99,72 \cdot 280 = 27\,921,6\text{ Дж} \approx 28\text{ кДж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 17 -->
+    <div class="task-card" id="task-17">
+      <div class="task-header"><span class="task-badge">Задача 17</span></div>
+      <div class="task-text">Идеальный газ в количестве $\nu = 4,0\text{ моль}$ расширяется так, что его давление изменяется прямо пропорционально объему. Определите работу, совершенную силой давления газа при увеличении его температуры на $\Delta T = 10\text{ К}$.</div>
+      <div class="calc-row">
+        <label>Введите работу в джоулях ($\text{Дж}$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-17">
+          <button class="btn-check" onclick="validateCalculation(17)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-17"></div>
+      <button class="btn-solution-toggle" id="btn-sol-17" onclick="toggleSolution(17)">Показать Решение</button>
+      <div class="solution-box" id="sol-17">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          <div class="task-image-wrap">
+            <img src="image8.png" alt="График процесса p(V)" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA+p(V)';">
+          </div>
+          Характер процесса:<br>
+          Давление прямо пропорционально объему: $p = \alpha V$, где $\alpha$ — некоторый коэффициент пропорциональности. В координатах $(p, V)$ этот процесс изображается прямой линией, выходящей из начала координат $(0, 0)$.<br><br>
+          Геометрический смысл работы:<br>
+          Работа газа численно равна площади фигуры под графиком в координатах $(p, V)$. Для данного процесса эта фигура является прямоугольной трапецией с основаниями $p_1$ и $p_2$ и высотой $(V_2 - V_1)$:
+          <div class="math-scroll">$$A = \frac{p_1 + p_2}{2} \cdot (V_2 - V_1) = \frac{1}{2}(p_1 + p_2)(V_2 - V_1)$$</div>
+          Раскроем скобки в числителе:
+          <div class="math-scroll">$$A = \frac{1}{2}(p_1 V_2 - p_1 V_1 + p_2 V_2 - p_2 V_1)$$</div>
+          Связь давлений и объемов:<br>
+          Так как $p = \alpha V$, то:<br>
+          1. $p_1 = \alpha V_1$<br>
+          2. $p_2 = \alpha V_2$<br><br>
+          Подставим перекрестные произведения:<br>
+          1. $p_1 V_2 = (\alpha V_1)V_2 = \alpha V_1 V_2$<br>
+          2. $p_2 V_1 = (\alpha V_2)V_1 = \alpha V_1 V_2$<br><br>
+          Заметим, что $p_1 V_2 = p_2 V_1$. Подставим это равенство в формулу работы:
+          <div class="math-scroll">$$A = \frac{1}{2}(p_2 V_2 - p_1 V_1)$$</div>
+          Использование уравнения Менделеева — Клапейрона:<br>
+          Для начального и конечного состояний запишем:<br>
+          1. $p_1 V_1 = \nu RT_1$<br>
+          2. $p_2 V_2 = \nu RT_2$<br><br>
+          Подставляем эти выражения в формулу работы:
+          <div class="math-scroll">$$A = \frac{1}{2}(\nu RT_2 - \nu RT_1) = \frac{1}{2}\nu R(T_2 - T_1) = \frac{1}{2}\nu R\Delta T$$</div>
+          <div class="math-scroll">$$A = \frac{1}{2} \cdot 4,0 \cdot 8,31 \cdot 10 = 2 \cdot 83,1 = 166,2\text{ Дж}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 18 -->
+    <div class="task-card" id="task-18">
+      <div class="task-header"><span class="task-badge">Задача 18</span></div>
+      <div class="task-text">При изобарном процессе температура идеального газа изменяется от $T_1 = 2T_2$ до $T_2$. Если первоначальную температуру газа поднять вдвое, то работа, совершенная над газом:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(18, 1, this)">1) не изменится;</button>
+        <button class="btn-option" onclick="handleChoice(18, 2, this)">2) увеличится в 2 раза;</button>
+        <button class="btn-option" onclick="handleChoice(18, 3, this)">3) уменьшится в 2 раза;</button>
+        <button class="btn-option" onclick="handleChoice(18, 4, this)">4) увеличится в 3 раза;</button>
+        <button class="btn-option" onclick="handleChoice(18, 5, this)">5) уменьшится в 3 раза.</button>
+      </div>
+      <div class="feedback-msg" id="fb-18"></div>
+      <button class="btn-solution-toggle" id="btn-sol-18" onclick="toggleSolution(18)">Показать Решение</button>
+      <div class="solution-box" id="sol-18">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Работа, совершаемая газом при изобарном процессе: $A = p(V_2 - V_1)$. Используя уравнение Клапейрона — Менделеева $pV = \nu RT$, получим $A = \nu R(T_2 - T_1)$. Следовательно,
+          <div class="math-scroll">$$A_1 = \nu R(T_2 - 2T_2) = -\nu RT_2;$$</div>
+          <div class="math-scroll">$$A_2 = \nu R(T_2 - 4T_2) = -3\nu RT_2.$$</div>
+          Так как согласно условию газ охлаждается, то он совершает отрицательную работу. Положительную работу совершают внешние силы, сжимающие газ: $A' = -A$. Поэтому $A_1' = \nu RT_2$, $A_2' = 3\nu RT_2$, откуда $\frac{A_2'}{A_1'} = 3$. Работа, совершенная над газом, увеличится в 3 раза.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 19 -->
+    <div class="task-card" id="task-19">
+      <div class="task-header"><span class="task-badge">Задача 19</span></div>
+      <div class="task-text">В двух одинаковых цилиндрах под легкими поршнями находятся водород $\left(M_1 = 2,0\text{ }\frac{\text{г}}{\text{моль}}\right)$ и азот $\left(M_2 = 2,8\text{ }\frac{\text{г}}{\text{моль}}\right)$. Оба газа изобарно расширяются. Если массы газов и их начальные и конечные температуры одинаковы, то отношение $\frac{A_1}{A_2}$ работы, совершенной водородом, к работе, совершенной азотом, равно:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(19, 1, this)">1) $\frac{1}{14}$;</button>
+        <button class="btn-option" onclick="handleChoice(19, 2, this)">2) 1,0;</button>
+        <button class="btn-option" onclick="handleChoice(19, 3, this)">3) 14;</button>
+        <button class="btn-option" onclick="handleChoice(19, 4, this)">4) 56;</button>
+        <button class="btn-option" onclick="handleChoice(19, 5, this)">5) 28.</button>
+      </div>
+      <div class="feedback-msg" id="fb-19"></div>
+      <button class="btn-solution-toggle" id="btn-sol-19" onclick="toggleSolution(19)">Показать Решение</button>
+      <div class="solution-box" id="sol-19">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          При изобарном процессе работу идеального газа можно рассчитать по формуле
+          <div class="math-scroll">$$A = p\Delta V.$$</div>
+          Используя уравнение Клапейрона — Менделеева, получим для работы формулу
+          <div class="math-scroll">$$A = \frac{m}{M}R\Delta T.$$</div>
+          Определим работы, совершаемые водородом и азотом, учитывая, что начальные и конечные температуры у них одинаковы
+          <div class="math-scroll">$$\Delta T_1 = \Delta T_2 = \Delta T$$</div>
+          и массы одинаковы
+          <div class="math-scroll">$$m_1 = m_2 = m,$$</div>
+          <div class="math-scroll">$$A_1 = \frac{m}{M_1}R\Delta T,\quad A_2 = \frac{m}{M_2}R\Delta T,$$</div>
+          откуда
+          <div class="math-scroll">$$\frac{A_1}{A_2} = \frac{M_2}{M_1} = \frac{28\text{ }\frac{\text{г}}{\text{моль}}}{2,0\text{ }\frac{\text{г}}{\text{моль}}} = 14.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 20 -->
+    <div class="task-card" id="task-20">
+      <div class="task-header"><span class="task-badge">Задача 20</span></div>
+      <div class="task-text">С идеальным газом, количество вещества которого $\nu$ моль, совершают цикл, где $1 \to 2$ — изохора, $2 \to 3$ — изобара, $3 \to 1$ — прямая, проходящая через начало координат (рис. 2.26). Отношение давлений в состояниях 2 и 1 $\frac{p_2}{p_1} = k$. Температура газа в состоянии 3 равна $T_3$. Работа $A$, совершаемая газом в процессе $1 \to 2 \to 3$, равна:</div>
+      <div class="task-image-wrap">
+        <img src="image5.png" alt="Рис. 2.26" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+2.26';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(20, 1, this)">1) $\nu RT_3(k - 1)$;</button>
+        <button class="btn-option" onclick="handleChoice(20, 2, this)">2) $\frac{\nu RT_3}{k}$;</button>
+        <button class="btn-option" onclick="handleChoice(20, 3, this)">3) $\frac{\nu RT_3}{k - 1}$;</button>
+        <button class="btn-option" onclick="handleChoice(20, 4, this)">4) $\nu RT_3\frac{k - 1}{k}$;</button>
+        <button class="btn-option" onclick="handleChoice(20, 5, this)">5) $\frac{\nu RT_3}{2}\left(\frac{k - 1}{k}\right)^2$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-20"></div>
+      <button class="btn-solution-toggle" id="btn-sol-20" onclick="toggleSolution(20)">Показать Решение</button>
+      <div class="solution-box" id="sol-20">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Пусть температуры газов в состояниях 1, 2, 3 равны $T_1$, $T_2$, $T_3$. Точки 1 и 3 находятся на одной прямой, проходящей через начало координат, уравнение которой $p = \alpha V$, где $\alpha$ — коэффициент пропорциональности. Тогда $p_1 = \alpha V_1$ и $p_2 = \alpha V_2$. $\frac{p_2}{p_1} = \frac{V_2}{V_1} = k$. Точки 2 и 3 находятся на изобаре, для которой
+          <div class="math-scroll">$$\frac{V_1}{T_2} = \frac{V_2}{T_3},\text{ откуда } \frac{V_2}{V_1} = \frac{T_3}{T_2} = k\text{ и } T_2 = \frac{T_3}{k}.$$</div>
+          Работа газа в процессе $1 \to 2 \to 3$ равна площади прямоугольника $V_1 2 3 V_2$. Следовательно, $A = p_2(V_2 - V_1) = p_2 V_2 - p_2 V_1$. Используя уравнение Клапейрона — Менделеева, получим:
+          <div class="math-scroll">$$p_2 V_2 = \nu RT_3;\quad p_2 V_1 = \nu RT_2 = \nu R\frac{T_3}{k}.$$</div>
+          Искомая работа
+          <div class="math-scroll">$$A = \nu RT_3\left(1 - \frac{1}{k}\right) = \nu RT_3\frac{k - 1}{k}$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 21 -->
+    <div class="task-card" id="task-21">
+      <div class="task-header"><span class="task-badge">Задача 21</span></div>
+      <div class="task-text">С идеальным газом, количество вещества которого $\nu$ моль, совершают цикл, где $1 \to 2$ — изохора, $2 \to 3$ — изобара, $3 \to 1$ — прямая, проходящая через начало координат (рис. 2.27). Отношение давлений в состояниях 2 и 1 $\frac{p_2}{p_1} = k$. Температура газа в состоянии 3 равна $T_3$. Полезная работа $A_{\text{п}}$, совершенная газом за цикл, равна:</div>
+      <div class="task-image-wrap">
+        <img src="image6.png" alt="Рис. 2.27" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+2.27';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(21, 1, this)">1) $\nu RT_3(k - 1)$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 2, this)">2) $\frac{\nu RT_3}{k}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 3, this)">3) $\frac{\nu RT_3}{k - 1}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 4, this)">4) $\nu RT_3\frac{k - 1}{k}$;</button>
+        <button class="btn-option" onclick="handleChoice(21, 5, this)">5) $\frac{\nu RT_3}{2}\left(\frac{k - 1}{k}\right)^2$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-21"></div>
+      <button class="btn-solution-toggle" id="btn-sol-21" onclick="toggleSolution(21)">Показать Решение</button>
+      <div class="solution-box" id="sol-21">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Полезная работа численно равна площади, ограниченной циклом:
+          <div class="math-scroll">$$A_{\text{п}} = \frac{1}{2}(p_2 - p_1)(V_2 - V_1).$$</div>
+          Согласно условию $\frac{p_2}{p_1} = k$, откуда $p_2 = kp_1$. Отношение объемов (см. решение задачи 20) $\frac{V_2}{V_1} = k$ и $T_2 = \frac{T_3}{k}$. Поэтому $V_2 = kV_1$. Тогда
+          <div class="math-scroll">$$A_{\text{п}} = \frac{1}{2}(kp_1 - p_1)(kV_1 - V_1) = \frac{1}{2}p_1 V_1(k - 1)^2.$$</div>
+          Из уравнения Клапейрона — Менделеева $p_1 V_1 = \nu RT_1$. Точки 1 и 2 находятся на изохоре. Поэтому
+          <div class="math-scroll">$$\frac{p_2}{p_1} = \frac{T_2}{T_1} = k,\text{ откуда } T_1 = \frac{T_2}{k} = \frac{T_3}{k^2}.$$</div>
+          Искомая работа
+          <div class="math-scroll">$$A_{\text{п}} = \frac{\nu RT_3}{2}\left(\frac{k - 1}{k}\right)^2.$$</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const testAnswers = {
+      1: 1,
+      2: 5,
+      3: 4,
+      4: 5,
+      13: 2,
+      15: 1,
+      18: 4,
+      19: 3,
+      20: 4,
+      21: 5
+    };
+
+    const calcAnswers = {
+      5: [200, 200000],
+      6: [24.31, 24.3, 24, 24307, 24306.75],
+      7: [2.5, 0.4],
+      8: [20, 0.2],
+      9: [4, 4000],
+      10: [290],
+      11: [0.2, 0.0002],
+      12: [60, 60000],
+      14: [2.0, 2, 1.99, 1.988],
+      16: [28, 27.9, 27922, 27921.6],
+      17: [166.2, 166]
+    };
+
+    function handleChoice(taskId, selectedVal, btnEl) {
+      const parent = btnEl.closest('.options-grid');
+      const allBtns = parent.querySelectorAll('.btn-option');
+      allBtns.forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+        b.disabled = true;
+      });
+
+      const correctVal = testAnswers[taskId];
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+
+      if (selectedVal === correctVal) {
+        btnEl.classList.add('correct');
+        fb.textContent = 'Правильно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        btnEl.classList.add('incorrect');
+        allBtns[correctVal - 1].classList.add('correct');
+        fb.textContent = 'Неверно, попробуйте еще раз или изучите решение.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase();
+      s = s.replace(/,/g, '.');
+      s = s.replace(/·|\*|x|х/g, '*');
+      s = s.replace(/\s+/g, '');
+      s = s.replace(/10\^([+-]?\d+)/g, '1e$1');
+      if (s.includes('*')) {
+        let parts = s.split('*');
+        if (parts.length === 2) {
+          let a = parseFloat(parts[0]);
+          let b = parseFloat(parts[1]);
+          if (!isNaN(a) && !isNaN(b)) return a * b;
+        }
+      }
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inp = document.getElementById('inp-' + taskId);
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+      const targets = calcAnswers[taskId];
+      const val = parseVal(inp.value);
+
+      if (isNaN(val)) {
+        fb.textContent = 'Пожалуйста, введите числовое значение.';
+        fb.className = 'feedback-msg incorrect';
+        return;
+      }
+
+      let isCorrect = false;
+      for (let t of targets) {
+        let eps = Math.abs(t) * 0.03;
+        if (eps < 0.05) eps = 0.05;
+        if (Math.abs(val - t) <= eps) {
+          isCorrect = true;
+          break;
+        }
+      }
+
+      if (isCorrect) {
+        fb.textContent = 'Верно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        fb.textContent = 'Неверно. Проверьте расчеты.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function toggleSolution(taskId) {
+      const sol = document.getElementById('sol-' + taskId);
+      const btn = document.getElementById('btn-sol-' + taskId);
+      if (!sol) return;
+      const isHidden = sol.style.display === 'none' || !sol.style.display;
+      sol.style.display = isHidden ? 'block' : 'none';
+      btn.textContent = isHidden ? 'Скрыть Решение' : 'Показать Решение';
+      if (isHidden && window.renderMathInElement) {
+        renderMathInElement(sol, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+  </script>
+</body>
+</html>
