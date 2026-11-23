@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ДЗ 27-28. КПД. Тепловые двигатели</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+  <style>
+    :root {
+      --bg-main: #090a10;
+      --card-bg: rgba(18, 22, 34, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #f43f5e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s ease;
+    }
+    .task-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .task-header {
+      margin-bottom: 18px;
+    }
+    .task-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+    }
+
+    .task-text {
+      font-size: 1.02rem;
+      color: #e2e8f0;
+      margin-bottom: 22px;
+    }
+
+    .task-image-wrap {
+      text-align: center;
+      margin: 18px 0;
+    }
+    .task-image-wrap img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .btn-option {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-option:hover:not(:disabled) {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+    .btn-option.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+    }
+    .btn-option.incorrect {
+      background: rgba(244, 63, 94, 0.2) !important;
+      border-color: #f43f5e !important;
+      color: #fda4af !important;
+    }
+
+    .calc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .calc-row label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .calc-input-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .calc-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .calc-input:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .btn-check {
+      background: var(--primary-gradient);
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-check:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-check:active {
+      transform: translateY(0);
+    }
+
+    .feedback-msg {
+      display: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .feedback-msg.correct {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    .feedback-msg.incorrect {
+      display: block;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #f87171;
+    }
+
+    .btn-solution-toggle {
+      display: none;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-solution-toggle:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .solution-box {
+      display: none;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .solution-title {
+      color: #a5b4fc;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+    .solution-content {
+      font-size: 0.98rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .math-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+      padding: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <div class="hero-badge">ДЗ 27-28</div>
+      <h1>КПД. Тепловые двигатели</h1>
+      <p>Выберите вариант ответа или введите полученное числовое значение.</p>
+    </div>
+
+    <!-- Задача 1 -->
+    <div class="task-card" id="task-1">
+      <div class="task-header"><span class="task-badge">Задача 1</span></div>
+      <div class="task-text">Состояние идеального газа изменялось по циклу, представленному на рисунке 161. Газ получал энергию на участках:</div>
+      <div class="task-image-wrap">
+        <img src="image1.png" alt="Рис. 161" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+161';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(1, 1, this)">1) $1 \to 2$, $2 \to 3$;</button>
+        <button class="btn-option" onclick="handleChoice(1, 2, this)">2) $2 \to 3$, $3 \to 4$;</button>
+        <button class="btn-option" onclick="handleChoice(1, 3, this)">3) $3 \to 4$, $4 \to 5$;</button>
+        <button class="btn-option" onclick="handleChoice(1, 4, this)">4) $4 \to 5$, $5 \to 1$;</button>
+        <button class="btn-option" onclick="handleChoice(1, 5, this)">5) $5 \to 1$, $1 \to 2$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-1"></div>
+      <button class="btn-solution-toggle" id="btn-sol-1" onclick="toggleSolution(1)">Показать Решение</button>
+      <div class="solution-box" id="sol-1">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          В соответствии с первым законом термодинамики газ получал энергию на участках $1 \to 2$, $2 \to 3$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 2 -->
+    <div class="task-card" id="task-2">
+      <div class="task-header"><span class="task-badge">Задача 2</span></div>
+      <div class="task-text">На рисунке 164 показан цикл, который совершает идеальный газ в количестве $\nu = 1,5\text{ моль}$. В состоянии 1 температура газа $T_1 = 300\text{ К}$, в состоянии 4 — $T_4 = 600\text{ К}$. Если в процессе $2 \to 3$ газу было передано количество теплоты $Q_{23} = 6,84\text{ кДж}$, то полезная работа $A_{\text{пол}}$, совершенная газом за цикл, равна:</div>
+      <div class="task-image-wrap">
+        <img src="image2.png" alt="Рис. 164" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+164';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(2, 1, this)">1) 1,5 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 2, this)">2) 2,0 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 3, this)">3) 2,3 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 4, this)">4) 2,7 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(2, 5, this)">5) 3,1 кДж.</button>
+      </div>
+      <div class="feedback-msg" id="fb-2"></div>
+      <button class="btn-solution-toggle" id="btn-sol-2" onclick="toggleSolution(2)">Показать Решение</button>
+      <div class="solution-box" id="sol-2">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          На рисунке 515 показан график зависимости давления $p$ газа от его объема $V$. При изотермическом процессе $2 \to 3$ работа газа равна количеству теплоты, полученному газом: $A_{23} = Q_{23}$. Полезная работа, совершенная за цикл, $A_{\text{пол}} = A_{23} - |A_{41}|$. Работа $A_{41} = \nu R(T_1 - T_4)$. Из записанных уравнений найдем ответ: $A_{\text{пол}} = 3,1\text{ кДж}$.
+          <div class="task-image-wrap">
+            <img src="image8.png" alt="Рис. 515" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+515';">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 3 -->
+    <div class="task-card" id="task-3">
+      <div class="task-header"><span class="task-badge">Задача 3</span></div>
+      <div class="task-text">Тепловой двигатель, термический коэффициент полезного действия которого $\eta_{\text{т}} = 13\text{ }\%$, работает по циклу, изображенному на рисунке 167. Рабочим телом является идеальный одноатомный газ в количестве $\nu = 0,50\text{ моль}$. Температура газа в состояниях 1 и 2 соответственно $T_1 = 335\text{ К}$ и $T_2 = 670\text{ К}$. Если объем $V_3 = 2V_1$, то работа $A_{23}$, совершенная силами давления газа при изотермическом расширении, равна:</div>
+      <div class="task-image-wrap">
+        <img src="image3.png" alt="Рис. 167" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+167';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(3, 1, this)">1) 1,2 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(3, 2, this)">2) 1,4 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(3, 3, this)">3) 1,9 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(3, 4, this)">4) 2,5 кДж;</button>
+        <button class="btn-option" onclick="handleChoice(3, 5, this)">5) 3,0 кДж.</button>
+      </div>
+      <div class="feedback-msg" id="fb-3"></div>
+      <button class="btn-solution-toggle" id="btn-sol-3" onclick="toggleSolution(3)">Показать Решение</button>
+      <div class="solution-box" id="sol-3">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          На рисунке 518 показан график зависимости давления $p$ газа от его объема $V$. Термический КПД цикла
+          <div class="math-scroll">$$\eta_{\text{т}} = \frac{A_{\text{пол}}}{Q_1} \cdot 100\text{ }\%.$$</div>
+          Полезная работа $A_{\text{пол}} = A_{23} - \nu R(T_3 - T_1)$, где $T_3 = T_2$. Количество теплоты, полученное газом за цикл, $Q_1 = Q_{12} + Q_{23}$. По первому закону термодинамики
+          <div class="math-scroll">$$Q_{12} = \frac{3}{2}\nu R(T_2 - T_1),\quad Q_{23} = A_{23}.$$</div>
+          Из записанных уравнений найдем ответ: $A_{23} = 1,9\text{ кДж}$.
+          <div class="task-image-wrap">
+            <img src="image9.png" alt="Рис. 518" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+518';">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="task-card" id="task-4">
+      <div class="task-header"><span class="task-badge">Задача 4</span></div>
+      <div class="task-text">Рабочим телом в циклах $1 \to 2 \to 3 \to 4 \to 1$ (цикл I) и $5 \to 6 \to 7 \to 3 \to 5$ (цикл II), представленных на рисунке 169, является идеальный одноатомный газ. Отношение термических коэффициентов полезного действия циклов $\frac{\eta_{\text{тI}}}{\eta_{\text{тII}}}$ равно:</div>
+      <div class="task-image-wrap">
+        <img src="image4.png" alt="Рис. 169" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+169';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(4, 1, this)">1) $\frac{1}{2}$;</button>
+        <button class="btn-option" onclick="handleChoice(4, 2, this)">2) $\frac{3}{5}$;</button>
+        <button class="btn-option" onclick="handleChoice(4, 3, this)">3) $\frac{5}{3}$;</button>
+        <button class="btn-option" onclick="handleChoice(4, 4, this)">4) $\frac{32}{23}$;</button>
+        <button class="btn-option" onclick="handleChoice(4, 5, this)">5) $\frac{21}{23}$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-4"></div>
+      <button class="btn-solution-toggle" id="btn-sol-4" onclick="toggleSolution(4)">Показать Решение</button>
+      <div class="solution-box" id="sol-4">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Полезные работы, совершенные газами в этих циклах, одинаковы. Газ в цикле I получает энергию на процессах $1 \to 2$ и $2 \to 3$. В цикле II газ получает энергию на процессах $5 \to 6$ и $6 \to 7$. По первому закону термодинамики количество теплоты, полученное газом:
+          <div class="math-scroll">$$Q_{12} = \Delta U_{12} = \frac{3}{2}p_1 V_1,\quad Q_{23} = \Delta U_{23} + A_{23} = 10p_1 V_1,$$</div>
+          <div class="math-scroll">$$Q_{56} = \Delta U_{56} = 6p_1 V_1,\quad Q_{67} = \Delta U_{67} + A_{67} = 10p_1 V_1.$$</div>
+          Отсюда $(Q_1)_{\text{I}} = 11,5p_1 V_1$ и $(Q_1)_{\text{II}} = 16p_1 V_1$. Искомое отношение:
+          <div class="math-scroll">$$\frac{\eta_{\text{тI}}}{\eta_{\text{тII}}} = \frac{32}{23}.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 5 -->
+    <div class="task-card" id="task-5">
+      <div class="task-header"><span class="task-badge">Задача 5</span></div>
+      <div class="task-text">На пути $s = 100\text{ км}$ двигатель мотоцикла при средней скорости движения, модуль которой $\langle\upsilon\rangle = 108\text{ }\frac{\text{км}}{\text{ч}}$, потребляет бензин $\left(q = 46\text{ }\frac{\text{МДж}}{\text{кг}}\right)$ массой $m = 5,8\text{ кг}$. Если эффективный коэффициент полезного действия двигателя $\eta = 25\text{ }\%$, то средняя мощность $\langle P\rangle$ двигателя равна:</div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(5, 1, this)">1) 15 кВт;</button>
+        <button class="btn-option" onclick="handleChoice(5, 2, this)">2) 18 кВт;</button>
+        <button class="btn-option" onclick="handleChoice(5, 3, this)">3) 20 кВт;</button>
+        <button class="btn-option" onclick="handleChoice(5, 4, this)">4) 25 кВт;</button>
+        <button class="btn-option" onclick="handleChoice(5, 5, this)">5) 30 кВт.</button>
+      </div>
+      <div class="feedback-msg" id="fb-5"></div>
+      <button class="btn-solution-toggle" id="btn-sol-5" onclick="toggleSolution(5)">Показать Решение</button>
+      <div class="solution-box" id="sol-5">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Эффективный КПД теплового двигателя $\eta_{\text{э}} = \frac{E_{\text{п}}}{Q}\cdot 100\text{ }\%$. Полезная энергия двигателя:
+          <div class="math-scroll">$$E_{\text{п}} = \langle P\rangle \frac{s}{\langle\upsilon\rangle}.$$</div>
+          Количество теплоты, полученное двигателем, $Q = qm$. Из записанных уравнений найдем ответ: $\langle P\rangle = 20\text{ кВт}$.
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 6 -->
+    <div class="task-card" id="task-6">
+      <div class="task-header"><span class="task-badge">Задача 6</span></div>
+      <div class="task-text">Автомобиль движется равномерно со скоростью $\upsilon = 90\text{ }\frac{\text{км}}{\text{ч}}$ и на пути $s = 100\text{ км}$ расходует $V = 8,0\text{ л}$ топлива $\left(\rho = 745\text{ }\frac{\text{кг}}{\text{м}^3},\; q = 44,6\text{ }\frac{\text{МДж}}{\text{кг}}\right)$. Если двигатель автомобиля развивает механическую мощность $P = 16\text{ кВт}$, то коэффициент полезного действия $\eta$ двигателя равен ... %</div>
+      <div class="calc-row">
+        <label>Введите коэффициент полезного действия в процентах ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-6">
+          <button class="btn-check" onclick="validateCalculation(6)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-6"></div>
+      <button class="btn-solution-toggle" id="btn-sol-6" onclick="toggleSolution(6)">Показать Решение</button>
+      <div class="solution-box" id="sol-6">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Для выполнения задания необходимо уметь решать задачи на расчёт коэффициента полезного действия теплового двигателя.<br>
+          Коэффициент полезного действия двигателя автомобиля:
+          <div class="math-scroll">$$\eta = \frac{Pt}{qm},\text{ где } t = \frac{s}{\upsilon}\text{ — время движения автомобиля; } m = \rho V\text{ —}$$</div>
+          масса сгоревшего топлива. Окончательно получаем:
+          <div class="math-scroll">$$\eta = \frac{Ps}{q\rho V\upsilon};$$</div>
+          <div class="math-scroll">$$\eta = \frac{16\cdot 10^3\text{ Вт}\cdot 100\cdot 10^3\text{ м}}{44,6\cdot 10^6\text{ }\frac{\text{Дж}}{\text{кг}}\cdot 745\text{ }\frac{\text{кг}}{\text{м}^3}\cdot 8,0\cdot 10^{-3}\text{ м}^3\cdot 25\text{ }\frac{\text{м}}{\text{с}}} = 0,24 = 24\text{ }\%.$$</div>
+          Ответ: 24
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 7 -->
+    <div class="task-card" id="task-7">
+      <div class="task-header"><span class="task-badge">Задача 7</span></div>
+      <div class="task-text">Термический коэффициент полезного действия теплового двигателя $\eta_1 = 20\text{ }\%$. Если после изменения условий работы двигателя количество теплоты, полученное от нагревателя за цикл, увеличилось на $k = 20\text{ }\%$, а количество теплоты, переданное холодильнику, уменьшилось на $n = 10\text{ }\%$, то термический коэффициент полезного действия $\eta_2$ теплового двигателя стал равен ... %</div>
+      <div class="calc-row">
+        <label>Введите термический коэффициент полезного действия в процентах ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-7">
+          <button class="btn-check" onclick="validateCalculation(7)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-7"></div>
+      <button class="btn-solution-toggle" id="btn-sol-7" onclick="toggleSolution(7)">Показать Решение</button>
+      <div class="solution-box" id="sol-7">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Для выполнения задания необходимо уметь решать задачи на расчёт термического коэффициента полезного действия теплового двигателя.<br>
+          Термический коэффициент полезного действия теплового двигателя:
+          <div class="math-scroll">$$\eta_1 = 1 - \frac{|Q_2|}{Q_1},\text{ откуда } \frac{|Q_2|}{Q_1} = 1 - \eta_1.$$</div>
+          После изменения условий работы двигателя:
+          <div class="math-scroll">$$\eta_2 = 1 - \frac{(1 - n)|Q_2|}{(1 + k)Q_1} = 1 - \frac{1 - n}{1 + k}(1 - \eta_1).$$</div>
+          <div class="math-scroll">$$\eta_2 = 1 - \frac{1 - 0,10}{1 + 0,20}(1 - 0,20) = 0,40 = 40\text{ }\%.$$</div>
+          Ответ: 40
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 8 -->
+    <div class="task-card" id="task-8">
+      <div class="task-header"><span class="task-badge">Задача 8</span></div>
+      <div class="task-text">Тепловой двигатель, рабочим телом которого является идеальный газ, совершает цикл, изображенный на рисунке 2.30. Термический КПД $\eta$ двигателя равен:</div>
+      <div class="task-image-wrap">
+        <img src="image5.png" alt="Рис. 2.30" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+2.30';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(8, 1, this)">1) 13 %;</button>
+        <button class="btn-option" onclick="handleChoice(8, 2, this)">2) 15 %;</button>
+        <button class="btn-option" onclick="handleChoice(8, 3, this)">3) 19 %;</button>
+        <button class="btn-option" onclick="handleChoice(8, 4, this)">4) 23 %;</button>
+        <button class="btn-option" onclick="handleChoice(8, 5, this)">5) 66 %.</button>
+      </div>
+      <div class="feedback-msg" id="fb-8"></div>
+      <button class="btn-solution-toggle" id="btn-sol-8" onclick="toggleSolution(8)">Показать Решение</button>
+      <div class="solution-box" id="sol-8">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          По определению термический КПД теплового двигателя
+          <div class="math-scroll">$$\eta = \frac{A_{\text{п}}}{Q_1},$$</div>
+          где $A_{\text{п}}$ — полезная работа, совершаемая идеальным газом за цикл; $Q_1$ — количество теплоты, полученное газом от нагревателя.<br>
+          Полезная работа численно равна площади прямоугольника, ограниченного циклом:
+          <div class="math-scroll">$$A_{\text{п}} = (3p_0 - p_0)(2V_0 - V_0) = 2p_0 V_0.$$</div>
+          Рабочее тело получает от нагревателя количество теплоты $Q_1$ в процессах $1 \to 2$ и $2 \to 3$. По первому закону термодинамики
+          <div class="math-scroll">$$Q_1 = A_{123} + \Delta U_{123}.$$</div>
+          Работа газа зависит от вида процесса.<br>
+          $A_{123} = A_{12} + A_{23} = A_{23}$, так как процесс $1 \to 2$ изохорный и $A_{12} = 0$. Работа $A_{23}$ численно равна площади прямоугольника $V_0 2 3 2V_0$:
+          <div class="math-scroll">$$A_{123} = A_{23} = 3p_0(2V_0 - V_0) = 3p_0 V_0.$$</div>
+          Изменение внутренней энергии:
+          <div class="math-scroll">$$\Delta U_{123} = U_3 - U_1 = \frac{3}{2}\nu R(T_3 - T_1).$$</div>
+          Запишем для состояний 1 и 3 газа уравнение Клапейрона — Менделеева:
+          <div class="math-scroll">$$\nu RT_1 = p_0 V_0;\quad \nu RT_3 = 3p_0 \cdot 2V_0 = 6p_0 V_0.$$</div>
+          Тогда $\Delta U_{123} = \frac{3}{2}(6p_0 V_0 - p_0 V_0) = \frac{15}{2}p_0 V_0$. Следовательно,
+          <div class="math-scroll">$$Q_1 = 3p_0 V_0 + \frac{15}{2}p_0 V_0 = \frac{21}{2}p_0 V_0.$$</div>
+          Искомый термический КПД:
+          <div class="math-scroll">$$\eta = \frac{2p_0 V_0}{\frac{21}{2}p_0 V_0} = \frac{4}{21} = 19\text{ }\%.$$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 9 -->
+    <div class="task-card" id="task-9">
+      <div class="task-header"><span class="task-badge">Задача 9</span></div>
+      <div class="task-text">На $p-V$-диаграмме представлен замкнутый цикл, проводимый с идеальным одноатомным газом. Термический коэффициент полезного действия $\eta$ этого цикла равен ... %</div>
+      <div class="task-image-wrap">
+        <img src="image6.png" alt="График цикла" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA';">
+      </div>
+      <div class="calc-row">
+        <label>Введите термический коэффициент полезного действия в процентах ($\%$):</label>
+        <div class="calc-input-group">
+          <input type="text" class="calc-input" id="inp-9">
+          <button class="btn-check" onclick="validateCalculation(9)">Проверить</button>
+        </div>
+      </div>
+      <div class="feedback-msg" id="fb-9"></div>
+      <button class="btn-solution-toggle" id="btn-sol-9" onclick="toggleSolution(9)">Показать Решение</button>
+      <div class="solution-box" id="sol-9">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Для выполнения задания необходимо уметь решать задачи на определение коэффициента полезного действия тепловых двигателей.<br>
+          Термический коэффициент полезного действия
+          <div class="math-scroll">$$\eta = \frac{A_{\text{ц}}}{Q_1} \cdot 100\text{ }\%,$$</div>
+          где работа газа за цикл $A_{\text{ц}}$ определяется площадью фигуры внутри этого цикла, то есть $A_{\text{ц}} = p_0 V_0$.<br>
+          $Q_1$ — количество теплоты, полученное рабочим телом от нагревателя.<br>
+          На участке $1-2$ $V = \text{const}$. $Q_{12} = \Delta U_{12} = \frac{3}{2}p_0 V_0$.<br>
+          На участке $2-3$ $p = \text{const}$.
+          <div class="math-scroll">$$Q_{23} = \Delta U_{23} + A_{23} = \frac{3}{2}\cdot 2p_0 V_0 + 2p_0 V_0 = 5p_0 V_0.$$</div>
+          На других участках рабочее тело отдавало тепло.<br>
+          Таким образом, $Q_1 = Q_{12} + Q_{23}$.
+          <div class="math-scroll">$$Q_1 = \frac{3}{2}p_0 V_0 + 5p_0 V_0 = 6,5p_0 V_0.$$</div>
+          <div class="math-scroll">$$\eta = \frac{p_0 V_0}{6,5p_0 V_0} \cdot 100\text{ }\% = 15\text{ }\%.$$</div>
+          Ответ: 15
+        </div>
+      </div>
+    </div>
+
+    <!-- Задача 10 -->
+    <div class="task-card" id="task-10">
+      <div class="task-header"><span class="task-badge">Задача 10</span></div>
+      <div class="task-text">С одноатомным идеальным газом, количество вещества которого $\nu$ моль, совершают цикл, где $1 \to 2$ — изохора, $2 \to 3$ — изобара, $3 \to 1$ — прямая, проходящая через начало координат (рис. 2.31). Отношение давлений в состояниях 2 и 1 $\frac{p_2}{p_1} = k$. Температура газа в состоянии 3 равна $T_3$. Термический КПД $\eta$ цикла $1 \to 2 \to 3$ равен:</div>
+      <div class="task-image-wrap">
+        <img src="image7.png" alt="Рис. 2.31" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=%D0%A0%D0%B8%D1%81.+2.31';">
+      </div>
+      <div class="options-grid">
+        <button class="btn-option" onclick="handleChoice(10, 1, this)">1) $\frac{k+1}{5k+3}$;</button>
+        <button class="btn-option" onclick="handleChoice(10, 2, this)">2) $\frac{k-1}{5k-3}$;</button>
+        <button class="btn-option" onclick="handleChoice(10, 3, this)">3) $\frac{k-1}{5k+3}$;</button>
+        <button class="btn-option" onclick="handleChoice(10, 4, this)">4) $\frac{k-1}{5k+1}$;</button>
+        <button class="btn-option" onclick="handleChoice(10, 5, this)">5) $\frac{k-1}{5k-1}$.</button>
+      </div>
+      <div class="feedback-msg" id="fb-10"></div>
+      <button class="btn-solution-toggle" id="btn-sol-10" onclick="toggleSolution(10)">Показать Решение</button>
+      <div class="solution-box" id="sol-10">
+        <div class="solution-title">Решение:</div>
+        <div class="solution-content">
+          Термический коэффициент полезного действия двигателя — это отношение полезной работы $A_{\text{п}}$ к количеству теплоты, полученному рабочим телом от нагревателя:
+          <div class="math-scroll">$$\eta = \frac{A_{\text{п}}}{Q_1},$$</div>
+          <div class="math-scroll">$$Q_1 = Q_{123} = A_{123} + \Delta U_{123},$$</div>
+          где $A_{123}$ — работа, совершенная газом в процессе нагревания и расширения; $\Delta U_{123} = U_3 - U_1$ — изменение внутренней энергии в этих процессах;
+          <div class="math-scroll">$$U_1 = \frac{3}{2}\nu RT_1\text{ и } U_3 = \frac{3}{2}\nu RT_3\text{ — внутренняя энергия газа в состояниях 1 и 3.}$$</div>
+          Из решений задач 7 и 8 имеем:
+          <div class="math-scroll">$$A_{123} = \frac{k-1}{k}\nu RT_3;\quad A_{\text{п}} = \frac{1}{2}\nu RT_3\left(\frac{k-1}{k}\right)^2;\quad T_1 = \frac{T_3}{k^2}.$$</div>
+          Поэтому
+          <div class="math-scroll">$$\Delta U_{123} = \frac{3}{2}\nu R(T_3 - T_1) = \frac{3}{2}\nu R\left(T_3 - \frac{T_3}{k^2}\right) = \frac{3}{2}\nu RT_3\frac{k^2 - 1}{k^2};$$</div>
+          <div class="math-scroll">$$Q_1 = \frac{k-1}{k}\nu RT_3 + \frac{3}{2}\nu RT_3\frac{k^2 - 1}{k^2} = \frac{k-1}{k}\nu RT_3\left(1 + \frac{3}{2}\frac{(k+1)}{k}\right) = \frac{(5k+3)(k-1)}{2k^2}\nu RT_3.$$</div>
+          Искомый термический КПД двигателя:
+          <div class="math-scroll">$$\eta = \frac{\frac{1}{2}\nu RT_3\left(\frac{k-1}{k}\right)^2}{\frac{(5k+3)(k-1)}{2k^2}\nu RT_3} = \frac{k-1}{5k+3}.$$</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function initMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    const testAnswers = {
+      1: 1,
+      2: 5,
+      3: 3,
+      4: 4,
+      5: 3,
+      8: 3,
+      10: 3
+    };
+
+    const calcAnswers = {
+      6: [24, 0.24],
+      7: [40, 0.4],
+      9: [15, 0.15]
+    };
+
+    function handleChoice(taskId, selectedVal, btnEl) {
+      const parent = btnEl.closest('.options-grid');
+      const allBtns = parent.querySelectorAll('.btn-option');
+      allBtns.forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+        b.disabled = true;
+      });
+
+      const correctVal = testAnswers[taskId];
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+
+      if (selectedVal === correctVal) {
+        btnEl.classList.add('correct');
+        fb.textContent = 'Правильно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        btnEl.classList.add('incorrect');
+        allBtns[correctVal - 1].classList.add('correct');
+        fb.textContent = 'Неверно, попробуйте еще раз или изучите решение.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function parseVal(str) {
+      if (!str) return NaN;
+      let s = str.trim().toLowerCase();
+      s = s.replace(/,/g, '.');
+      s = s.replace(/·|\*|x|х/g, '*');
+      s = s.replace(/\s+/g, '');
+      s = s.replace(/10\^([+-]?\d+)/g, '1e$1');
+      if (s.includes('*')) {
+        let parts = s.split('*');
+        if (parts.length === 2) {
+          let a = parseFloat(parts[0]);
+          let b = parseFloat(parts[1]);
+          if (!isNaN(a) && !isNaN(b)) return a * b;
+        }
+      }
+      return parseFloat(s);
+    }
+
+    function validateCalculation(taskId) {
+      const inp = document.getElementById('inp-' + taskId);
+      const fb = document.getElementById('fb-' + taskId);
+      const solBtn = document.getElementById('btn-sol-' + taskId);
+      const targets = calcAnswers[taskId];
+      const val = parseVal(inp.value);
+
+      if (isNaN(val)) {
+        fb.textContent = 'Пожалуйста, введите числовое значение.';
+        fb.className = 'feedback-msg incorrect';
+        return;
+      }
+
+      let isCorrect = false;
+      for (let t of targets) {
+        let eps = Math.abs(t) * 0.03;
+        if (eps < 0.05) eps = 0.05;
+        if (Math.abs(val - t) <= eps) {
+          isCorrect = true;
+          break;
+        }
+      }
+
+      if (isCorrect) {
+        fb.textContent = 'Верно!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        fb.textContent = 'Неверно. Проверьте расчеты.';
+        fb.className = 'feedback-msg incorrect';
+      }
+      solBtn.style.display = 'inline-block';
+    }
+
+    function toggleSolution(taskId) {
+      const sol = document.getElementById('sol-' + taskId);
+      const btn = document.getElementById('btn-sol-' + taskId);
+      if (!sol) return;
+      const isHidden = sol.style.display === 'none' || !sol.style.display;
+      sol.style.display = isHidden ? 'block' : 'none';
+      btn.textContent = isHidden ? 'Скрыть Решение' : 'Показать Решение';
+      if (isHidden && window.renderMathInElement) {
+        renderMathInElement(sol, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+  </script>
+</body>
+</html>
